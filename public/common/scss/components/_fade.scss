@@ -1,0 +1,73 @@
+@charset "UTF-8";
+@use "../scss_var";
+
+/*　フェード
+----------------------------------------------- */
+//下から上
+.view01 {
+  transform: translateY(30px);
+  @include scss_var.fadeBefore;
+
+  &.view-on {
+    transform: translateY(0);
+    @include scss_var.fadeAfter;
+  }
+}
+
+//左から右
+.view02 {
+  transform: translateX(-30px);
+  @include scss_var.fadeBefore;
+
+  &.view-on {
+    transform: translateX(0);
+    @include scss_var.fadeAfter;
+  }
+}
+
+//右から左
+.view03 {
+  transform: translateX(30px);
+  @include scss_var.fadeBefore;
+
+  &.view-on {
+    transform: translateX(0);
+    @include scss_var.fadeAfter;
+  }
+}
+
+//上から下
+.view04 {
+  transform: translateY(-30px);
+  @include scss_var.fadeBefore;
+
+  &.view-on {
+    transform: translateY(0);
+    @include scss_var.fadeAfter;
+  }
+}
+
+//その場から
+.view05 {
+  @include scss_var.fadeBefore;
+
+  &.view-on {
+    @include scss_var.fadeAfter;
+  }
+}
+
+/*　スライドアニメーション
+----------------------------------------------- */
+.js-slide-h {
+  display: grid;
+  transition: grid-template-rows 0.4s;
+  grid-template-rows: 0fr;
+
+  & > * {
+    overflow: hidden;
+  }
+
+  &.js-active {
+    grid-template-rows: 1fr;
+  }
+}
