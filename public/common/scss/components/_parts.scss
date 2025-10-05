@@ -1,0 +1,56 @@
+@charset "UTF-8";
+@use "../scss_var";
+
+/*　共通
+----------------------------------------------- */
+body {
+  overflow-x: clip;
+
+  &.js-on {
+    overflow: hidden;
+  }
+}
+
+.sp {
+  display: none;
+}
+
+.pc {
+  display: block;
+}
+
+.pc-inline {
+  display: inline;
+}
+
+.sp-inline {
+  display: none;
+}
+
+.inner {
+  max-width: var(--main-inner-width);
+  margin-inline: auto;
+  padding: var(--main-inner-padding);
+}
+
+@include scss_var.sp {
+  .sp {
+    display: block;
+  }
+
+  .pc {
+    display: none;
+  }
+
+  .sp-inline {
+    display: inline;
+  }
+
+  .pc-inline {
+    display: none;
+  }
+
+  .inner {
+    margin: 0;
+  }
+}

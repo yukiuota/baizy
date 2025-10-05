@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+@use "scss-variables" as var;
+
+// ブレイクポイント指定
+@mixin pc {
+  @media screen and (min-width: (var.$pc)) {
+    @content;
+  }
+}
+
+@mixin tab {
+  @media screen and (max-width: (var.$tab)) {
+    @content;
+  }
+}
+
+@mixin sp {
+  @media screen and (max-width: (var.$sp)) {
+    @content;
+  }
+}
+
+// フェードアニメーション
+@mixin fadeBefore {
+  position: relative;
+  opacity: 0;
+  transition: all var(--anime-speed) ease;
+  transition-delay: var(--anime-delay);
+}
+
+@mixin fadeAfter {
+  opacity: 1;
+  transition: all var(--anime-speed) ease;
+  transition-delay: var(--anime-delay);
+}
+
+// レイアウト
+// @include flexCenter;
+@mixin flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// @include positionCenter;
+@mixin positionCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// hover時、CPデバイスのみにホバーを実装
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}

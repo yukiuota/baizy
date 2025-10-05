@@ -1,0 +1,9 @@
+{
+    "name": "uota/baizy",
+    "autoload": {
+        "psr-4": {
+        "App\\": "app/"
+        }
+    },
+    "require": {}
+}

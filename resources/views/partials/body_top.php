@@ -1,0 +1,1 @@
+<?php if ( !defined( 'ABSPATH' ) ) exit; // body上部に追加するタグ  ?>

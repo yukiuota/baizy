@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.5/theme.json",
+  "version": 2,
+  "customTemplates": [{
+      "name": "blank",
+      "postTypes": ["page", "post"],
+      "title": "Blank"
+    },
+    {
+      "name": "blog-alternative",
+      "postTypes": ["page"],
+      "title": "Blog (Alternative)"
+    },
+    {
+      "name": "404",
+      "postTypes": ["page"],
+      "title": "404"
+    }
+  ],
+  "settings": {
+    "appearanceTools": true,
+    "color": {
+      "palette": [{
+          "color": "#5a5a5a",
+          "name": "Base",
+          "slug": "base"
+        },
+        {
+          "color": "#000",
+          "name": "Base",
+          "slug": "base-black"
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "1100px",
+      "wideSize": "1140px"
+    },
+    "useRootPaddingAwareAlignments": true
+  },
+  "styles": {
+    "spacing": {
+      "blockGap": "1.5rem",
+      "padding": {
+        "top": "var(--wp--preset--spacing--40)",
+        "right": "var(--wp--preset--spacing--30)",
+        "bottom": "var(--wp--preset--spacing--40)",
+        "left": "var(--wp--preset--spacing--30)"
+      }
+    },
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--system-font)",
+      "fontSize": "var(--wp--preset--font-size--medium)",
+      "lineHeight": "1.6"
+    }
+  }
+}
