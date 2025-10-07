@@ -1,34 +1,60 @@
-# baizy
+# WordPress オリジナルテーマ制作テンプレート
 
-## ディレクトリ構造
-baizy/
-├── app/
-│   ├── Controllers/       # 各ページや機能の処理をまとめる (クラス or 関数)
-│   ├── Models/            # DBアクセスやビジネスロジック (WP_QueryやカスタムDB操作)
-│   ├── Services/          # 外部API連携や複雑な処理
-│   ├── Helpers/           # 共通関数
-│   └── bootstrap.php      # 初期読み込み
-│
-├── resources/
-│   ├── views/             # ビュー（TwigやBlade, または get_template_part()用のphp）
-│   │   ├── partials/      # ヘッダー・フッター・共通UI
-│   │   ├── pages/         # 固定ページ用
-│   │   ├── archives/      # archiveページ用
-│   │   ├── single/        # singleページ用
-│   │   ├── components/    # 小さいUIパーツ
-│   │   └── blocks/        # 小さいUIパーツ
-│   └── blocks/            # ブロック出力先
-│
-├── public/                # CSS/JS/画像
-│   └── common/
-│   │   ├── css/
-│   │   ├── scss/
-│   │   ├── js/
-│   └── imgs/
-│
-├── functions.php          # 最小限にして app/bootstrap.php を読み込む
-├── style.css              # テーマ情報のみ
-├── index.php              # WordPressテーマ必須
-├── single.php
-├── archive.php
-└── ...
+クラシックテーマをベースにしたオリジナルテーマ開発用テンプレートです。ブロック（Gutenberg）関連の JS を Webpack でビルドします。
+
+## 必要環境
+
+- WordPress 6.6 以上
+- PHP 8.0 以上
+- Node.js 18 以上
+
+## セットアップ（カスタムブロック開発）
+
+1) 依存関係をインストール
+
+```
+npm install
+```
+
+2) 本番ビルド
+
+```
+npm run build
+```
+
+出力ファイル: `app/blocks/build/custom-blocks.js`
+
+## ディレクトリ構成（抜粋）
+
+- `app/blocks/src/` ブロック関連のソース
+- `app/blocks/build/` Webpack 出力先
+- `public/` 共通 CSS/JS・ページテンプレート等
+- `include/` 分割テンプレート
+- `style.css` テーマ情報（ヘッダー必須）
+- `theme.json` テーマ設定
+
+## 運用メモ
+
+- `.gitignore` で `node_modules` やビルド成果物、エディタ設定等を除外しています。
+- NPM パッケージとしての公開を避けるため `package.json` の `private: true` を設定しています。
+- ライセンスは WordPress に合わせて GPL-2.0-or-later としています（`style.css` と `LICENSE` を参照）。
+
+
+# テーマ制作メモ
+## 画像表示
+```
+<picture>
+<source srcset="<?php echo tmp_img('xx/xx.png'); ?> 1x, <?php echo tmp_img('xx/xx@2x.png'); ?> 2x" media="(max-width: 750px)">
+<img src="<?php echo tmp_img('xx/xx.png'); ?>" srcset="<?php echo tmp_img('xx/xx.png'); ?> 1x, <?php echo tmp_img('xx/xx@2x.png'); ?> 2x" <?php tmp_img_wh('xx/xx.png'); ?> alt="">
+</picture>
+```
+
+
+## functions.phpの読み込み
+composer dump-autoload
+
+## ライセンス
+
+GPL-2.0-or-later
+
+詳細は `LICENSE` を参照してください。

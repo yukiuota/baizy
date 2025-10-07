@@ -1,0 +1,10 @@
+/* フォームデフォルト */
+.c-form-confirm,
+.c-form-thanks {
+  display: none;
+}
+
+/*デフォルトのサンクスメッセージを非表示*/
+.wpcf7-response-output {
+  display: none;
+}

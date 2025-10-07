@@ -1,0 +1,98 @@
+{
+  "url": "http://localhost:10013/",
+  "timestamp": "2025-09-26T10:12:07.971Z",
+  "loadTime": 843,
+  "statusCode": 200,
+  "performanceMetrics": {
+    "domContentLoaded": 124,
+    "loadComplete": 130,
+    "domReady": 123,
+    "dnsLookup": 0,
+    "tcpConnection": 0,
+    "requestTime": 29,
+    "responseTime": 1,
+    "domProcessing": 35,
+    "redirectTime": 0,
+    "navigationType": 0,
+    "redirectCount": 0,
+    "firstContentfulPaint": "N/A",
+    "largestContentfulPaint": "N/A",
+    "cumulativeLayoutShift": "N/A"
+  },
+  "resourceCount": 10,
+  "totalTransferSize": 0,
+  "resources": [{
+      "name": "http://localhost:10013/wp-includes/css/dist/block-library/style.min.css?ver=6.8.2",
+      "type": "link",
+      "size": 0,
+      "duration": 8,
+      "startTime": 95.60000000149012
+    },
+    {
+      "name": "http://localhost:10013/wp-content/themes/baizy/public/common/css/common.css?ver=1758384793",
+      "type": "link",
+      "size": 0,
+      "duration": 8.799999997019768,
+      "startTime": 95.70000000298023
+    },
+    {
+      "name": "http://localhost:10013/wp-content/themes/baizy/public/common/css/home.css?ver=1755101305",
+      "type": "link",
+      "size": 0,
+      "duration": 9.300000004470348,
+      "startTime": 95.89999999850988
+    },
+    {
+      "name": "http://localhost:10013/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1",
+      "type": "script",
+      "size": 0,
+      "duration": 10.299999997019768,
+      "startTime": 96.10000000149012
+    },
+    {
+      "name": "http://localhost:10013/wp-includes/js/jquery/jquery.min.js?ver=3.7.1",
+      "type": "script",
+      "size": 0,
+      "duration": 9.899999998509884,
+      "startTime": 96.10000000149012
+    },
+    {
+      "name": "http://localhost:10013/wp-content/themes/baizy/public/common/js/script.js?ver=1758385934",
+      "type": "script",
+      "size": 0,
+      "duration": 12.299999997019768,
+      "startTime": 96.20000000298023
+    },
+    {
+      "name": "http://localhost:10013/wp-content/themes/baizy/app/ajax/ajax-more.js",
+      "type": "script",
+      "size": 0,
+      "duration": 13.5,
+      "startTime": 96.20000000298023
+    },
+    {
+      "name": "http://localhost:10013/wp-content/themes/baizy/app/ajax/ajax-search.js",
+      "type": "script",
+      "size": 0,
+      "duration": 23.69999999552965,
+      "startTime": 96.30000000447035
+    },
+    {
+      "name": "http://localhost:10013/wp-content/themes/baizy/app/ajax/ajax-pagination.js?ver=1758881527",
+      "type": "script",
+      "size": 0,
+      "duration": 24.400000005960464,
+      "startTime": 96.39999999850988
+    },
+    {
+      "name": "http://localhost:10013/wp-content/uploads/2025/09/cropped-screenshot-32x32.png",
+      "type": "other",
+      "size": 0,
+      "duration": 13.600000001490116,
+      "startTime": 134.60000000149012
+    }
+  ],
+  "recommendations": [
+    "パフォーマンスは良好です！現在の最適化を維持してください。"
+  ]
+}

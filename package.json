@@ -1,0 +1,53 @@
+{
+  "name": "baizy",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack --watch --mode development",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mcp:start": "chrome-devtools-mcp",
+    "mcp:headless": "chrome-devtools-mcp --headless=true --isolated=true",
+    "mcp:dev": "chrome-devtools-mcp --isolated=true --channel=dev",
+    "perf:check": "node performance-check.js",
+    "perf:localhost": "node performance-check.js http://localhost:10013/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yukiuota/baizy.git"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "block-editor",
+    "webpack"
+  ],
+  "author": "Yuki Uota",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/yukiuota/baizy/issues"
+  },
+  "homepage": "https://github.com/yukiuota/baizy#readme",
+  "description": "WordPress オリジナルテーマ制作テンプレート。Webpack でブロック等をビルド。",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.1",
+    "@babel/preset-react": "^7.27.1",
+    "@wordpress/block-editor": "^15.1.0",
+    "@wordpress/blocks": "^15.1.0",
+    "@wordpress/components": "^30.1.0",
+    "@wordpress/element": "^6.28.0",
+    "@wordpress/scripts": "^30.21.0",
+    "babel-loader": "^10.0.0",
+    "chrome-devtools-mcp": "^0.3.0",
+    "css-loader": "^7.1.2",
+    "puppeteer": "^24.22.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  }
+}
