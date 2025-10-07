@@ -1,2 +1,19 @@
-/vendor/
 .DS_Store
+node_modules
+sample
+.vscode
+*.log
+.idea/
+
+# Build outputs
+app/blocks/build/
+public/common/css/*.css.map
+public/common/js/*.map
+
+# Local WordPress (if this theme is in a full WP tree, avoid committing env-specific assets)
+wp-content/uploads/
+wp-content/cache/
+
+# Env files
+.env
+*.local

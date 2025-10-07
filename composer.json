@@ -1,9 +1,33 @@
 {
-    "name": "uota/baizy",
-    "autoload": {
-        "psr-4": {
-        "App\\": "app/"
-        }
+    "name": "baizy/theme",
+    "description": "Baizy WordPress Theme",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0-or-later",
+    "authors": [{
+        "name": "Y.U."
+    }],
+    "require": {
+        "php": ">=7.4"
     },
-    "require": {}
+    "autoload": {
+        "files": [
+            "app/functions/settings.php",
+            "app/functions/my_functions.php",
+            "app/functions/seo.php",
+            "app/functions/admin.php",
+            "app/functions/posts.php",
+            "app/functions/global_links.php",
+            "app/functions/cache.php",
+            "app/functions/post_gallery.php",
+            "app/functions/single_gallery.php",
+            "app/functions/widget.php",
+            "app/functions/custom_block.php",
+            "app/functions/plugins.php",
+            "app/functions/ajax_more.php",
+            "app/functions/ajax_search.php",
+            "app/functions/ajax_pagination.php",
+            "app/functions/comment.php",
+            "app/functions/test.php"
+        ]
+    }
 }
