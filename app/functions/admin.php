@@ -171,7 +171,7 @@ function add_my_editor_styles() {
   // クラシックエディタ用のCSSを読み込む
   wp_enqueue_style(
     'editor-style', // ハンドル名
-    get_template_directory_uri() . '/public/common/css/editor-style.css'
+    BAIZY_THEME_URI . '/public/common/css/editor-style.css'
   );
 }
 add_action('enqueue_block_editor_assets', 'add_my_editor_styles');

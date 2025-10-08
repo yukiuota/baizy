@@ -50,7 +50,7 @@ function baizy_img($path) {
     return '';
   }
   
-  return esc_url(get_template_directory_uri() . '/public/img/' . $path);
+  return esc_url(BAIZY_THEME_URI . '/public/img/' . $path);
 }
 
 

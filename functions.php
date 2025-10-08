@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * パス・URIの定数化
  */
 define( 'BAIZY_THEME_PATH', get_template_directory() );
-define( 'BAIZY_THEME_URI', get_template_directory_uri() );
+define( 'BAIZY_THEME_URI', BAIZY_THEME_URI );
 
 
 function baizy_setup() {

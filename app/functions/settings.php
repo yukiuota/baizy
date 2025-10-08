@@ -115,7 +115,7 @@ class baizy_Scripts_Styles {
             $main_css_version = filemtime( $main_css_path );
             wp_enqueue_style( 
                 'baizy-main', 
-                get_template_directory_uri() . '/public/common/css/common.css', 
+                BAIZY_THEME_URI . '/public/common/css/common.css', 
                 array(), 
                 $main_css_version 
             );
@@ -142,7 +142,7 @@ class baizy_Scripts_Styles {
                 $css_file_version = filemtime( $css_file_path );
                 wp_enqueue_style( 
                     'baizy-body-class-' . sanitize_html_class( $class_name ), 
-                    get_template_directory_uri() . '/public/common/css/' . sanitize_file_name( $class_name ) . '.css', 
+                    BAIZY_THEME_URI . '/public/common/css/' . sanitize_file_name( $class_name ) . '.css', 
                     array( 'baizy-main' ), 
                     $css_file_version 
                 );
@@ -163,7 +163,7 @@ class baizy_Scripts_Styles {
             $main_js_version = filemtime( $main_js_path );
             wp_enqueue_script( 
                 'baizy-main-script', 
-                get_template_directory_uri() . '/public/common/js/script.js', 
+                BAIZY_THEME_URI . '/public/common/js/script.js', 
                 array( 'jquery' ), 
                 $main_js_version, 
                 true // フッターで読み込み
