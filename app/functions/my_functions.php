@@ -37,7 +37,7 @@ endif;
 // -----------------------------------------------------
 // テンプレートのimgパスを取得
 // -----------------------------------------------------
-function tmp_img($path) {
+function baizy_img($path) {
   // imgディレクトリが存在するかチェック
   $img_dir = get_template_directory() . '/public/img/';
   if (!is_dir($img_dir)) {
@@ -57,7 +57,7 @@ function tmp_img($path) {
 // -----------------------------------------------------
 // テンプレートのimgの幅・高さを取得
 // -----------------------------------------------------
-function tmp_img_wh($path) {
+function baizy_img_wh($path) {
   // imgディレクトリが存在するかチェック
   $img_dir = get_template_directory() . '/public/img/';
   if (!is_dir($img_dir)) {
@@ -74,7 +74,7 @@ function tmp_img_wh($path) {
       
       if ($file_extension === 'svg') {
           // SVGファイルの場合
-          $svg_dimensions = tmp_get_svg_dimensions($image_url);
+          $svg_dimensions = baizy_get_svg_dimensions($image_url);
           if ($svg_dimensions) {
               echo 'width="' . intval($svg_dimensions['width']) . '" height="' . intval($svg_dimensions['height']) . '"';
           }
@@ -91,7 +91,7 @@ function tmp_img_wh($path) {
 // -----------------------------------------------------
 // SVGの幅・高さを取得
 // -----------------------------------------------------
-function tmp_get_svg_dimensions($svg_file_path) {
+function baizy_get_svg_dimensions($svg_file_path) {
     if (!file_exists($svg_file_path)) {
         return false;
     }

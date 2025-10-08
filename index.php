@@ -5,16 +5,16 @@ get_header();
 
 if ( is_home() || is_front_page() ) :
     // ホームページ・フロントページ
-    get_template_part( 'public/pages/top' );
+    baizy_template_part( 'public/pages/top' );
 elseif ( is_single() ) :
     // 単一投稿ページ
     $page = get_post( get_the_ID() );
     $template = locate_template( 'public/single/' . $page->post_type . '.php' );
     
     if ( $template ) {
-        get_template_part( 'public/single/' . $page->post_type );
+        baizy_template_part( 'public/single/' . $page->post_type );
     } else {
-        get_template_part( 'public/single/single-base' );
+        baizy_template_part( 'public/single/single-base' );
     }
 elseif ( is_page() ) :
     // 固定ページ
@@ -29,7 +29,7 @@ elseif ( is_page() ) :
         $template_part = 'public/pages/' . $template_name;
         
         if ( locate_template( $template_part . '.php' ) ) {
-            get_template_part( $template_part );
+            baizy_template_part( $template_part );
         } else {
             // フォールバック：通常のスラッグベースの検索
             $slug = basename( get_permalink( $post->ID ) );
@@ -37,7 +37,7 @@ elseif ( is_page() ) :
             if ( ! locate_template( $template_part . '.php' ) ) {
                 $template_part = 'public/pages/page-base';
             }
-            get_template_part( $template_part );
+            baizy_template_part( $template_part );
         }
     } else {
         // パスが空の場合の通常の処理
@@ -46,7 +46,7 @@ elseif ( is_page() ) :
         if ( ! locate_template( $template_part . '.php' ) ) {
             $template_part = 'public/pages/page-base';
         }
-        get_template_part( $template_part );
+        baizy_template_part( $template_part );
     }
 elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() || is_date() ) :
     // アーカイブページ（カテゴリ、タグ、カスタムタクソノミー、投稿者、日付アーカイブを含む）
@@ -70,18 +70,18 @@ elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() ||
 
     // テンプレートが存在するか確認
     if (locate_template('public/archives/' . $post_type . '.php')) {
-        get_template_part('public/archives/' . $post_type);
+        baizy_template_part('public/archives/' . $post_type);
     } else {
         // デフォルトテンプレート
         if (locate_template('public/archives/archive-base.php')) {
-            get_template_part('public/archives/archive-base');
+            baizy_template_part('public/archives/archive-base');
         } else {
             echo '<div class="container"><p>テンプレートが見つかりませんでした。</p></div>';
         }
     }
 else :
     // その他の場合のフォールバック
-    get_template_part( 'public/archives/archive-base' );
+    baizy_template_part( 'public/archives/archive-base' );
 endif;
 
 get_footer();
