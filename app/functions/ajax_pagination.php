@@ -41,7 +41,7 @@ function custom_ajax_pagination() {
   // Ajaxエンドポイントの追加
   function enqueue_ajax_pagination_scripts() {
       // スクリプトの登録
-      wp_register_script('ajax-pagination', get_template_directory_uri() . '/app/ajax/ajax-pagination.js', array('jquery'), time(), true);
+      wp_register_script('ajax-pagination', BAIZY_THEME_URI . '/app/ajax/ajax-pagination.js', array('jquery'), time(), true);
       
       // スクリプトの読み込み
       wp_enqueue_script('ajax-pagination');

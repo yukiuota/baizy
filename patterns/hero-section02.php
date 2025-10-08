@@ -10,10 +10,10 @@ if ( !defined( 'ABSPATH' ) ) exit;
  */
 ?>
 
-<!-- wp:cover {"url":"<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero.jpg' ); ?>","dimRatio":50,"overlayColor":"black","minHeight":400,"align":"full"} -->
+<!-- wp:cover {"url":"<?php echo esc_url( BAIZY_THEME_URI . '/assets/images/hero.jpg' ); ?>","dimRatio":50,"overlayColor":"black","minHeight":400,"align":"full"} -->
 <div class="wp-block-cover alignfull" style="min-height:400px">
     <span aria-hidden="true" class="wp-block-cover__background has-black-background-color has-background-dim-50"></span>
-    <img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero.jpg' ); ?>" data-object-fit="cover" />
+    <img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( BAIZY_THEME_URI . '/assets/images/hero.jpg' ); ?>" data-object-fit="cover" />
     <div class="wp-block-cover__inner-container">
         <!-- wp:heading {"textAlign":"center","level":1,"textColor":"white"} -->
         <h1 class="has-text-align-center has-white-color has-text-color">ここにキャッチコピーが入ります</h1>

@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 // ----------------------------------------------------- //
 
 function enqueue_more_scripts() {
-    wp_enqueue_script('custom-ajax-script', get_template_directory_uri() . '/app/ajax/ajax-more.js', array('jquery'), null, true);
+    wp_enqueue_script('custom-ajax-script', BAIZY_THEME_URI . '/app/ajax/ajax-more.js', array('jquery'), null, true);
     wp_localize_script('custom-ajax-script', 'ajax_object', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('ajax_more_nonce')

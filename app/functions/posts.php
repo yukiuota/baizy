@@ -485,7 +485,7 @@ function enqueue_color_picker_assets($hook_suffix) {
 if ($hook_suffix === 'edit-tags.php' || $hook_suffix === 'term.php') {
 wp_enqueue_style('wp-color-picker');
 wp_enqueue_script('wp-color-picker');
-wp_enqueue_script('term-color-picker', get_template_directory_uri() . '/include/js/term-color-picker.js', array('wp-color-picker'), '1.0.0', true);
+wp_enqueue_script('term-color-picker', BAIZY_THEME_URI . '/include/js/term-color-picker.js', array('wp-color-picker'), '1.0.0', true);
 }
 }
 add_action('admin_enqueue_scripts', 'enqueue_color_picker_assets');
