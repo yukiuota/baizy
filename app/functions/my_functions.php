@@ -6,6 +6,35 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // ----------------------------------------------------- //
 
 // -----------------------------------------------------
+// get_template_partにフック追加
+// -----------------------------------------------------
+if ( !function_exists( 'baizy_template_part' ) ):
+function baizy_template_part($slug){
+  ob_start();
+  get_template_part($slug);
+  $content = ob_get_clean();
+
+  // 読み込み前
+  if (has_filter("baizy_part_before__{$slug}")) {
+    do_action("baizy_part_before__{$slug}");
+  }
+
+  // 書き換え
+  if (has_filter("baizy_part__{$slug}")) {
+    $content = apply_filters("baizy_part__{$slug}" ,$content);
+  }
+  echo $content;
+
+  // 読み込み後
+  if (has_filter("baizy_part_after__{$slug}")) {
+    do_action("baizy_part_after__{$slug}");
+  }
+}
+endif;
+
+
+
+// -----------------------------------------------------
 // テンプレートのimgパスを取得
 // -----------------------------------------------------
 function tmp_img($path) {
