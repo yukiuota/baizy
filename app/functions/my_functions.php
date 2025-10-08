@@ -152,3 +152,14 @@ function baizy_get_svg_dimensions($svg_file_path) {
     
     return false;
 }
+
+
+
+
+
+// -----------------------------------------------------
+// HTMLエスケープ短縮
+// -----------------------------------------------------
+function e($str) {
+    echo esc_html($str);
+}
