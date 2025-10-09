@@ -12,12 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * パス・URIの定数化
  */
 define( 'BAIZY_THEME_PATH', get_template_directory() );
-define( 'BAIZY_THEME_URI', BAIZY_THEME_URI );
+define( 'BAIZY_THEME_URI', get_template_directory_uri() );
 
 
 function baizy_setup() {
     // 国際化対応
-    load_theme_textdomain( 'baizy', get_template_directory() . '/app/languages' );
+    load_theme_textdomain( 'baizy', BAIZY_THEME_PATH . '/app/languages' );
     
     // ブロックエディタサポート
     add_theme_support( 'wp-block-styles' );
