@@ -146,34 +146,40 @@ add_filter('request', 'mysite_feed_request');
 
 
 
-
 // -----------------------------------------------------
 // カスタム投稿SEO設定
 // -----------------------------------------------------
+
+// メタディスクリプション定数
+define('NEWS_ARCHIVE_META_DESCRIPTION', 'これはカスタム投稿タイプ「news」のアーカイブページです。');
+
+/**
+ * カスタム投稿タイプにメタディスクリプションを設定
+ */
 function set_custom_post_type_meta_description($post_type_name, $description) {
-  global $wp_post_types;
+    global $wp_post_types;
 
-  if (isset($wp_post_types[$post_type_name])) {
-      $wp_post_types[$post_type_name]->description = $description;
-  }
-}
-
-// メタディスクリプションの出力を別関数に分離
-function output_custom_post_meta_description() {
-    // アーカイブページでのみ実行
-    if (is_post_type_archive('news')) {
-        $description = 'これはカスタム投稿タイプ「news」のアーカイブページです。';
-        echo '<meta name="description" content="' . esc_attr($description) . '" />' . "\n";
+    if (isset($wp_post_types[$post_type_name])) {
+        $wp_post_types[$post_type_name]->description = $description;
     }
 }
 
-// initフックの優先度を低く（数値を大きく）して、カスタム投稿タイプ登録後に実行されるようにする
-add_action('init', function() {
-    set_custom_post_type_meta_description('news', 'これはカスタム投稿タイプ「news」のアーカイブページです。');
-}, 20); // 優先度を20に設定
+/**
+ * カスタム投稿アーカイブページのメタディスクリプション出力
+ */
+function output_custom_post_meta_description() {
+    if (is_post_type_archive('news')) {
+        echo '<meta name="description" content="' . esc_attr(NEWS_ARCHIVE_META_DESCRIPTION) . '" />' . "\n";
+    }
+}
 
-// wp_headフックで出力
-add_action('wp_head', 'output_custom_post_meta_description', 1); // 早めに実行
+// カスタム投稿タイプ登録後にメタディスクリプションを設定
+add_action('init', function() {
+    set_custom_post_type_meta_description('news', NEWS_ARCHIVE_META_DESCRIPTION);
+}, 20);
+
+// メタディスクリプションを出力
+add_action('wp_head', 'output_custom_post_meta_description', 1);
 
 
 
