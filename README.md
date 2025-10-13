@@ -44,13 +44,21 @@ npm run build
 ## 画像表示
 ```
 <picture>
-<source srcset="<?php echo tmp_img('xx/xx.png'); ?> 1x, <?php echo tmp_img('xx/xx@2x.png'); ?> 2x" media="(max-width: 750px)">
-<img src="<?php echo tmp_img('xx/xx.png'); ?>" srcset="<?php echo tmp_img('xx/xx.png'); ?> 1x, <?php echo tmp_img('xx/xx@2x.png'); ?> 2x" <?php tmp_img_wh('xx/xx.png'); ?> alt="">
+<source srcset="<?php echo baizy_img('xx/xx.png'); ?> 1x, <?php echo baizy_img('xx/xx@2x.png'); ?> 2x" media="(max-width: 750px)">
+<img src="<?php echo baizy_img('xx/xx.png'); ?>" srcset="<?php echo baizy_img('xx/xx.png'); ?> 1x, <?php echo baizy_img('xx/xx@2x.png'); ?> 2x" <?php baizy_img_wh('xx/xx.png'); ?> alt="">
 </picture>
+
+
+例:
+<!-- loading="lazy"あり(デフォルト) -->
+<img src="<?php echo baizy_img('sample.jpg'); ?>" <?php baizy_img_wh('sample.jpg'); ?> alt="">
+
+<!-- loading="lazy"なし -->
+<img src="<?php echo baizy_img('hero.jpg'); ?>" <?php baizy_img_wh('hero.jpg', false); ?> alt="">
 ```
 
 
-## functions.phpの読み込み
+## functions.phpの読み込み（オートロード）
 composer dump-autoload
 
 ## ライセンス
