@@ -486,13 +486,30 @@ function enqueue_color_picker_assets($hook_suffix) {
 if ($hook_suffix === 'edit-tags.php' || $hook_suffix === 'term.php') {
 wp_enqueue_style('wp-color-picker');
 wp_enqueue_script('wp-color-picker');
-wp_enqueue_script('term-color-picker', BAIZY_THEME_URI . '/include/js/term-color-picker.js', array('wp-color-picker'), '1.0.0', true);
+wp_enqueue_script('term-color-picker', BAIZY_THEME_URI . '/public/include/js/term-color-picker.js', array('wp-color-picker'), '1.0.0', true);
 }
 }
 add_action('admin_enqueue_scripts', 'enqueue_color_picker_assets');
 
-// タクソノミー新規追加フォームにカラーピッカーフィールドを追加
-function add_term_color_field() {
+/**
+* 指定したタクソノミーに背景色設定機能を追加する
+*
+* @param string|array $taxonomies タクソノミー名（文字列）または複数のタクソノミー名（配列）
+*
+* 使用例:
+* add_term_background_color_field('news-category');
+* add_term_background_color_field(['news-category', 'product-category', 'post_tag']);
+*/
+function add_term_background_color_field($taxonomies) {
+// 文字列が渡された場合は配列に変換
+if (!is_array($taxonomies)) {
+$taxonomies = array($taxonomies);
+}
+
+// 各タクソノミーに対してフックを登録
+foreach ($taxonomies as $taxonomy) {
+// 新規追加フォームにフィールドを追加
+add_action("{$taxonomy}_add_form_fields", function() {
 ?>
 <div class="form-field">
     <label for="term_bg_color">背景色</label>
@@ -500,16 +517,15 @@ function add_term_color_field() {
     <p class="description">このタームの背景色を選択してください。</p>
 </div>
 <?php
-}
-add_action('news-cat_add_form_fields', 'add_term_color_field');
+        });
 
-// タクソノミー編集フォームにカラーピッカーフィールドを追加
-function edit_term_color_field($term) {
-    $bg_color = get_term_meta($term->term_id, 'term_bg_color', true);
-    if (empty($bg_color)) {
-        $bg_color = '#ffffff';
-    }
-    ?>
+        // 編集フォームにフィールドを追加
+        add_action("{$taxonomy}_edit_form_fields", function($term) {
+            $bg_color = get_term_meta($term->term_id, 'term_bg_color', true);
+            if (empty($bg_color)) {
+                $bg_color = '#ffffff';
+            }
+            ?>
 <tr class="form-field">
     <th scope="row">
         <label for="term_bg_color">背景色</label>
@@ -520,17 +536,30 @@ function edit_term_color_field($term) {
     </td>
 </tr>
 <?php
-}
-add_action('news-cat_edit_form_fields', 'edit_term_color_field');
+        });
 
-// ターム保存時にカラー値を保存
-function save_term_color_field($term_id) {
-    if (isset($_POST['term_bg_color']) && !empty($_POST['term_bg_color'])) {
-        update_term_meta($term_id, 'term_bg_color', sanitize_hex_color($_POST['term_bg_color']));
+        // ターム作成時に保存
+        add_action("created_{$taxonomy}", function($term_id) {
+            if (isset($_POST['term_bg_color']) && !empty($_POST['term_bg_color'])) {
+                update_term_meta($term_id, 'term_bg_color', sanitize_hex_color($_POST['term_bg_color']));
+            }
+        });
+
+        // ターム編集時に保存
+        add_action("edited_{$taxonomy}", function($term_id) {
+            if (isset($_POST['term_bg_color']) && !empty($_POST['term_bg_color'])) {
+                update_term_meta($term_id, 'term_bg_color', sanitize_hex_color($_POST['term_bg_color']));
+            }
+        });
     }
 }
-add_action('created_news-cat', 'save_term_color_field');
-add_action('edited_news-cat', 'save_term_color_field');
+
+// タクソノミーに背景色機能を追加（使用例）
+// 単一のタクソノミーの場合
+add_term_background_color_field('news-category');
+
+// 複数のタクソノミーの場合
+// add_term_background_color_field(['news-category', 'news-tag', 'category']);
 
 // タームの背景色を取得する関数
 function get_term_background_color($term_id) {
