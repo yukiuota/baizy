@@ -8,85 +8,125 @@ if ( ! defined( 'ABSPATH' ) ) {
 // =============================================================================
 
 /**
- * WordPressコア機能のクリーンアップ
+ * テーマ基本設定管理クラス
  */
-// WordPressバージョン情報を削除
-remove_action( 'wp_head', 'wp_generator' );
-
-// 絵文字検出スクリプトとスタイルを削除
-remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-remove_action( 'wp_print_styles', 'print_emoji_styles' );
-remove_action( 'admin_print_styles', 'print_emoji_styles' );
-
-// Windows Live Writerマニフェストを削除
-remove_action( 'wp_head', 'wlwmanifest_link' );
-
-// Really Simple Discoveryリンクを削除
-remove_action( 'wp_head', 'rsd_link' );
-
-// DNS プリフェッチを削除
-remove_action( 'wp_head', 'wp_resource_hints', 2 );
-
-// RSSフィードリンクを削除
-remove_action( 'wp_head', 'feed_links', 2 );
-remove_action( 'wp_head', 'feed_links_extra', 3 );
-
-// テーマサポート設定
-add_theme_support( 'automatic-feed-links' );
-
-// 自動段落整形を無効化
-remove_filter( 'the_content', 'wpautop' );
-remove_filter( 'the_excerpt', 'wpautop' );
-
-// 動的ドキュメントタイトルサポートを有効化
-add_theme_support( 'title-tag' );
-
-// アクセシビリティとHTML5テーマサポート
-add_theme_support( 'post-thumbnails' );
-add_theme_support( 'html5', array(
-    'search-form',
-    'comment-form',
-    'comment-list',
-    'gallery',
-    'caption',
-) );
-
-// ブロックスタイルサポート
-add_theme_support( 'wp-block-styles' );
-
-// ナビゲーションメニューの登録
-register_nav_menus( array(
-    'primary' => __( 'Primary Menu', 'baizy' ),
-    'footer'  => __( 'Footer Menu', 'baizy' ),
-) );
-
-// =============================================================================
-// bodyクラスのカスタマイズ
-// =============================================================================
-
-/**
- * 投稿スラッグをbodyクラスに追加
- *
- * @param array $classes 既存のbodyクラス
- * @return array 変更されたbodyクラス
- */
-function baizy_add_slug_to_body_class( $classes ) {
-    global $post;
+class Baizy_Theme_Setup {
     
-    if ( isset( $post ) ) {
-        $classes[] = $post->post_name;
+    /**
+     * コンストラクタ
+     */
+    public function __construct() {
+        add_action( 'after_setup_theme', array( $this, 'setup_theme' ) );
+        add_filter( 'body_class', array( $this, 'add_slug_to_body_class' ) );
     }
     
-    return $classes;
+    /**
+     * テーマのセットアップ
+     */
+    public function setup_theme() {
+        // WordPressコア機能のクリーンアップ
+        $this->cleanup_wp_head();
+        
+        // テーマサポート設定
+        $this->add_theme_supports();
+        
+        // ナビゲーションメニューの登録
+        $this->register_nav_menus();
+        
+        // 自動段落整形を無効化
+        $this->disable_auto_paragraph();
+    }
+    
+    /**
+     * WordPressコア機能のクリーンアップ
+     */
+    private function cleanup_wp_head() {
+        // WordPressバージョン情報を削除
+        remove_action( 'wp_head', 'wp_generator' );
+        
+        // 絵文字検出スクリプトとスタイルを削除
+        remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+        remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+        remove_action( 'wp_print_styles', 'print_emoji_styles' );
+        remove_action( 'admin_print_styles', 'print_emoji_styles' );
+        
+        // Windows Live Writerマニフェストを削除
+        remove_action( 'wp_head', 'wlwmanifest_link' );
+        
+        // Really Simple Discoveryリンクを削除
+        remove_action( 'wp_head', 'rsd_link' );
+        
+        // DNS プリフェッチを削除
+        remove_action( 'wp_head', 'wp_resource_hints', 2 );
+        
+        // RSSフィードリンクを削除
+        remove_action( 'wp_head', 'feed_links', 2 );
+        remove_action( 'wp_head', 'feed_links_extra', 3 );
+    }
+    
+    /**
+     * テーマサポート設定
+     */
+    private function add_theme_supports() {
+        // 自動フィードリンク
+        add_theme_support( 'automatic-feed-links' );
+        
+        // 動的ドキュメントタイトルサポート
+        add_theme_support( 'title-tag' );
+        
+        // アイキャッチ画像サポート
+        add_theme_support( 'post-thumbnails' );
+        
+        // HTML5サポート
+        add_theme_support( 'html5', array(
+            'search-form',
+            'comment-form',
+            'comment-list',
+            'gallery',
+            'caption',
+        ) );
+        
+        // ブロックスタイルサポート
+        add_theme_support( 'wp-block-styles' );
+        
+        // サイトアイコン（favicon）サポート
+        add_theme_support( 'site-icon' );
+    }
+    
+    /**
+     * ナビゲーションメニューの登録
+     */
+    private function register_nav_menus() {
+        register_nav_menus( array(
+            'primary' => __( 'Primary Menu', 'baizy' ),
+            'footer'  => __( 'Footer Menu', 'baizy' ),
+        ) );
+    }
+    
+    /**
+     * 自動段落整形を無効化
+     */
+    private function disable_auto_paragraph() {
+        remove_filter( 'the_content', 'wpautop' );
+        remove_filter( 'the_excerpt', 'wpautop' );
+    }
+    
+    /**
+     * 投稿スラッグをbodyクラスに追加
+     *
+     * @param array $classes 既存のbodyクラス
+     * @return array 変更されたbodyクラス
+     */
+    public function add_slug_to_body_class( $classes ) {
+        global $post;
+        
+        if ( isset( $post ) ) {
+            $classes[] = $post->post_name;
+        }
+        
+        return $classes;
+    }
 }
-add_filter( 'body_class', 'baizy_add_slug_to_body_class' );
-
-
-// サイトアイコン（favicon）サポートを有効化
-add_theme_support( 'site-icon' );
-
-
 
 // =============================================================================
 // スクリプト・スタイル管理
@@ -95,7 +135,7 @@ add_theme_support( 'site-icon' );
 /**
  * テーマスクリプト・スタイル管理クラス
  */
-class baizy_Scripts_Styles {
+class Baizy_Scripts_Styles {
     
     /**
      * コンストラクタ
@@ -103,6 +143,7 @@ class baizy_Scripts_Styles {
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_filter( 'script_loader_tag', array( $this, 'add_script_attributes' ), 10, 3 );
     }
     
     /**
@@ -170,62 +211,63 @@ class baizy_Scripts_Styles {
             );
         }
     }
+    
+    /**
+     * スクリプトタグにdefer/async属性を追加
+     * 
+     * @param string $tag スクリプトタグ
+     * @param string $handle スクリプトハンドル
+     * @param string $src スクリプトソース
+     * @return string 変更されたスクリプトタグ
+     */
+    public function add_script_attributes( $tag, $handle, $src ) {
+        // defer属性を追加するスクリプトハンドル
+        $defer_scripts = array(
+            'baizy-main-script',        // メインテーマスクリプト（jQuery非依存）
+            'custom-page-script',        // CF7フォーム（jQuery非依存、DOMContentLoaded使用）
+        );
+        
+        // jQuery依存スクリプトはjQueryがロード後にdefer適用
+        $jquery_dependent_defer_scripts = array(
+            'custom-ajax-search-script', // Ajax検索（jQuery依存）
+            'custom-ajax-script',        // Ajax more（jQuery依存）
+            'ajax-pagination',           // Ajaxページネーション（jQuery依存）
+        );
+        
+        // async属性を追加するスクリプトハンドル（アナリティクスなど独立したスクリプト）
+        $async_scripts = array(
+            // 'analytics-script', // 例:Google Analyticsなどの非同期スクリプト
+        );
+        
+        // jQueryは通常通り読み込み、他のスクリプトはdefer/async適用
+        if ( $handle !== 'jquery' && $handle !== 'jquery-core' && $handle !== 'jquery-migrate' ) {
+            
+            // defer属性を追加（jQuery非依存）
+            if ( in_array( $handle, $defer_scripts ) ) {
+                $tag = str_replace( ' src', ' defer src', $tag );
+            }
+            
+            // jQuery依存スクリプトにもdefer適用（jQueryは先に読み込まれているため）
+            if ( in_array( $handle, $jquery_dependent_defer_scripts ) ) {
+                $tag = str_replace( ' src', ' defer src', $tag );
+            }
+            
+            // async属性を追加
+            if ( in_array( $handle, $async_scripts ) ) {
+                $tag = str_replace( ' src', ' async src', $tag );
+            }
+        }
+        
+        return $tag;
+    }
 }
 
+// =============================================================================
+// 初期化
+// =============================================================================
+
+// テーマ基本設定を初期化
+new Baizy_Theme_Setup();
 
 // スクリプト・スタイル管理を初期化
-new baizy_Scripts_Styles();
-
-// =============================================================================
-// スクリプト最適化（defer/async属性追加）
-// =============================================================================
-
-/**
- * スクリプトタグにdefer/async属性を追加
- * 
- * @param string $tag スクリプトタグ
- * @param string $handle スクリプトハンドル
- * @param string $src スクリプトソース
- * @return string 変更されたスクリプトタグ
- */
-function baizy_add_script_attributes( $tag, $handle, $src ) {
-    // defer属性を追加するスクリプトハンドル
-    $defer_scripts = array(
-        'baizy-main-script',        // メインテーマスクリプト（jQuery非依存）
-        'custom-page-script',        // CF7フォーム（jQuery非依存、DOMContentLoaded使用）
-    );
-    
-    // jQuery依存スクリプトはjQueryがロード後にdefer適用
-    $jquery_dependent_defer_scripts = array(
-        'custom-ajax-search-script', // Ajax検索（jQuery依存）
-        'custom-ajax-script',        // Ajax more（jQuery依存）
-        'ajax-pagination',           // Ajaxページネーション（jQuery依存）
-    );
-    
-    // async属性を追加するスクリプトハンドル（アナリティクスなど独立したスクリプト）
-    $async_scripts = array(
-        // 'analytics-script', // 例：Google Analyticsなどの非同期スクリプト
-    );
-    
-    // jQueryは通常通り読み込み、他のスクリプトはdefer/async適用
-    if ( $handle !== 'jquery' && $handle !== 'jquery-core' && $handle !== 'jquery-migrate' ) {
-        
-        // defer属性を追加（jQuery非依存）
-        if ( in_array( $handle, $defer_scripts ) ) {
-            $tag = str_replace( ' src', ' defer src', $tag );
-        }
-        
-        // jQuery依存スクリプトにもdefer適用（jQueryは先に読み込まれているため）
-        if ( in_array( $handle, $jquery_dependent_defer_scripts ) ) {
-            $tag = str_replace( ' src', ' defer src', $tag );
-        }
-        
-        // async属性を追加
-        if ( in_array( $handle, $async_scripts ) ) {
-            $tag = str_replace( ' src', ' async src', $tag );
-        }
-    }
-    
-    return $tag;
-}
-add_filter( 'script_loader_tag', 'baizy_add_script_attributes', 10, 3 );
+new Baizy_Scripts_Styles();
