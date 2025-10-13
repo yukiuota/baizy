@@ -12,5 +12,3 @@
 
 <body <?php body_class(); ?>>
     <?php wp_body_open(); ?>
-    <div id="container">
-        <?php baizy_template_part( 'public/include/header/header_base' ); ?>
