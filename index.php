@@ -3,6 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 get_header();
 
+echo '<div id="container">';
+baizy_template_part( 'public/include/header/header_base' ); // header読み込み
+
 if ( is_home() || is_front_page() ) :
     // ホームページ・フロントページ
     baizy_template_part( 'public/pages/top' );
@@ -69,12 +72,12 @@ elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() ||
     }
 
     // テンプレートが存在するか確認
-    if (locate_template('public/archives/' . $post_type . '.php')) {
-        baizy_template_part('public/archives/' . $post_type);
+    if (locate_template( 'public/archives/' . $post_type . '.php' )) {
+        baizy_template_part( 'public/archives/' . $post_type);
     } else {
         // デフォルトテンプレート
-        if (locate_template('public/archives/archive-base.php')) {
-            baizy_template_part('public/archives/archive-base');
+        if (locate_template( 'public/archives/archive-base.php' )) {
+            baizy_template_part( 'public/archives/archive-base' );
         } else {
             echo '<div class="container"><p>テンプレートが見つかりませんでした。</p></div>';
         }
@@ -83,6 +86,9 @@ else :
     // その他の場合のフォールバック
     baizy_template_part( 'public/archives/archive-base' );
 endif;
+
+baizy_template_part( 'public/include/footer/footer_base' ); // footer読み込み
+echo '</div>';
 
 get_footer();
 ?>
