@@ -82,13 +82,16 @@ elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() ||
             echo '<div class="container"><p>テンプレートが見つかりませんでした。</p></div>';
         }
     }
+elseif ( is_404() ) :
+    // 404ページ
+    baizy_template_part( 'public/pages/not-page' );
 else :
     // その他の場合のフォールバック
     baizy_template_part( 'public/archives/archive-base' );
 endif;
 
 baizy_template_part( 'public/include/footer/footer_base' ); // footer読み込み
-echo '</div>';
+echo '</div>'; // /#container
 
 get_footer();
 ?>
