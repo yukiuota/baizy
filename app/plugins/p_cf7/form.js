@@ -162,155 +162,31 @@ document.addEventListener("DOMContentLoaded", () => {
       const formElement = form.closest('.wpcf7');
       if (!formElement) return;
 
-      // Contact Form 7の内部バリデーション用にFormDataを作成
-      const formData = new FormData(form);
-      
-      // wpcf7オブジェクトが存在するか確認
-      if (typeof wpcf7 === 'undefined') {
-        console.error('Contact Form 7が読み込まれていません');
-        return;
-      }
+      // Contact Form 7のバリデーションを実行するために一時的にsubmitイベントを発火
+      const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+      const isValid = form.dispatchEvent(submitEvent);
 
-      // 全ての必須フィールドをチェック
-      let hasErrors = false;
-      const requiredFields = form.querySelectorAll('[aria-required="true"], .wpcf7-validates-as-required');
-      
-      requiredFields.forEach(field => {
-        // 既存のエラー表示をクリア
-        const existingError = field.parentElement.querySelector('.wpcf7-not-valid-tip');
-        if (existingError) {
-          existingError.remove();
-        }
-        field.classList.remove('wpcf7-not-valid');
-        field.setAttribute('aria-invalid', 'false');
-      });
-
-      // Contact Form 7のバリデーションを実行
-      requiredFields.forEach(field => {
-        const fieldType = field.type;
-        let isEmpty = false;
-
-        if (fieldType === 'checkbox' || fieldType === 'radio') {
-          const name = field.name;
-          const checkedItems = form.querySelectorAll(`[name="${name}"]:checked`);
-          isEmpty = checkedItems.length === 0;
-        } else if (fieldType === 'select-one' || fieldType === 'select-multiple') {
-          isEmpty = !field.value || field.value === '';
+      // バリデーション結果を確認
+      setTimeout(() => {
+        const hasErrors = form.querySelector('.wpcf7-not-valid');
+        
+        if (hasErrors) {
+          // エラーがある場合は最初のエラーにスクロール
+          scrollToError(hasErrors);
         } else {
-          isEmpty = !field.value || field.value.trim() === '';
-        }
-
-        if (isEmpty) {
-          hasErrors = true;
-          field.classList.add('wpcf7-not-valid');
-          field.setAttribute('aria-invalid', 'true');
+          // エラーがない場合は確認画面を表示
+          const responseOutput = formElement.querySelector('.wpcf7-response-output');
+          if (responseOutput) {
+            responseOutput.classList.add('wpcf7-display-none');
+            responseOutput.classList.remove('wpcf7-validation-errors');
+          }
           
-          // エラーメッセージを追加
-          const errorMessage = document.createElement('span');
-          errorMessage.className = 'wpcf7-not-valid-tip';
-          errorMessage.setAttribute('aria-hidden', 'true');
-          errorMessage.textContent = 'このフィールドは必須です。';
-          
-          // エラーメッセージを適切な位置に挿入
-          if (fieldType === 'checkbox' || fieldType === 'radio') {
-            const wrapper = field.closest('.wpcf7-form-control-wrap');
-            if (wrapper) {
-              wrapper.appendChild(errorMessage);
-            }
-          } else {
-            field.parentElement.appendChild(errorMessage);
-          }
+          document.querySelector(".c-form").style.display = "none";
+          document.querySelector(".c-form-confirm").style.display = "block";
+          // ページの一番上にスクロール
+          window.scrollTo(0, 0);
         }
-      });
-
-      // メールアドレスのバリデーション
-      const emailFields = form.querySelectorAll('input[type="email"]');
-      emailFields.forEach(field => {
-        const value = field.value ? field.value.trim() : '';
-        if (value) {
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(value)) {
-            hasErrors = true;
-            field.classList.add('wpcf7-not-valid');
-            field.setAttribute('aria-invalid', 'true');
-            
-            const errorMessage = document.createElement('span');
-            errorMessage.className = 'wpcf7-not-valid-tip';
-            errorMessage.setAttribute('aria-hidden', 'true');
-            errorMessage.textContent = 'メールアドレスが正しくありません。';
-            field.parentElement.appendChild(errorMessage);
-          }
-        }
-      });
-
-      // URLのバリデーション
-      const urlFields = form.querySelectorAll('input[type="url"]');
-      urlFields.forEach(field => {
-        const value = field.value ? field.value.trim() : '';
-        if (value) {
-          const urlRegex = /^https?:\/\/.+/;
-          if (!urlRegex.test(value)) {
-            hasErrors = true;
-            field.classList.add('wpcf7-not-valid');
-            field.setAttribute('aria-invalid', 'true');
-            
-            const errorMessage = document.createElement('span');
-            errorMessage.className = 'wpcf7-not-valid-tip';
-            errorMessage.setAttribute('aria-hidden', 'true');
-            errorMessage.textContent = 'URLが正しくありません。';
-            field.parentElement.appendChild(errorMessage);
-          }
-        }
-      });
-
-      // 電話番号のバリデーション
-      const telFields = form.querySelectorAll('input[type="tel"]');
-      telFields.forEach(field => {
-        const value = field.value ? field.value.trim() : '';
-        if (value) {
-          const telRegex = /^[0-9\-\+\(\)\s]+$/;
-          if (!telRegex.test(value)) {
-            hasErrors = true;
-            field.classList.add('wpcf7-not-valid');
-            field.setAttribute('aria-invalid', 'true');
-            
-            const errorMessage = document.createElement('span');
-            errorMessage.className = 'wpcf7-not-valid-tip';
-            errorMessage.setAttribute('aria-hidden', 'true');
-            errorMessage.textContent = '電話番号が正しくありません。';
-            field.parentElement.appendChild(errorMessage);
-          }
-        }
-      });
-
-      if (hasErrors) {
-        // エラーがある場合は最初のエラーにスクロール
-        const firstError = form.querySelector('.wpcf7-not-valid');
-        if (firstError) {
-          scrollToError(firstError);
-        }
-        
-        // エラーメッセージを表示
-        const responseOutput = formElement.querySelector('.wpcf7-response-output');
-        if (responseOutput) {
-          responseOutput.innerHTML = '入力内容に誤りがあります。ご確認ください。';
-          responseOutput.classList.add('wpcf7-validation-errors');
-          responseOutput.classList.remove('wpcf7-display-none');
-          responseOutput.setAttribute('role', 'alert');
-        }
-      } else {
-        // エラーがない場合は確認画面を表示
-        const responseOutput = formElement.querySelector('.wpcf7-response-output');
-        if (responseOutput) {
-          responseOutput.classList.add('wpcf7-display-none');
-          responseOutput.classList.remove('wpcf7-validation-errors');
-        }
-        
-        document.querySelector(".c-form").style.display = "none";
-        document.querySelector(".c-form-confirm").style.display = "block";
-        // ページの一番上にスクロール
-        window.scrollTo(0, 0);
-      }
+      }, 100);
     });
   }
 
@@ -318,15 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const backButton = document.querySelector(".back_button");
   if (backButton) {
     backButton.addEventListener("click", () => {
-      // エラーメッセージをクリア
+      // Contact Form 7のエラー状態をクリア
       const form = document.querySelector('.wpcf7-form');
       if (form) {
-        form.querySelectorAll('.wpcf7-not-valid-tip').forEach(error => error.remove());
-        form.querySelectorAll('.wpcf7-not-valid').forEach(field => {
-          field.classList.remove('wpcf7-not-valid');
-          field.setAttribute('aria-invalid', 'false');
-        });
-        
         const formElement = form.closest('.wpcf7');
         if (formElement) {
           const responseOutput = formElement.querySelector('.wpcf7-response-output');
