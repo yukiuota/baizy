@@ -46,3 +46,30 @@ add_filter('wpcf7_autop_or_not', 'wpcf7_autop_return_false');
 function wpcf7_autop_return_false() {
   return false;
 }
+
+
+// カスタムバリデーションエラーメッセージ設定
+// ※エラーメッセージを変更するには、管理画面のContactform7の「*」を削除する必要あり
+function my_wpcf7_custom_validation_error($result, $tag) {
+    // エラーメッセージの設定 [ フィールド名 => エラーメッセージ ]
+    $error_messages = array(
+        // 'your-name'    => 'お名前は必須項目です。',
+        // 'your-kana'    => 'フリガナは必須項目です。',
+        // 'your-tel'     => '電話番号は必須項目です。',
+        // 'your-type'    => 'お問い合わせ項目は必須項目です。',
+        // 'your-message' => 'お問い合わせ内容は必須項目です。',
+    );
+
+    // 設定されたフィールドのエラーメッセージを適用
+    if (isset($error_messages[$tag->name]) && empty($_POST[$tag->name])) {
+        $result->invalidate($tag, $error_messages[$tag->name]);
+    }
+
+    return $result;
+}
+
+// 各フィールドタイプにフィルターを適用
+add_filter('wpcf7_validate_text', 'my_wpcf7_custom_validation_error', 10, 2);
+add_filter('wpcf7_validate_tel', 'my_wpcf7_custom_validation_error', 10, 2);
+add_filter('wpcf7_validate_checkbox', 'my_wpcf7_custom_validation_error', 10, 2);
+add_filter('wpcf7_validate_textarea', 'my_wpcf7_custom_validation_error', 10, 2);
