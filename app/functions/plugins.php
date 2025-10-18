@@ -35,16 +35,6 @@ function enqueue_custom_assets_for_specific_page() {
         
         // JavaScriptファイルの読み込み
         wp_enqueue_script('custom-page-script', BAIZY_THEME_URI . '/app/plugins/p_cf7/form.js', array('jquery'), '1.0.0', true);
-        
-        // Contact Form 7のデフォルトバリデーションメッセージを非表示にするCSS
-        wp_add_inline_style('custom-page-style', '
-            .wpcf7-not-valid-tip {
-                display: none !important;
-            }
-            .wpcf7-validation-errors {
-                display: none !important;
-            }
-        ');
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_assets_for_specific_page');
