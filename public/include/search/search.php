@@ -19,11 +19,11 @@ function custom_search_form($args = []) {
     
     // 検索フォームのHTML
     ?>
-    <form role="search" method="get" class="<?php echo esc_attr($settings['form_class']); ?>" action="<?php echo esc_url(home_url('/')); ?>">
-        <input type="search" class="search-field" placeholder="<?php echo esc_attr($settings['placeholder']); ?>" value="<?php echo get_search_query(); ?>" name="s" />
-        <button type="submit" class="search-submit"><?php echo esc_html($settings['button_text']); ?></button>
-    </form>
-    <?php
+<form role="search" method="get" class="<?php echo esc_attr($settings['form_class']); ?>" action="<?php echo esc_url(home_url('/')); ?>">
+    <input type="search" class="search-field" placeholder="<?php echo esc_attr($settings['placeholder']); ?>" value="<?php echo get_search_query(); ?>" name="s" />
+    <button type="submit" class="search-submit"><?php echo e($settings['button_text']); ?></button>
+</form>
+<?php
 }
 
 /**

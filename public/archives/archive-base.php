@@ -4,7 +4,7 @@
 if (is_tax() || is_category() || is_tag()) {
     $term = get_queried_object();
     if ($term) {
-        echo esc_html($term->name);
+        echo e($term->name);
     }
 }
 ?>
