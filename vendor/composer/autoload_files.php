@@ -22,5 +22,6 @@ return array(
     '2d5ce76f24ca58363d0563bfabcba69f' => $baseDir . '/app/functions/ajax_search.php',
     'b4e4b14d690ff26ec47cc0186ffc3511' => $baseDir . '/app/functions/ajax_pagination.php',
     'c2ebda86fabc01e705e3666e56fa5c1a' => $baseDir . '/app/functions/comment.php',
+    'ac0c06d664e8fdba61ce1b775362154c' => $baseDir . '/app/functions/one_time_page.php',
     '385f9a15ff1ad282452aba7a8ae9a887' => $baseDir . '/app/functions/test.php',
 );

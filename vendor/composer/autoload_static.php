@@ -23,6 +23,7 @@ class ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11
         '2d5ce76f24ca58363d0563bfabcba69f' => __DIR__ . '/../..' . '/app/functions/ajax_search.php',
         'b4e4b14d690ff26ec47cc0186ffc3511' => __DIR__ . '/../..' . '/app/functions/ajax_pagination.php',
         'c2ebda86fabc01e705e3666e56fa5c1a' => __DIR__ . '/../..' . '/app/functions/comment.php',
+        'ac0c06d664e8fdba61ce1b775362154c' => __DIR__ . '/../..' . '/app/functions/one_time_page.php',
         '385f9a15ff1ad282452aba7a8ae9a887' => __DIR__ . '/../..' . '/app/functions/test.php',
     );
 
