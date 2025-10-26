@@ -162,20 +162,40 @@ document.addEventListener("DOMContentLoaded", () => {
       const formElement = form.closest('.wpcf7');
       if (!formElement) return;
 
-      // Contact Form 7のバリデーションを実行するために一時的にsubmitイベントを発火
-      const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
-      const isValid = form.dispatchEvent(submitEvent);
+      // Contact Form 7のバリデーションメソッドを実行
+      // wpcf7オブジェクトが存在する場合はそのバリデーションを使用
+      if (typeof wpcf7 !== 'undefined' && wpcf7.validate) {
+        wpcf7.validate(formElement);
+      }
 
-      // バリデーション結果を確認
+      // すべての入力フィールドを手動でバリデーション
+      const inputs = form.querySelectorAll('input:not([type="submit"]):not([type="button"]), select, textarea');
+      inputs.forEach(input => {
+        // HTML5バリデーションを実行
+        if (input.checkValidity) {
+          input.checkValidity();
+        }
+        
+        // Contact Form 7のカスタムバリデーションイベントを発火
+        const event = new Event('change', { bubbles: true });
+        input.dispatchEvent(event);
+      });
+
+      // バリデーション結果を確認（少し長めの待機時間を設定）
       setTimeout(() => {
         const hasErrors = form.querySelector('.wpcf7-not-valid');
+        const responseOutput = formElement.querySelector('.wpcf7-response-output');
+        const hasValidationErrors = responseOutput && responseOutput.classList.contains('wpcf7-validation-errors');
         
-        if (hasErrors) {
+        if (hasErrors || hasValidationErrors) {
           // エラーがある場合は最初のエラーにスクロール
-          scrollToError(hasErrors);
+          if (hasErrors) {
+            scrollToError(hasErrors);
+          } else if (responseOutput) {
+            scrollToError(responseOutput);
+          }
         } else {
           // エラーがない場合は確認画面を表示
-          const responseOutput = formElement.querySelector('.wpcf7-response-output');
           if (responseOutput) {
             responseOutput.classList.add('wpcf7-display-none');
             responseOutput.classList.remove('wpcf7-validation-errors');
@@ -186,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // ページの一番上にスクロール
           window.scrollTo(0, 0);
         }
-      }, 100);
+      }, 200);
     });
   }
 
