@@ -27,7 +27,6 @@
             "app/functions/ajax_search.php",
             "app/functions/ajax_pagination.php",
             "app/functions/comment.php",
-            "app/functions/one_time_page.php",
             "app/functions/test.php"
         ]
     }
