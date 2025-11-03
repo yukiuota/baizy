@@ -263,6 +263,137 @@ class Baizy_Scripts_Styles {
 }
 
 // =============================================================================
+// カスタマイザー設定
+// =============================================================================
+
+/**
+ * テーマカスタマイザー設定クラス
+ */
+class Baizy_Customizer {
+    
+    /**
+     * コンストラクタ
+     */
+    public function __construct() {
+        add_action( 'customize_register', array( $this, 'register_customizer' ) );
+    }
+    
+    /**
+     * カスタマイザーに設定を登録
+     *
+     * @param WP_Customize_Manager $wp_customize カスタマイザーオブジェクト
+     */
+    public function register_customizer( $wp_customize ) {
+        // タグ追加セクション
+        $wp_customize->add_section( 'baizy_custom_tags', array(
+            'title'       => __( 'タグ追加', 'baizy' ),
+            'priority'    => 30,
+            'description' => __( 'headタグやbodyタグにカスタムコードを追加します。', 'baizy' ),
+        ) );
+        
+        // head上部タグ設定
+        $wp_customize->add_setting( 'baizy_head_top_code', array(
+            'default'           => '',
+            'sanitize_callback' => array( $this, 'sanitize_code' ),
+            'transport'         => 'refresh',
+        ) );
+        
+        $wp_customize->add_control( 'baizy_head_top_code', array(
+            'label'       => __( 'head上部', 'baizy' ),
+            'description' => __( '<head>タグの直後に追加されるコードです。Google Analytics、メタタグなどを追加できます。', 'baizy' ),
+            'section'     => 'baizy_custom_tags',
+            'type'        => 'textarea',
+            'input_attrs' => array(
+                'placeholder' => __( '例: <meta name="description" content="サイトの説明">', 'baizy' ),
+                'rows'        => 10,
+            ),
+        ) );
+        
+        // body上部タグ設定
+        $wp_customize->add_setting( 'baizy_body_top_code', array(
+            'default'           => '',
+            'sanitize_callback' => array( $this, 'sanitize_code' ),
+            'transport'         => 'refresh',
+        ) );
+        
+        $wp_customize->add_control( 'baizy_body_top_code', array(
+            'label'       => __( 'body上部', 'baizy' ),
+            'description' => __( '<body>タグの直後に追加されるコードです。Google Tag Manager、トラッキングコードなどを追加できます。', 'baizy' ),
+            'section'     => 'baizy_custom_tags',
+            'type'        => 'textarea',
+            'input_attrs' => array(
+                'placeholder' => __( '例: <!-- Google Tag Manager -->', 'baizy' ),
+                'rows'        => 10,
+            ),
+        ) );
+    }
+    
+    /**
+     * コードのサニタイズ
+     * スクリプトやスタイルを許可
+     *
+     * @param string $input 入力値
+     * @return string サニタイズされた値
+     */
+    public function sanitize_code( $input ) {
+        // 空の場合はそのまま返す
+        if ( empty( $input ) ) {
+            return '';
+        }
+        
+        // 許可するHTMLタグとその属性を定義
+        $allowed_html = wp_kses_allowed_html( 'post' );
+        
+        // スクリプトタグを許可
+        $allowed_html['script'] = array(
+            'type'        => true,
+            'src'         => true,
+            'async'       => true,
+            'defer'       => true,
+            'crossorigin' => true,
+            'integrity'   => true,
+        );
+        
+        // スタイルタグを許可
+        $allowed_html['style'] = array(
+            'type'  => true,
+            'media' => true,
+        );
+        
+        // メタタグを許可
+        $allowed_html['meta'] = array(
+            'name'     => true,
+            'content'  => true,
+            'property' => true,
+            'charset'  => true,
+        );
+        
+        // リンクタグを許可
+        $allowed_html['link'] = array(
+            'rel'         => true,
+            'href'        => true,
+            'type'        => true,
+            'media'       => true,
+            'sizes'       => true,
+            'crossorigin' => true,
+        );
+        
+        // noscriptタグを許可
+        $allowed_html['noscript'] = array();
+        $allowed_html['iframe'] = array(
+            'src'             => true,
+            'height'          => true,
+            'width'           => true,
+            'frameborder'     => true,
+            'style'           => true,
+            'allowfullscreen' => true,
+        );
+        
+        return wp_kses( $input, $allowed_html );
+    }
+}
+
+// =============================================================================
 // ユーザー名の保護
 // =============================================================================
 
@@ -283,3 +414,6 @@ new Baizy_Theme_Setup();
 
 // スクリプト・スタイル管理を初期化
 new Baizy_Scripts_Styles();
+
+// カスタマイザー設定を初期化
+new Baizy_Customizer();
