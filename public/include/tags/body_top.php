@@ -1,1 +1,10 @@
-<?php if ( !defined( 'ABSPATH' ) ) exit; // body上部に追加するタグ  ?>
+<?php 
+if ( !defined( 'ABSPATH' ) ) exit; 
+
+// body上部に追加するタグ
+// カスタマイザーで設定されたコードを出力
+$body_top_code = get_theme_mod( 'baizy_body_top_code', '' );
+if ( !empty( $body_top_code ) ) {
+    echo $body_top_code . "\n";
+}
+?>
