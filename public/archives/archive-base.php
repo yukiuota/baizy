@@ -1,14 +1,5 @@
 <?php if ( !defined( 'ABSPATH' ) ) exit; ?>
 
-<?php 
-if (is_tax() || is_category() || is_tag()) {
-    $term = get_queried_object();
-    if ($term) {
-        echo e($term->name);
-    }
-}
-?>
-
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 <ul>
     <li>
