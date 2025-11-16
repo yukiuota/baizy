@@ -1,7 +1,20 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+function baizy_setup() {
+    // 国際化対応
+    load_theme_textdomain( 'baizy', BAIZY_THEME_PATH . '/app/languages' );
+    
+    // ブロックエディタサポート
+    add_theme_support( 'wp-block-styles' );
+    add_theme_support( 'responsive-embeds' );
+    add_theme_support( 'editor-styles' );
+    
+    // ブロックパターンサポート(WordPress 5.5以降)
+    add_theme_support( 'block-patterns' );
 }
+add_action( 'after_setup_theme', 'baizy_setup' );
+
 
 // =============================================================================
 // テーマ基本設定

@@ -14,21 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'BAIZY_THEME_PATH', get_template_directory() );
 define( 'BAIZY_THEME_URI', get_template_directory_uri() );
 
-
-function baizy_setup() {
-    // 国際化対応
-    load_theme_textdomain( 'baizy', BAIZY_THEME_PATH . '/app/languages' );
-    
-    // ブロックエディタサポート
-    add_theme_support( 'wp-block-styles' );
-    add_theme_support( 'responsive-embeds' );
-    add_theme_support( 'editor-styles' );
-    
-    // ブロックパターンサポート(WordPress 5.5以降)
-    add_theme_support( 'block-patterns' );
-}
-add_action( 'after_setup_theme', 'baizy_setup' );
-
 /**
  * Composerオートローダーを読み込み
  */
