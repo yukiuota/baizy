@@ -13,8 +13,6 @@ return array(
     'd2e53e5d45ea933f279a91fdb59f02e1' => $baseDir . '/app/functions/posts.php',
     'dac31246f5fc020aa31a0be05a33b490' => $baseDir . '/app/functions/global_links.php',
     'd4996e691805b5b8cb46a1bcbe88d2d0' => $baseDir . '/app/functions/cache.php',
-    'a16adbbf06a4ea1bb017e661684e989d' => $baseDir . '/app/functions/post_gallery.php',
-    '08f8512c885983fdb78757ecd6be6f43' => $baseDir . '/app/functions/single_gallery.php',
     'de9caf0f03adcf96f9519e50c0c4e9b2' => $baseDir . '/app/functions/widget.php',
     'f733c843461eaf9623927a85e1f2d55b' => $baseDir . '/app/functions/custom_block.php',
     '0d8f821e89536918effaab9f83c078f9' => $baseDir . '/app/functions/plugins.php',
