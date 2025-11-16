@@ -18,8 +18,6 @@
             "app/functions/posts.php",
             "app/functions/global_links.php",
             "app/functions/cache.php",
-            "app/functions/post_gallery.php",
-            "app/functions/single_gallery.php",
             "app/functions/widget.php",
             "app/functions/custom_block.php",
             "app/functions/plugins.php",
