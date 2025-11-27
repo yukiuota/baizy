@@ -3,11 +3,20 @@
  */
 import { registerBlockType } from "@wordpress/blocks";
 import { RichText, useBlockProps } from "@wordpress/block-editor";
-import { Button, PanelBody, TextControl } from "@wordpress/components";
+import { Button, PanelBody } from "@wordpress/components";
 import { InspectorControls } from "@wordpress/block-editor";
 
+interface QAPair {
+  question: string;
+  answer: string;
+}
+
+interface Attributes {
+  qaPairs: QAPair[];
+}
+
 // ブロック登録
-registerBlockType("my-blocks/qa-block", {
+registerBlockType<Attributes>("my-blocks/qa-block", {
   title: "Q&Aブロック",
   icon: "format-chat",
   description: "質問と回答をセットで表示するブロックです",
@@ -23,16 +32,16 @@ registerBlockType("my-blocks/qa-block", {
         },
       ],
     },
-  },
+  } as any,
 
   // 編集画面の表示
-  edit: ({ attributes, setAttributes }) => {
+  edit: ({ attributes, setAttributes }: { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void }) => {
     const { qaPairs } = attributes;
     const blockProps = useBlockProps({
       className: "qa-block",
     });
 
-    const updateQAPair = (index, field, value) => {
+    const updateQAPair = (index: number, field: keyof QAPair, value: string) => {
       const newQAPairs = qaPairs.map((pair, i) => {
         if (i === index) {
           return {
@@ -60,7 +69,7 @@ registerBlockType("my-blocks/qa-block", {
       });
     };
 
-    const removeQAPair = (index) => {
+    const removeQAPair = (index: number) => {
       const newQAPairs = qaPairs.filter((pair, i) => i !== index);
       setAttributes({
         qaPairs: newQAPairs,
@@ -116,7 +125,7 @@ registerBlockType("my-blocks/qa-block", {
   },
 
   // フロント表示
-  save: ({ attributes }) => {
+  save: ({ attributes }: { attributes: Attributes }) => {
     const { qaPairs } = attributes;
 
     return (

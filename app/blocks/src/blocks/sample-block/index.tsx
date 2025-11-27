@@ -5,8 +5,16 @@ import { registerBlockType } from "@wordpress/blocks";
 import { RichText, useBlockProps } from "@wordpress/block-editor";
 import { Button } from "@wordpress/components";
 
+interface Item {
+  content: string;
+}
+
+interface Attributes {
+  items: Item[];
+}
+
 // ブロック登録
-registerBlockType("my-blocks/sample-block", {
+registerBlockType<Attributes>("my-blocks/sample-block", {
   title: "サンプルブロック",
   icon: "heart",
   description: "これはテスト用のブロックです",
@@ -29,14 +37,14 @@ registerBlockType("my-blocks/sample-block", {
         },
       },
     },
-  },
+  } as any, // 型定義の不整合を避けるため一旦 any キャストするか、厳密に定義する
 
   // 編集画面の表示
-  edit: ({ attributes, setAttributes }) => {
+  edit: ({ attributes, setAttributes }: { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void }) => {
     const { items } = attributes;
     const blockProps = useBlockProps({ className: "area" });
 
-    const onChangeItemContent = (newContent, index) => {
+    const onChangeItemContent = (newContent: string, index: number) => {
       const newItems = items.map((item, i) => {
         if (i === index) {
           return {
@@ -58,7 +66,7 @@ registerBlockType("my-blocks/sample-block", {
       setAttributes({ items: newItems });
     };
 
-    const removeItem = (index) => {
+    const removeItem = (index: number) => {
       const newItems = items.filter((item, i) => i !== index);
       setAttributes({ items: newItems });
     };
@@ -89,7 +97,7 @@ registerBlockType("my-blocks/sample-block", {
   },
 
   // フロント表示
-  save: ({ attributes }) => {
+  save: ({ attributes }: { attributes: Attributes }) => {
     const { items } = attributes;
 
     return (

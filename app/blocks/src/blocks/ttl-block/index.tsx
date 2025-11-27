@@ -4,8 +4,12 @@
 import { registerBlockType } from "@wordpress/blocks";
 import { RichText, useBlockProps } from "@wordpress/block-editor";
 
+interface Attributes {
+  headingText: string;
+}
+
 // ブロック登録
-registerBlockType("my-blocks/ttl-block", {
+registerBlockType<Attributes>("my-blocks/ttl-block", {
   title: "タイトルサンプルブロック",
   icon: "smiley",
   description: "これはタイトル用のテスト用ブロックです",
@@ -18,14 +22,14 @@ registerBlockType("my-blocks/ttl-block", {
       selector: "h2.ttl01",
       default: "すきなテキスト",
     },
-  },
+  } as any,
 
   // 編集画面の表示
-  edit: ({ attributes, setAttributes }) => {
+  edit: ({ attributes, setAttributes }: { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void }) => {
     const { headingText } = attributes;
     const blockProps = useBlockProps();
 
-    const onChangeHeadingText = (newText) => {
+    const onChangeHeadingText = (newText: string) => {
       setAttributes({
         headingText: newText,
       });
@@ -39,7 +43,7 @@ registerBlockType("my-blocks/ttl-block", {
   },
 
   // フロント表示
-  save: ({ attributes }) => {
+  save: ({ attributes }: { attributes: Attributes }) => {
     const { headingText } = attributes;
 
     return <RichText.Content tagName="h2" className="ttl01" value={headingText} />;

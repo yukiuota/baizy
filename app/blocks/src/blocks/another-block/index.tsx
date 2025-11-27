@@ -5,8 +5,16 @@ import { registerBlockType } from "@wordpress/blocks";
 import { RichText, useBlockProps } from "@wordpress/block-editor";
 import { Button } from "@wordpress/components";
 
+interface Item {
+  content: string;
+}
+
+interface Attributes {
+  items: Item[];
+}
+
 // ブロック登録
-registerBlockType("my-blocks/another-block", {
+registerBlockType<Attributes>("my-blocks/another-block", {
   title: "別のサンプルブロック",
   icon: "smiley",
   description: "これは別のテスト用のブロックです",
@@ -29,14 +37,14 @@ registerBlockType("my-blocks/another-block", {
         },
       },
     },
-  },
+  } as any,
 
   // 編集画面の表示
-  edit: ({ attributes, setAttributes }) => {
+  edit: ({ attributes, setAttributes }: { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void }) => {
     const { items } = attributes;
     const blockProps = useBlockProps();
 
-    const onChangeItemContent = (newContent, index) => {
+    const onChangeItemContent = (newContent: string, index: number) => {
       const newItems = items.map((item, i) => {
         if (i === index) {
           return {
@@ -58,7 +66,7 @@ registerBlockType("my-blocks/another-block", {
       setAttributes({ items: newItems });
     };
 
-    const removeItem = (index) => {
+    const removeItem = (index: number) => {
       const newItems = items.filter((item, i) => i !== index);
       setAttributes({ items: newItems });
     };
@@ -87,7 +95,7 @@ registerBlockType("my-blocks/another-block", {
   },
 
   // フロント表示
-  save: ({ attributes }) => {
+  save: ({ attributes }: { attributes: Attributes }) => {
     const { items } = attributes;
 
     return (

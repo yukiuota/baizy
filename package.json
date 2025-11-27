@@ -4,8 +4,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
-    "start": "webpack --watch --mode development",
+    "build": "vite build",
+    "start": "vite build --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "mcp:start": "chrome-devtools-mcp",
     "mcp:headless": "chrome-devtools-mcp --headless=true --isolated=true",
@@ -34,20 +34,23 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.5",
-    "@babel/preset-env": "^7.28.5",
-    "@babel/preset-react": "^7.28.5",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@types/wordpress__block-editor": "^14.21.2",
+    "@types/wordpress__blocks": "^12.5.18",
+    "@types/wordpress__components": "^23.0.12",
+    "@types/wordpress__element": "^2.4.1",
+    "@vitejs/plugin-react": "^5.1.1",
     "@wordpress/block-editor": "^15.7.0",
     "@wordpress/blocks": "^15.7.0",
     "@wordpress/components": "^30.7.0",
     "@wordpress/element": "^6.34.0",
     "@wordpress/scripts": "^30.27.0",
-    "babel-loader": "^10.0.0",
     "chrome-devtools-mcp": "^0.10.1",
-    "css-loader": "^7.1.2",
     "puppeteer": "^24.29.1",
-    "style-loader": "^4.0.0",
-    "webpack": "^5.102.1",
-    "webpack-cli": "^6.0.1"
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4",
+    "vite-plugin-css-injected-by-js": "^3.5.2"
   }
 }
