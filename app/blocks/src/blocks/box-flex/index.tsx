@@ -20,8 +20,22 @@ import {
   Fragment
 } from "@wordpress/element";
 
+// 型定義
+interface Item {
+  id: number;
+  imageId: number;
+  imageUrl: string;
+  headingText: string;
+  contentText: string;
+  contentText02: string;
+}
+
+interface Attributes {
+  items: Item[];
+}
+
 // ブロック登録
-registerBlockType("my-blocks/box-flex", {
+registerBlockType<Attributes>("my-blocks/box-flex", {
   title: "画像横並びブロック",
   icon: "layout",
   description: "画像とテキストが横並びになるブロックです（複数追加可能）",
@@ -39,13 +53,13 @@ registerBlockType("my-blocks/box-flex", {
         contentText02: "補足説明をここに入力します",
       }, ],
     },
-  },
+  } as any,
 
   // 編集画面の表示
   edit: ({
     attributes,
     setAttributes
-  }) => {
+  }: { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void }) => {
     const {
       items
     } = attributes;
@@ -66,7 +80,7 @@ registerBlockType("my-blocks/box-flex", {
       });
     };
 
-    const removeItem = (index) => {
+    const removeItem = (index: number) => {
       const newItems = [...items];
       newItems.splice(index, 1);
       setAttributes({
@@ -74,7 +88,7 @@ registerBlockType("my-blocks/box-flex", {
       });
     };
 
-    const updateItemAttribute = (index, attribute, value) => {
+    const updateItemAttribute = (index: number, attribute: keyof Item, value: any) => {
       const newItems = [...items];
       newItems[index] = {
         ...newItems[index],
@@ -85,12 +99,12 @@ registerBlockType("my-blocks/box-flex", {
       });
     };
 
-    const onSelectImage = (index, media) => {
+    const onSelectImage = (index: number, media: any) => {
       updateItemAttribute(index, "imageId", media.id);
       updateItemAttribute(index, "imageUrl", media.url);
     };
 
-    const onRemoveImage = (index) => {
+    const onRemoveImage = (index: number) => {
       updateItemAttribute(index, "imageId", 0);
       updateItemAttribute(index, "imageUrl", "");
     };
@@ -244,7 +258,7 @@ registerBlockType("my-blocks/box-flex", {
   // フロント表示
   save: ({
     attributes
-  }) => {
+  }: { attributes: Attributes }) => {
     const {
       items
     } = attributes;
@@ -348,8 +362,8 @@ registerBlockType("my-blocks/box-flex", {
       );
     },
     // 古いブロックから新しいブロックへの変換
-    migrate: (attributes) => {
-      const newItems = attributes.items.map((item) => ({
+    migrate: (attributes: any) => {
+      const newItems = attributes.items.map((item: any) => ({
         ...item,
         contentText02: "補足説明をここに入力します",
       }));
@@ -358,5 +372,5 @@ registerBlockType("my-blocks/box-flex", {
         items: newItems,
       };
     },
-  }, ],
+  }, ] as any,
 });

@@ -3,14 +3,20 @@ const path = require('path');
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
-    'custom-blocks': './app/blocks/src/index.js',
+    'custom-blocks': './app/blocks/src/index.tsx',
   },
   output: {
     path: path.resolve(__dirname, 'app/blocks/build'),
     filename: '[name].js',
   },
   module: {
-    rules: [{
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: 'ts-loader',
+      },
+      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
@@ -27,7 +33,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   externals: {
     '@wordpress/blocks': 'wp.blocks',
