@@ -17,11 +17,6 @@ class ExternalLinksManager {
         'privacy_policy' => [
             'name' => 'プライバシーポリシー',
             'url' => 'https://example.com/privacy/'
-        ],
-        // 従来のサンプルリンク（後方互換性のため）
-        'sample' => [
-            'name' => 'サンプルリンク',
-            'url' => 'https://xxx.com/'
         ]
     ];
     

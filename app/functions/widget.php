@@ -192,3 +192,30 @@ function custom_html_widget_admin_styles() {
 <?php
 }
 add_action( 'admin_head-widgets.php', 'custom_html_widget_admin_styles' );
+
+
+
+
+
+
+// -----------------------------------------------------
+// ダッシュボードにオリジナルウィジェットを追加
+// -----------------------------------------------------
+// add_action('wp_dashboard_setup', 'my_dashboard_widgets');
+// function my_dashboard_widgets() {
+//   wp_add_dashboard_widget('my_theme_options_widget', 'オリジナルウィジェット', 'my_dashboard_widget_function');
+// }
+// // ダッシュボードのオリジナルウィジェット内に情報を掲載
+// function my_dashboard_widget_function() {
+// // 管理画面用HTML
+// echo '<ul class="custom_widget">
+//   <li><a href="post-new.php"><span class="dashicons dashicons-edit"></span><span>新しく記事を書く</span></a></li>
+//   <li><a href="edit.php"><span class="dashicons dashicons-list-view"></span><span>過去記事一覧</span></a></li>
+//   <li><a href="edit.php?post_type=page"><span class="dashicons dashicons-clipboard"></span><span>固定ページ編集</span></a></li>
+//   </ul>';
+// }
+// // ダッシュボードにスタイルシートを読み込む
+// function custom_admin_enqueue(){
+//      wp_enqueue_style( 'custom_admin_enqueue', get_stylesheet_directory_uri(). '/my-widgets.css' );
+// }
+// add_action( 'admin_enqueue_scripts', 'custom_admin_enqueue' );
