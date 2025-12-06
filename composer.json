@@ -17,7 +17,6 @@
             "app/functions/admin.php",
             "app/functions/posts.php",
             "app/functions/global_links.php",
-            "app/functions/cache.php",
             "app/functions/widget.php",
             "app/functions/custom_block.php",
             "app/functions/plugins.php",
