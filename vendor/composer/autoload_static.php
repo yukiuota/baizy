@@ -13,7 +13,6 @@ class ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11
         '0270cafbe3843b4e42635a0977ee58c7' => __DIR__ . '/../..' . '/app/functions/admin.php',
         'd2e53e5d45ea933f279a91fdb59f02e1' => __DIR__ . '/../..' . '/app/functions/posts.php',
         'dac31246f5fc020aa31a0be05a33b490' => __DIR__ . '/../..' . '/app/functions/global_links.php',
-        'd4996e691805b5b8cb46a1bcbe88d2d0' => __DIR__ . '/../..' . '/app/functions/cache.php',
         'de9caf0f03adcf96f9519e50c0c4e9b2' => __DIR__ . '/../..' . '/app/functions/widget.php',
         'f733c843461eaf9623927a85e1f2d55b' => __DIR__ . '/../..' . '/app/functions/custom_block.php',
         '0d8f821e89536918effaab9f83c078f9' => __DIR__ . '/../..' . '/app/functions/plugins.php',
