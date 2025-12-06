@@ -163,19 +163,9 @@ add_action('pre_get_posts', 'filter_posts_by_custom_taxonomy');
 // -----------------------------------------------------
 // 管理画面にCSSを反映
 // -----------------------------------------------------
-function add_my_editor_styles() {
-  // ブロックエディタ（Gutenberg）用のCSSを読み込む
-  add_theme_support('editor-styles');
+add_action('admin_init', function () {
   add_editor_style('public/common/css/editor-style.css');
-
-  // クラシックエディタ用のCSSを読み込む
-  wp_enqueue_style(
-    'editor-style', // ハンドル名
-    BAIZY_THEME_URI . '/public/common/css/editor-style.css'
-  );
-}
-add_action('enqueue_block_editor_assets', 'add_my_editor_styles');
-add_action('admin_enqueue_scripts', 'add_my_editor_styles');
+});
 
 
 
