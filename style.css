@@ -53,16 +53,22 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 .alignright {
   float: right;
-  margin-left: 1rem;
 }
 
 .alignleft {
   float: left;
-  margin-right: 1rem;
 }
 
 .aligncenter {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+em {
+  font-style: italic;
+}
+
+p:has(img) {
+  overflow: hidden;
 }
