@@ -6,7 +6,10 @@ get_header();
 echo '<div id="container">';
 baizy_template_part( 'public/include/header/header_base' ); // header読み込み
 
-if ( is_home() || is_front_page() ) :
+if ( is_front_page() && is_page() ) :
+    // 固定ページがトップページに設定されている場合
+    baizy_template_part( 'public/pages/page-base' );
+elseif ( is_home() || is_front_page() ) :
     // ホームページ・フロントページ
     baizy_template_part( 'public/pages/top' );
 elseif ( is_single() ) :
