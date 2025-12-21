@@ -241,6 +241,20 @@ function display_terms_of_post_with_color($taxonomy, $wrapper_tag = 'span', $sep
 }
 // <?php display_terms_of_post_with_color('news-cat', 'span', ' '); 使用例
 
+// 記事が属するタームの背景色をCSS変数で出力
+function display_term_color_var($taxonomy)
+{
+  // タームを取得
+  $terms = get_the_terms(get_the_ID(), $taxonomy);
+  if ($terms && !is_wp_error($terms)) :
+    // 最初のタームの背景色を使用
+    $term = reset($terms);
+    $bg_color = get_term_background_color($term->term_id);
+    echo 'style="--category-color: ' . esc_attr($bg_color) . ';"';
+  endif;
+}
+// <div <?php display_term_color_var('news-category');> 使用例
+
 
 
 
