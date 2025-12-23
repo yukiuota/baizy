@@ -1,51 +1,93 @@
-# WordPress オリジナルテーマ制作テンプレート
+# Baizy WordPress Theme
 
-クラシックテーマをベースにしたオリジナルテーマ開発用テンプレートです。ブロック（Gutenberg）関連の JS を Webpack でビルドします。
+クラシックテーマをベースにしたオリジナルテーマ開発用テンプレートです。
+
+- カスタムブロック（Gutenberg）は React + TypeScript で実装し、Vite でビルドします
+- ビルド成果物はブロックエディタ用に読み込まれます（`app/blocks/build/custom-blocks.js`）
 
 ## 必要環境
 
-- WordPress 6.6 以上
-- PHP 8.0 以上
-- Node.js 18 以上
+- WordPress 6.5 以上（`theme.json` のスキーマが 6.5 なので目安）
+- PHP 7.4 以上（`composer.json` に準拠）
+- Node.js 18 以上（`package.json` の `engines` に準拠）
 
-## セットアップ（カスタムブロック開発）
+## セットアップ
+
+### PHP（オートロード）
+
+Composer のオートロードを利用しています。
+
+```bash
+composer install
+composer dump-autoload
+```
+
+### カスタムブロック（Gutenberg）
 
 1) 依存関係をインストール
 
-```
+```bash
 npm install
 ```
 
-2) 本番ビルド
+2) 本番ビルド（圧縮あり）
 
-```
+```bash
 npm run build
 ```
 
-出力ファイル: `app/blocks/build/custom-blocks.js`
+3) 監視ビルド（変更を検知して再ビルド）
+
+```bash
+npm run start
+```
+
+#### ビルド仕様
+
+- エントリ: `app/blocks/src/index.tsx`
+- 出力先: `app/blocks/build/custom-blocks.js`
+- WordPress / React は外部依存として扱います（`wp.*` グローバルを参照）
+
+※ `webpack.config.js` はリポジトリに残っていますが、現状の npm スクリプトは Vite ビルド（`vite.config.ts`）を使用します。
+
+## 主な npm スクリプト
+
+```bash
+# ブロックの本番ビルド
+npm run build
+
+# ブロックの監視ビルド
+npm run start
+
+# Puppeteer によるパフォーマンス計測（URL省略時は localhost を計測）
+npm run perf:check
+npm run perf:localhost
+```
 
 ## ディレクトリ構成（抜粋）
 
-- `app/blocks/src/` ブロック関連のソース
-- `app/blocks/build/` Webpack 出力先
-- `public/` 共通 CSS/JS・ページテンプレート等
+- `app/blocks/src/` ブロック関連ソース（React/TS）
+- `app/blocks/build/` ブロックのビルド出力先（`custom-blocks.js`）
+- `app/functions/` functions.php 相当の機能群（Composer オートロード）
+- `public/` 共通 CSS/JS・ページテンプレートなど
 - `include/` 分割テンプレート
+- `patterns/` ブロックパターン（PHP）
 - `style.css` テーマ情報（ヘッダー必須）
 - `theme.json` テーマ設定
 
 ## テーマ仕様
-### functions.phpの読み込み（オートロード）
-```
-composer dump-autoload
-```
 
-### 画像表示
-```
+### カスタムブロックの読み込み
+
+ブロックエディタ（管理画面）で `app/blocks/build/custom-blocks.js` を読み込みます。
+
+### 画像表示ヘルパー
+
+```html
 <picture>
-<source srcset="<?php echo baizy_img('xx/xx.png'); ?> 1x, <?php echo baizy_img('xx/xx@2x.png'); ?> 2x" media="(max-width: 750px)">
-<img src="<?php echo baizy_img('xx/xx.png'); ?>" srcset="<?php echo baizy_img('xx/xx.png'); ?> 1x, <?php echo baizy_img('xx/xx@2x.png'); ?> 2x" <?php baizy_img_wh('xx/xx.png'); ?> alt="">
+  <source srcset="<?php echo baizy_img('xx/xx.png'); ?> 1x, <?php echo baizy_img('xx/xx@2x.png'); ?> 2x" media="(max-width: 750px)">
+  <img src="<?php echo baizy_img('xx/xx.png'); ?>" srcset="<?php echo baizy_img('xx/xx.png'); ?> 1x, <?php echo baizy_img('xx/xx@2x.png'); ?> 2x" <?php baizy_img_wh('xx/xx.png'); ?> alt="">
 </picture>
-
 
 例:
 <!-- loading="lazy"あり(デフォルト) -->
@@ -55,163 +97,30 @@ composer dump-autoload
 <img src="<?php echo baizy_img('hero.jpg'); ?>" <?php baizy_img_wh('hero.jpg', false); ?> alt="">
 ```
 
+## Chrome DevTools MCP
+
+このリポジトリには、Chrome DevTools MCP（Model Context Protocol）を使うための設定ファイルが含まれています。
+
+- パッケージ: `chrome-devtools-mcp`（バージョンは `package.json` を参照）
+- 設定ファイル:
+  - `mcp-servers.json`
+  - `mcp-config.json`
+
+### 利用可能なスクリプト
+
+```bash
+npm run mcp:start
+npm run mcp:headless
+npm run mcp:dev
+```
+
+### 注意事項
+
+- ブラウザ内容が MCP クライアントに公開されるため、機密情報や個人情報を含むページでは使用しないでください
+- サンドボックス環境等で制限が出る場合は `--isolated=true` などのオプションを使用してください
+
 ## ライセンス
 
 GPL-2.0-or-later
 
 詳細は `LICENSE` を参照してください。
-
-
-
-# Chrome DevTools MCP セットアップガイド
-
-## 概要
-
-Chrome DevTools MCPは、AIコーディングアシスタント（Gemini、Claude、Cursor、Copilot など）がライブのChromeブラウザを制御・検査できるようにするModel Context Protocol（MCP）サーバーです。
-
-## インストール済みコンテンツ
-
-- `chrome-devtools-mcp` パッケージ（バージョン 0.3.0）
-- 設定ファイル：
-  - `mcp-servers.json` - 基本設定
-  - `mcp-config.json` - 詳細設定オプション付き
-
-## 利用可能なスクリプト
-
-以下のnpmスクリプトが追加されています：
-
-```bash
-# 基本的なMCPサーバー起動
-npm run mcp:start
-
-# ヘッドレスモードで起動（UIなし）
-npm run mcp:headless
-
-# 開発者チャンネルのChromeを使用
-npm run mcp:dev
-```
-
-## VS Code での使用方法
-
-### 1. GitHub Copilot での使用
-
-VS CodeでGitHub Copilotを使用している場合、以下の手順で設定できます：
-
-1. VS Codeの設定を開く（Cmd/Ctrl + ,）
-2. "github.copilot.mcp" を検索
-3. MCP設定に以下を追加：
-
-```json
-{
-  "mcpServers": {
-    "chrome-devtools": {
-      "command": "npx",
-      "args": ["chrome-devtools-mcp@latest"]
-    }
-  }
-}
-```
-
-### 2. Cursor での使用
-
-Cursorエディターを使用している場合：
-
-1. Cursorの設定 > Extensions > MCP
-2. 設定ファイルに `mcp-config.json` の内容を追加
-
-## 主な機能
-
-### 入力自動化（7ツール）
-- click - 要素をクリック
-- drag - ドラッグ操作
-- fill - フォーム入力
-- fill_form - フォーム一括入力
-- handle_dialog - ダイアログ処理
-- hover - ホバー操作
-- upload_file - ファイルアップロード
-
-### ナビゲーション自動化（7ツール）
-- close_page - ページを閉じる
-- list_pages - ページ一覧
-- navigate_page - ページナビゲーション
-- new_page - 新規ページ
-- select_page - ページ選択
-- wait_for - 待機
-
-### パフォーマンス（3ツール）
-- performance_analyze_insight - パフォーマンス解析
-- performance_start_trace - トレース開始
-- performance_stop_trace - トレース停止
-
-### デバッグ（4ツール）
-- evaluate_script - スクリプト実行
-- list_console_messages - コンソールメッセージ一覧
-- take_screenshot - スクリーンショット
-- take_snapshot - スナップショット
-
-## 設定オプション
-
-### 基本設定
-- `--headless`: ヘッドレスモード（UIなし）
-- `--isolated`: 一時的なユーザーデータディレクトリを使用
-- `--channel`: Chromeチャンネル選択（stable, canary, beta, dev）
-- `--executablePath`: カスタムChrome実行パスを指定
-
-### 使用例
-
-```json
-{
-  "mcpServers": {
-    "chrome-devtools-production": {
-      "command": "npx",
-      "args": [
-        "chrome-devtools-mcp@latest",
-        "--headless=true",
-        "--isolated=true"
-      ]
-    },
-    "chrome-devtools-dev": {
-      "command": "npx", 
-      "args": [
-        "chrome-devtools-mcp@latest",
-        "--channel=canary",
-        "--isolated=true"
-      ]
-    }
-  }
-}
-```
-
-## テスト方法
-
-MCPクライアントで以下のプロンプトを入力してテストしてください：
-
-```
-Check the performance of https://developers.chrome.com
-```
-
-これにより、ブラウザが自動的に開かれ、パフォーマンストレースが記録されます。
-
-## 注意事項
-
-- `chrome-devtools-mcp` はブラウザインスタンスの内容をMCPクライアントに公開するため、機密情報や個人情報を含むページでの使用は避けてください。
-- macOS Seatbelt や Linuxコンテナなどのサンドボックス環境では制限がある場合があります。
-- MCP サーバーはブラウザが必要になった時点で自動的に Chrome を起動します。
-
-## トラブルシューティング
-
-### ブラウザが起動しない場合
-1. Node.js のバージョンを確認（22.12.0以上が必要）
-2. Chrome が正しくインストールされているか確認
-3. `--executablePath` でChromeのパスを明示的に指定
-
-### サンドボックスエラーの場合
-- `--isolated=true` オプションを使用
-- MCP クライアントのサンドボックス設定を無効化
-- 手動でChromeを起動し、`--browserUrl` で接続
-
-## 参考リンク
-
-- [Chrome DevTools MCP GitHub](https://github.com/ChromeDevTools/chrome-devtools-mcp)
-- [ツールリファレンス](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md)
-- [npm パッケージ](https://npmjs.org/package/chrome-devtools-mcp)
