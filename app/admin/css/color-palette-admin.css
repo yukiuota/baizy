@@ -1,0 +1,34 @@
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.color-row label {
+  min-width: 80px;
+}
+
+.color-row input[type="text"] {
+  flex: 1;
+  max-width: 300px;
+}
+
+.color-row input[type="color"] {
+  width: 60px;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+}
+
+.remove-color-btn {
+  color: #b32d2e;
+  cursor: pointer;
+}
+
+.remove-color-btn:hover {
+  color: #dc3232;
+}
