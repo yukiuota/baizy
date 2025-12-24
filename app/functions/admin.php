@@ -176,3 +176,141 @@ add_action('admin_init', function () {
 //   return $content .= '<p>推奨サイズは幅：300px、高さ：200px</p>';
 // }
 // add_filter( 'admin_post_thumbnail_html', 'add_featured_image_instruction' );
+
+
+
+// -----------------------------------------------------
+// カスタムカラーパレットの設定
+// -----------------------------------------------------
+
+/**
+ * カラーパレット管理ページを追加
+ */
+add_action('admin_menu', function() {
+  add_theme_page(
+    'カラーパレット管理',
+    'カラーパレット',
+    'manage_options',
+    'custom-color-palette',
+    'render_custom_color_palette_page'
+  );
+});
+
+/**
+ * カラーパレット管理画面のCSS・JSを読み込み
+ */
+add_action('admin_enqueue_scripts', function($hook) {
+  if ($hook !== 'appearance_page_custom-color-palette') {
+    return;
+  }
+  
+  wp_enqueue_style(
+    'color-palette-admin-css',
+    get_template_directory_uri() . '/app/admin/css/color-palette-admin.css',
+    array(),
+    '1.0.0'
+  );
+  
+  wp_enqueue_script(
+    'color-palette-admin-js',
+    get_template_directory_uri() . '/app/admin/js/color-palette-admin.js',
+    array('jquery'),
+    '1.0.0',
+    true
+  );
+});
+
+/**
+ * カラーパレット管理ページの表示
+ */
+function render_custom_color_palette_page() {
+  // 権限チェック
+  if (!current_user_can('manage_options')) {
+    return;
+  }
+
+  // カラーの保存処理
+  if (isset($_POST['save_colors']) && check_admin_referer('save_custom_colors', 'custom_colors_nonce')) {
+    $colors = array();
+    
+    if (isset($_POST['color_name']) && is_array($_POST['color_name'])) {
+      foreach ($_POST['color_name'] as $index => $name) {
+        if (!empty($name) && !empty($_POST['color_code'][$index])) {
+          $colors[] = array(
+            'name' => sanitize_text_field($name),
+            'color' => sanitize_hex_color($_POST['color_code'][$index]),
+            'slug' => sanitize_title($name)
+          );
+        }
+      }
+    }
+    
+    update_option('custom_color_palette', $colors);
+    echo '<div class="notice notice-success is-dismissible"><p>カラーパレットを保存しました。</p></div>';
+  }
+
+  // 保存されているカラーを取得
+  $saved_colors = get_option('custom_color_palette', array());
+  
+  // ビューファイルを読み込み
+  include get_template_directory() . '/app/admin/views/color-palette-settings.php';
+}
+
+/**
+ * カラー行を表示
+ */
+function render_color_row($index, $color) {
+  $name = isset($color['name']) ? esc_attr($color['name']) : '';
+  $color_code = isset($color['color']) ? esc_attr($color['color']) : '#000000';
+  ?>
+<div class="color-row">
+    <label>カラー名:</label>
+    <input type="text" name="color_name[<?php echo $index; ?>]" value="<?php echo $name; ?>" placeholder="例: プライマリー" required>
+    <label>カラーコード:</label>
+    <input type="color" name="color_code[<?php echo $index; ?>]" value="<?php echo $color_code; ?>" required>
+    <input type="text" name="color_code[<?php echo $index; ?>]" value="<?php echo $color_code; ?>" class="color-code-text" pattern="^#[0-9A-Fa-f]{6}$" required>
+    <span class="dashicons dashicons-trash remove-color-btn"></span>
+</div>
+<?php
+}
+
+/**
+ * テーマのカラーパレットにカスタムカラーを追加する
+ * Core のデフォルトカラーパレットを非表示にする
+ *
+ * @param object $theme_json テーマJSONオブジェクト.
+ * @return object 更新されたテーマJSONオブジェクト.
+ */
+add_filter(
+  'wp_theme_json_data_theme',
+  function ( $theme_json ) {
+    $get_data = $theme_json->get_data();
+    $saved_colors = get_option('custom_color_palette', array());
+    $add_color_palette = array();
+    
+    foreach ($saved_colors as $color) {
+      $add_color_palette[] = array(
+        'slug'  => $color['slug'],
+        'color' => $color['color'],
+        'name'  => $color['name'],
+      );
+    }
+
+    $new_color_palette = array_merge(
+      $get_data['settings']['color']['palette']['theme'],
+      $add_color_palette
+    );
+
+    $new_data = array(
+      'version'  => 2,
+      'settings' => array(
+        'color' => array(
+          'palette'        => $new_color_palette,
+          'defaultPalette' => false,
+        ),
+      ),
+    );
+
+    return $theme_json->update_with( $new_data );
+  }
+);
