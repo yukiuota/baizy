@@ -1,6 +1,5 @@
 .DS_Store
 node_modules
-sample
 .vscode
 *.log
 .idea/
