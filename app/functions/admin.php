@@ -24,7 +24,7 @@ function remove_menus() {
   // remove_menu_page( 'edit.php' ); // 投稿.
   // remove_menu_page( 'upload.php' ); // メディア.
   // remove_menu_page( 'edit.php?post_type=page' ); // 固定.
-  // remove_menu_page( 'edit-comments.php' ); // コメント.
+  remove_menu_page( 'edit-comments.php' ); // コメント.
   // remove_menu_page( 'themes.php' ); // 外観.
   // remove_menu_page( 'plugins.php' ); // プラグイン.
   // remove_menu_page( 'users.php' ); // ユーザー.

@@ -123,7 +123,7 @@ function create_breadcrumb()
 
   echo
   '</ul>' .
-    '</div>';
+'</div>';
 }
 
 
