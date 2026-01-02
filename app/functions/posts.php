@@ -200,7 +200,6 @@ function custom_taxonomy_monthly_list($post_type, $taxonomy_slug, $post_id)
   }
 }
 
-
 // <?php 関数を使用する際に必要なパラメーターを指定して呼び出します
 // $post_id = get_the_ID();
 // custom_taxonomy_monthly_list('tyoka', 'tyoka_category', $post_id);
@@ -366,7 +365,7 @@ add_filter( 'excerpt_more', function( $more ){
   return '';
 }, 999 );
 
-// 文字数制限を110から200に変更
+// 文字数制限
 add_filter( 'excerpt_length', function( $length ){
   return 120;
 }, 999 );
@@ -396,12 +395,12 @@ add_filter( 'get_the_excerpt', 'disable_wpautop_on_excerpt', 1 );
 
 // 自動生成される抜粋でも改行を保持
 function custom_wp_trim_excerpt( $text, $raw_excerpt ) {
-    if ( '' == $raw_excerpt ) {
-        $text = get_the_content('');
-        $text = strip_shortcodes( $text );
-        
-        // wpautopを適用する前に改行を保護
-        $text = preg_replace('/<br\s*\/?>/i', '|||LINEBREAK|||', $text);
+if ( '' == $raw_excerpt ) {
+$text = get_the_content('');
+$text = strip_shortcodes( $text );
+
+// wpautopを適用する前に改行を保護
+$text = preg_replace('/<br\s*\/?>/i', '|||LINEBREAK|||', $text);
 $text = apply_filters( 'the_content', $text );
 $text = str_replace(']]>', ']]&gt;', $text);
 
