@@ -1,5 +1,8 @@
 @charset "UTF-8";
-@use "../scss_var";
+@use "../scss_var"as var;
 
-@include scss_var.sp {
+.a {
+    width: var.rm(160);
 }
+
+@include var.sp {}

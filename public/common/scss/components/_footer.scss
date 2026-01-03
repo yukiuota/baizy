@@ -1,10 +1,8 @@
 @charset "UTF-8";
-@use "../scss_var";
+@use "../scss_var"as var;
 
 /*　footer
 ----------------------------------------------- */
-#footer {
-}
+.footer {}
 
-@include scss_var.sp {
-}
+@include var.sp {}

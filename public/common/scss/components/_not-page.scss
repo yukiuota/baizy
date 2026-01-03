@@ -1,41 +1,41 @@
 @charset "UTF-8";
-@use "../scss_var";
+@use "../scss_var"as var;
 
 .not-page {
-  padding: 80px 0;
+  padding: var.rm(80) 0;
   text-align: center;
 }
 
 .not-page__ttl {
-  font-size: 35px;
+  font-size: var.rm(35);
   font-weight: 700;
 }
 
 .not-page__text {
-  margin-top: 25px;
+  margin-top: var.rm(25);
 }
 
 .not-page__btn {
-  margin-top: 35px;
-  font-size: 18px;
+  margin-top: var.rm(35);
+  font-size: var.rm(18);
   text-decoration: underline;
 }
 
-@include scss_var.sp {
+@include var.sp {
   .not-page {
-    padding: 50px 0;
+    padding: var.rm(50) 0;
   }
 
   .not-page__ttl {
-    font-size: 25px;
+    font-size: var.rm(25);
   }
 
   .not-page__text {
-    margin-top: 15px;
+    margin-top: var.rm(15);
   }
 
   .not-page__btn {
-    margin-top: 25px;
-    font-size: 16px;
+    margin-top: var.rm(25);
+    font-size: var.rm(16);
   }
 }

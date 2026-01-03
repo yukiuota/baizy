@@ -1,58 +1,58 @@
 @charset "UTF-8";
-@use "../scss_var";
+@use "../scss_var"as var;
 
 /*　フェード
 ----------------------------------------------- */
 //下から上
 .view01 {
-  transform: translateY(30px);
-  @include scss_var.fadeBefore;
+  transform: translateY(var.rm(30));
+  @include var.fadeBefore;
 
   &.view-on {
     transform: translateY(0);
-    @include scss_var.fadeAfter;
+    @include var.fadeAfter;
   }
 }
 
 //左から右
 .view02 {
-  transform: translateX(-30px);
-  @include scss_var.fadeBefore;
+  transform: translateX(var.rm(-30));
+  @include var.fadeBefore;
 
   &.view-on {
     transform: translateX(0);
-    @include scss_var.fadeAfter;
+    @include var.fadeAfter;
   }
 }
 
 //右から左
 .view03 {
-  transform: translateX(30px);
-  @include scss_var.fadeBefore;
+  transform: translateX(var.rm(30));
+  @include var.fadeBefore;
 
   &.view-on {
     transform: translateX(0);
-    @include scss_var.fadeAfter;
+    @include var.fadeAfter;
   }
 }
 
 //上から下
 .view04 {
-  transform: translateY(-30px);
-  @include scss_var.fadeBefore;
+  transform: translateY(var.rm(-30));
+  @include var.fadeBefore;
 
   &.view-on {
     transform: translateY(0);
-    @include scss_var.fadeAfter;
+    @include var.fadeAfter;
   }
 }
 
 //その場から
 .view05 {
-  @include scss_var.fadeBefore;
+  @include var.fadeBefore;
 
   &.view-on {
-    @include scss_var.fadeAfter;
+    @include var.fadeAfter;
   }
 }
 
@@ -63,7 +63,7 @@
   transition: grid-template-rows 0.4s;
   grid-template-rows: 0fr;
 
-  & > * {
+  &>* {
     overflow: hidden;
   }
 

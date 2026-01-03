@@ -1,6 +1,5 @@
 @charset "UTF-8";
-@use "../scss_var";
-@use "var";
+@use "../scss_var"as var;
 
 * {
   box-sizing: border-box;
@@ -173,7 +172,7 @@ select {
   color: var(--main-font-color);
 }
 
-@include scss_var.sp {
+@include var.sp {
   body {
     font-weight: var(--main-font-weight);
     line-height: var(--main-line-hight);

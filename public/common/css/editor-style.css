@@ -317,4 +317,12 @@ body.js-on {
     margin-top: 25px;
     font-size: 16px;
   }
+}}
+  .not-page__text {
+    margin-top: 0.9375rem;
+  }
+  .not-page__btn {
+    margin-top: 1.5625rem;
+    font-size: 1rem;
+  }
 }

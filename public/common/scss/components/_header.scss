@@ -1,23 +1,20 @@
 @charset "UTF-8";
-@use "../scss_var";
+@use "../scss_var"as var;
 
 /*　header
 ----------------------------------------------- */
-.header {
-}
+.header {}
 
-.header__inner {
-}
+.header__inner {}
 
 .header__logo {
-  a {
-  }
+  a {}
 }
 
 //menu-trigger
 .header-btn {
-  width: 35px;
-  height: 25px;
+  width: var.rm(35);
+  height: var.rm(25);
   position: relative;
   z-index: 13;
 }
@@ -38,7 +35,7 @@
     position: absolute;
     left: 0;
     width: 100%;
-    height: 3px;
+    height: var.rm(3);
     background-color: #00aac3;
 
     &:nth-of-type(1) {
@@ -46,7 +43,7 @@
     }
 
     &:nth-of-type(2) {
-      top: 11px;
+      top: var.rm(11);
     }
 
     &:nth-of-type(3) {
@@ -56,6 +53,7 @@
 
   &.active {
     span {
+
       //   background: #FFF;
       &:nth-of-type(1) {
         top: 50%;
@@ -74,10 +72,8 @@
   }
 }
 
-@include scss_var.sp {
-  .header {
-  }
+@include var.sp {
+  .header {}
 
-  .header__inner {
-  }
+  .header__inner {}
 }

@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-@use "scss-variables" as var;
+@use "scss-variables"as var;
 
 // ブレイクポイント指定
 @mixin pc {
@@ -58,4 +58,9 @@
       @content;
     }
   }
+}
+
+// pxをremに変換
+@function rm($px) {
+  @return ($px / 16) * 1rem;
 }
