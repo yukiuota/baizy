@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@use "../scss_var"as var;
 
 // -------------------------------------------- //
 // 共通設定
@@ -6,7 +7,7 @@
   // 共通フォント
   --main-font-family: YuMincho, "Yu Mincho", serif;
   --sub-font-family: YuMincho, "Yu Mincho", serif;
-  --main-font-size: 16px;
+  --main-font-size: var.rm(16);
   --main-font-weight: 400;
   --main-font-color: #000;
   --main-line-height: 1.6;
@@ -20,8 +21,8 @@
   --sub-color: #000;
 
   // 共通レイアウト
-  --main-inner-width: 1030px;
-  --main-inner-padding: 0 15px;
+  --main-inner-width: var.rm(1030);
+  --main-inner-padding: 0 var.rm(15);
 
   // アニメーション設定
   --anime-speed: 750ms;
@@ -30,11 +31,11 @@
 
 @media (max-width: 750px) {
   :root {
-    --main-font-size: 16px;
+    --main-font-size: var.rm(16);
     --main-line-height: 1.6;
     --main-letter-spacing: 0;
     --main-inner-width: 100%;
-    --main-inner-padding: 0 15px;
+    --main-inner-padding: 0 var.rm(15);
   }
 }
 

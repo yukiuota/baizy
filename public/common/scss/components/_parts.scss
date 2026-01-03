@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@use "../scss_var";
+@use "../scss_var"as var;
 
 /*　共通
 ----------------------------------------------- */
@@ -33,7 +33,7 @@ body {
   padding: var(--main-inner-padding);
 }
 
-@include scss_var.sp {
+@include var.sp {
   .sp {
     display: block;
   }

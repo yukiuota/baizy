@@ -1,37 +1,37 @@
 @charset "UTF-8";
-@use "../scss_var";
+@use "../scss_var"as var;
 
 /*　投稿
 ----------------------------------------------- */
 .post,
 .interface-interface-skeleton__body {
   h1 {
-    font-size: 26px;
+    font-size: var.rm(26);
     font-weight: bold;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: var.rm(24);
     font-weight: bold;
   }
 
   h3 {
-    font-size: 22px;
+    font-size: var.rm(22);
     font-weight: bold;
   }
 
   h4 {
-    font-size: 20px;
+    font-size: var.rm(20);
     font-weight: bold;
   }
 
   h5 {
-    font-size: 18px;
+    font-size: var.rm(18);
     font-weight: bold;
   }
 
   h6 {
-    font-size: 16px;
+    font-size: var.rm(16);
     font-weight: bold;
   }
 
@@ -40,31 +40,32 @@
   }
 }
 
-@include scss_var.sp {
+@include var.sp {
+
   .post,
   .interface-interface-skeleton__body {
     h1 {
-      font-size: 24px;
+      font-size: var.rm(24);
     }
 
     h2 {
-      font-size: 22px;
+      font-size: var.rm(22);
     }
 
     h3 {
-      font-size: 20px;
+      font-size: var.rm(20);
     }
 
     h4 {
-      font-size: 18px;
+      font-size: var.rm(18);
     }
 
     h5 {
-      font-size: 16px;
+      font-size: var.rm(16);
     }
 
     h6 {
-      font-size: 14px;
+      font-size: var.rm(14);
     }
   }
 }
