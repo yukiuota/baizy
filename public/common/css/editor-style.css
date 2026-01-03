@@ -1,11 +1,9 @@
 @charset "UTF-8";
-/* Scss Document */
-/* Scss Document */
 /*　header
 ----------------------------------------------- */
 .header-btn {
-  width: 35px;
-  height: 25px;
+  width: 2.1875rem;
+  height: 1.5625rem;
   position: relative;
   z-index: 13;
 }
@@ -30,14 +28,14 @@
   position: absolute;
   left: 0;
   width: 100%;
-  height: 3px;
+  height: 0.1875rem;
   background-color: #00aac3;
 }
 .menu span:nth-of-type(1) {
   top: 0;
 }
 .menu span:nth-of-type(2) {
-  top: 11px;
+  top: 0.6875rem;
 }
 .menu span:nth-of-type(3) {
   bottom: 0;
@@ -61,8 +59,8 @@
 /*　フェード
 ----------------------------------------------- */
 .view01 {
-  -webkit-transform: translateY(30px);
-          transform: translateY(30px);
+  -webkit-transform: translateY(1.875rem);
+          transform: translateY(1.875rem);
   position: relative;
   opacity: 0;
   -webkit-transition: all var(--anime-speed) ease;
@@ -81,8 +79,8 @@
 }
 
 .view02 {
-  -webkit-transform: translateX(-30px);
-          transform: translateX(-30px);
+  -webkit-transform: translateX(-1.875rem);
+          transform: translateX(-1.875rem);
   position: relative;
   opacity: 0;
   -webkit-transition: all var(--anime-speed) ease;
@@ -101,8 +99,8 @@
 }
 
 .view03 {
-  -webkit-transform: translateX(30px);
-          transform: translateX(30px);
+  -webkit-transform: translateX(1.875rem);
+          transform: translateX(1.875rem);
   position: relative;
   opacity: 0;
   -webkit-transition: all var(--anime-speed) ease;
@@ -121,8 +119,8 @@
 }
 
 .view04 {
-  -webkit-transform: translateY(-30px);
-          transform: translateY(-30px);
+  -webkit-transform: translateY(-1.875rem);
+          transform: translateY(-1.875rem);
   position: relative;
   opacity: 0;
   -webkit-transition: all var(--anime-speed) ease;
@@ -224,32 +222,32 @@ body.js-on {
 ----------------------------------------------- */
 .post h1,
 .interface-interface-skeleton__body h1 {
-  font-size: 26px;
+  font-size: 1.625rem;
   font-weight: bold;
 }
 .post h2,
 .interface-interface-skeleton__body h2 {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 .post h3,
 .interface-interface-skeleton__body h3 {
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: bold;
 }
 .post h4,
 .interface-interface-skeleton__body h4 {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
 }
 .post h5,
 .interface-interface-skeleton__body h5 {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: bold;
 }
 .post h6,
 .interface-interface-skeleton__body h6 {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
 }
 .post strong,
@@ -260,64 +258,56 @@ body.js-on {
 @media screen and (max-width: 750px) {
   .post h1,
   .interface-interface-skeleton__body h1 {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
   .post h2,
   .interface-interface-skeleton__body h2 {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
   .post h3,
   .interface-interface-skeleton__body h3 {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
   .post h4,
   .interface-interface-skeleton__body h4 {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
   .post h5,
   .interface-interface-skeleton__body h5 {
-    font-size: 16px;
+    font-size: 1rem;
   }
   .post h6,
   .interface-interface-skeleton__body h6 {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 }
 .not-page {
-  padding: 80px 0;
+  padding: 5rem 0;
   text-align: center;
 }
 
 .not-page__ttl {
-  font-size: 35px;
+  font-size: 2.1875rem;
   font-weight: 700;
 }
 
 .not-page__text {
-  margin-top: 25px;
+  margin-top: 1.5625rem;
 }
 
 .not-page__btn {
-  margin-top: 35px;
-  font-size: 18px;
+  margin-top: 2.1875rem;
+  font-size: 1.125rem;
   text-decoration: underline;
 }
 
 @media screen and (max-width: 750px) {
   .not-page {
-    padding: 50px 0;
+    padding: 3.125rem 0;
   }
   .not-page__ttl {
-    font-size: 25px;
+    font-size: 1.5625rem;
   }
-  .not-page__text {
-    margin-top: 15px;
-  }
-  .not-page__btn {
-    margin-top: 25px;
-    font-size: 16px;
-  }
-}}
   .not-page__text {
     margin-top: 0.9375rem;
   }
