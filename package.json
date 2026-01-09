@@ -36,10 +36,8 @@
   "devDependencies": {
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "@types/wordpress__block-editor": "^14.21.2",
+    "@types/wordpress__block-editor": "^15.0.0",
     "@types/wordpress__blocks": "^12.5.18",
-    "@types/wordpress__components": "^23.0.12",
-    "@types/wordpress__element": "^2.4.1",
     "@vitejs/plugin-react": "^5.1.1",
     "@wordpress/block-editor": "^15.7.0",
     "@wordpress/blocks": "^15.7.0",
