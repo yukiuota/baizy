@@ -10,6 +10,7 @@
 - WordPress 6.5 以上（`theme.json` のスキーマが 6.5 なので目安）
 - PHP 7.4 以上（`composer.json` に準拠）
 - Node.js 18 以上（`package.json` の `engines` に準拠）
+- pnpm 10.0 以上（パッケージマネージャー）
 
 ## セットアップ
 
@@ -27,19 +28,19 @@ composer dump-autoload
 1) 依存関係をインストール
 
 ```bash
-npm install
+pnpm install
 ```
 
 2) 本番ビルド（圧縮あり）
 
 ```bash
-npm run build
+pnpm build
 ```
 
 3) 監視ビルド（変更を検知して再ビルド）
 
 ```bash
-npm run start
+pnpm start
 ```
 
 #### ビルド仕様
@@ -48,20 +49,20 @@ npm run start
 - 出力先: `app/blocks/build/custom-blocks.js`
 - WordPress / React は外部依存として扱います（`wp.*` グローバルを参照）
 
-※ `webpack.config.js` はリポジトリに残っていますが、現状の npm スクリプトは Vite ビルド（`vite.config.ts`）を使用します。
+※ `webpack.config.js` はリポジトリに残っていますが、現状の pnpm スクリプトは Vite ビルド（`vite.config.ts`）を使用します。
 
-## 主な npm スクリプト
+## 主な pnpm スクリプト
 
 ```bash
 # ブロックの本番ビルド
-npm run build
+pnpm build
 
 # ブロックの監視ビルド
-npm run start
+pnpm start
 
 # Puppeteer によるパフォーマンス計測（URL省略時は localhost を計測）
-npm run perf:check
-npm run perf:localhost
+pnpm perf:check
+pnpm perf:localhost
 ```
 
 ## ディレクトリ構成（抜粋）
@@ -109,9 +110,9 @@ npm run perf:localhost
 ### 利用可能なスクリプト
 
 ```bash
-npm run mcp:start
-npm run mcp:headless
-npm run mcp:dev
+pnpm mcp:start
+pnpm mcp:headless
+pnpm mcp:dev
 ```
 
 ### 注意事項
