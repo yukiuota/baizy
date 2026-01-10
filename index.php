@@ -66,8 +66,14 @@ elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() ||
             // カスタム投稿タイプのアーカイブの場合
             $post_type = $queried_object->name;
         } elseif (isset($queried_object->taxonomy) && $queried_object instanceof WP_Term) {
-            // タクソノミーアーカイブの場合
-            $post_type = 'taxonomy';
+        // タクソノミーアーカイブの場合、関連する投稿タイプを取得
+        $taxonomy = get_taxonomy($queried_object->taxonomy);
+        if ($taxonomy && !empty($taxonomy->object_type)) {
+        // タクソノミーに関連付けられた投稿タイプを取得（最初のものを使用）
+        $post_type = $taxonomy->object_type[0];
+        } else {
+        $post_type = 'post';
+        }
         } else {
             // デフォルト
             $post_type = 'post';
