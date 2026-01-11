@@ -8,6 +8,7 @@ export default defineConfig({
     react(),
     cssInjectedByJsPlugin(),
   ],
+  publicDir: false, // publicディレクトリの自動コピーを無効化
   build: {
     outDir: 'app/blocks/build',
     emptyOutDir: true,
