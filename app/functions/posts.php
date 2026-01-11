@@ -214,8 +214,8 @@ function custom_taxonomy_monthly_list($post_type, $taxonomy_slug, $post_id)
           // 年と月がともに前回と異なる場合のみ表示
           if ($prev_month != $this_month || $prev_year != $this_year) {
             echo '<li>';
-            echo '<a href="' . $home_url . '/date/' . $this_year . '/' . $this_month . '?' . $taxonomy_slug . '=' . $term_slug . '">';
-            echo '<p>' . $this_year . '.' . $this_month . '</p>';
+            echo '<a href="' . esc_url($home_url . '/date/' . $this_year . '/' . $this_month . '?' . esc_attr($taxonomy_slug) . '=' . esc_attr($term_slug)) . '">';
+            echo '<p>' . esc_html($this_year . '.' . $this_month) . '</p>';
             echo '</a>';
             echo '</li>';
           }
@@ -256,10 +256,13 @@ function display_terms_of_post($taxonomy, $post_id = null)
     foreach ($terms as $term) {
       $term_data[] = array(
         'name' => $term->name,
+        'name_escaped' => esc_html($term->name),
         'slug' => $term->slug,
+        'slug_escaped' => esc_attr($term->slug),
         'term_id' => $term->term_id,
         'taxonomy' => $term->taxonomy,
         'link' => get_term_link($term),
+        'link_escaped' => esc_url(get_term_link($term)),
       );
     }
     return $term_data;
@@ -286,7 +289,7 @@ function display_terms_of_slug($taxonomy)
   $terms = get_the_terms(get_the_ID(), $taxonomy);
   if ($terms && !is_wp_error($terms)) :
     foreach ($terms as $term) {
-      echo $term->slug;
+      echo esc_html($term->slug);
     }
   endif;
 }

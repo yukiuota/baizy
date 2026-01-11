@@ -676,13 +676,18 @@ add_action( 'wp_footer', 'admin_link_checker_script' );
  */
 function ajax_check_link_status() {
     // ノンス検証
-    if ( ! wp_verify_nonce( $_POST['nonce'], 'check_link_nonce' ) ) {
+    if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], 'check_link_nonce' ) ) {
         wp_die( 'Security check failed' );
     }
     
     // 管理者権限チェック
     if ( ! current_user_can( 'manage_options' ) ) {
         wp_die( 'Insufficient permissions' );
+    }
+    
+    // URLの存在チェック
+    if ( ! isset($_POST['url']) ) {
+        wp_send_json_error( 'URL is required' );
     }
     
     $url = sanitize_url( $_POST['url'] );

@@ -91,9 +91,33 @@ function custom_ajax_pagination() {
           'post_status' => 'publish'
       );
       
-      // タクソノミークエリがある場合は追加
-      if (!empty($_POST['tax_query'])) {
-          $args['tax_query'] = $_POST['tax_query'];
+      // タクソノミークエリがある場合は追加（セキュリティ対策として適切に検証）
+      if (!empty($_POST['tax_query']) && is_array($_POST['tax_query'])) {
+          $sanitized_tax_query = array();
+          foreach ($_POST['tax_query'] as $query) {
+              if (is_array($query)) {
+                  $sanitized_query = array();
+                  if (!empty($query['taxonomy'])) {
+                      $sanitized_query['taxonomy'] = sanitize_key($query['taxonomy']);
+                  }
+                  if (!empty($query['field'])) {
+                      $sanitized_query['field'] = in_array($query['field'], array('term_id', 'slug', 'name')) ? $query['field'] : 'term_id';
+                  }
+                  if (!empty($query['terms'])) {
+                      if (is_array($query['terms'])) {
+                          $sanitized_query['terms'] = array_map('sanitize_text_field', $query['terms']);
+                      } else {
+                          $sanitized_query['terms'] = sanitize_text_field($query['terms']);
+                      }
+                  }
+                  if (!empty($sanitized_query)) {
+                      $sanitized_tax_query[] = $sanitized_query;
+                  }
+              }
+          }
+          if (!empty($sanitized_tax_query)) {
+              $args['tax_query'] = $sanitized_tax_query;
+          }
       }
       
       // カテゴリークエリがある場合は追加

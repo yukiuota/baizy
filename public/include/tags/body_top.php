@@ -5,6 +5,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 // カスタマイザーで設定されたコードを出力
 $body_top_code = get_theme_mod( 'baizy_body_top_code', '' );
 if ( !empty( $body_top_code ) ) {
-    echo $body_top_code . "\n";
+    echo wp_kses_post( $body_top_code ) . "\n";
 }
 ?>
