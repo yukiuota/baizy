@@ -77,6 +77,37 @@ function create_post_type()
       'update_count_callback' => '_update_post_term_count',
     )
   );
+
+
+
+
+  register_post_type(
+    'sample', //投稿
+    array(
+      'label' => 'サンブル', //ラベル
+      'public' => true,
+      'has_archive' => true,
+      'show_in_rest' => true,
+      'menu_position' => 5,
+      'supports' => array(
+        'title',
+        'editor',
+        'thumbnail',
+        'revisions',
+      )
+    )
+  );
+
+  register_taxonomy(
+    'sample-category',
+    'sample',
+    array(
+      'label' => 'カテゴリー', //ラベル名
+      'hierarchical' => true,
+      'public' => true,
+      'show_in_rest' => true,
+    )
+  );
 }
 
 
@@ -209,50 +240,38 @@ function custom_taxonomy_monthly_list($post_type, $taxonomy_slug, $post_id)
 
 
 // -----------------------------------------------------
-// 記事が属するタームを表示
+// 記事が属するタームを取得（配列）
 // -----------------------------------------------------
-function display_terms_of_post($taxonomy)
+function display_terms_of_post($taxonomy, $post_id = null)
 {
+  // 投稿IDが指定されていない場合は現在の投稿IDを取得
+  if ($post_id === null) {
+    $post_id = get_the_ID();
+  }
+  
   // タームを取得
-  $terms = get_the_terms(get_the_ID(), $taxonomy);
-  if ($terms && !is_wp_error($terms)) :
+  $terms = get_the_terms($post_id, $taxonomy);
+  if ($terms && !is_wp_error($terms)) {
+    $term_data = array();
     foreach ($terms as $term) {
-      echo $term->name;
+      $term_data[] = array(
+        'name' => $term->name,
+        'slug' => $term->slug,
+        'term_id' => $term->term_id,
+        'taxonomy' => $term->taxonomy,
+        'link' => get_term_link($term),
+      );
     }
-  endif;
+    return $term_data;
+  }
+  return array();
 }
-// <?php display_terms_of_post('your_taxonomy_name'); 使用例
-
-// 記事が属するタームを背景色付きで表示
-function display_terms_of_post_with_color($taxonomy, $wrapper_tag = 'span', $separator = ' ')
-{
-  // タームを取得
-  $terms = get_the_terms(get_the_ID(), $taxonomy);
-  if ($terms && !is_wp_error($terms)) :
-    $term_list = array();
-    foreach ($terms as $term) {
-      $bg_color = get_term_background_color($term->term_id);
-      $style = 'style="background-color: ' . esc_attr($bg_color) . ';"';
-      $term_list[] = '<' . $wrapper_tag . ' class="term-item term-' . esc_attr($term->slug) . '" ' . $style . '>' . esc_html($term->name) . '</' . $wrapper_tag . '>';
-    }
-    echo implode($separator, $term_list);
-  endif;
-}
-// <?php display_terms_of_post_with_color('news-cat', 'span', ' '); 使用例
-
-// 記事が属するタームの背景色をCSS変数で出力
-function display_term_color_var($taxonomy)
-{
-  // タームを取得
-  $terms = get_the_terms(get_the_ID(), $taxonomy);
-  if ($terms && !is_wp_error($terms)) :
-    // 最初のタームの背景色を使用
-    $term = reset($terms);
-    $bg_color = get_term_background_color($term->term_id);
-    echo 'style="--category-color: ' . esc_attr($bg_color) . ';"';
-  endif;
-}
-// <div <?php display_term_color_var('news-category');> 使用例
+// 使用例（Controller側）:
+// $post_id = get_the_ID();
+// $terms = display_terms_of_post('news-category', $post_id);
+// 
+// または現在の投稿の場合:
+// $terms = display_terms_of_post('news-category');
 
 
 
@@ -277,61 +296,6 @@ function display_terms_of_slug($taxonomy)
 
 
 
-
-// -----------------------------------------------------
-// タームリスト表示
-// -----------------------------------------------------
-function get_term_list($taxonomy, $use_background_color = false) {
-    global $wp_query;
-    $terms = get_terms(array(
-        'taxonomy' => $taxonomy,
-        'hide_empty' => true,
-    ));
-
-    if (!is_wp_error($terms) && !empty($terms)) {
-        $cat_list = '';
-        
-        // 現在のタームIDを取得
-        $current_term_id = 0;
-        if (is_tax($taxonomy)) {
-            $queried_object = get_queried_object();
-            if ($queried_object && isset($queried_object->term_id)) {
-                $current_term_id = $queried_object->term_id;
-            }
-        } elseif (is_singular()) {
-            $post_terms = get_the_terms(get_the_ID(), $taxonomy);
-            if (!is_wp_error($post_terms) && !empty($post_terms)) {
-                $current_term_id = $post_terms[0]->term_id;
-            }
-        }
-
-        foreach ($terms as $term) {
-            $term_link = get_term_link($term);
-            $active_class = ($term->term_id == $current_term_id) ? ' active' : '';
-            $slug_class = ' ' . esc_attr($term->slug); // タームスラッグをクラスとして追加
-            
-            // 背景色の適用は$use_background_colorがtrueの場合のみ
-            $style = '';
-            if ($use_background_color) {
-                $bg_color = get_term_background_color($term->term_id);
-                $style = 'style="background-color: ' . esc_attr($bg_color) . ';"';
-            }
-            
-            $cat_list .= '<li class="' . $active_class . $slug_class . '" ' . $style . '><a href="' . esc_url($term_link) . '">' . esc_html($term->name) . '</a></li>';
-        }
-        echo $cat_list;
-    }
-}
-// <?php get_term_list("タクソノミー名"); 通常の使用例
-// <?php get_term_list("タクソノミー名", true); 背景色付きの使用例
-
-// 背景色付きタームリスト表示（専用関数）
-function get_term_list_with_color($taxonomy) {
-    get_term_list($taxonomy, true);
-}
-// <?php get_term_list_with_color("タクソノミー名"); 背景色付き専用関数の使用例
-
-
 // -----------------------------------------------------
 // アイキャッチ設定設定
 // -----------------------------------------------------
@@ -352,7 +316,6 @@ function custom_posts_per_page($query) {
     }
 }
 add_action('pre_get_posts', 'custom_posts_per_page');
-
 
 
 
@@ -431,7 +394,6 @@ remove_filter( 'the_excerpt', 'wpautop' );
 
 
 
-
 // -----------------------------------------------------
 // オリジナルタクソノミーのデフォルトタームを設定
 // -----------------------------------------------------
@@ -468,26 +430,9 @@ wp_set_object_terms($post_id, $term->term_id, 'news_category');
 }
 add_action('wp_insert_post', 'set_default_news_category', 10, 3);
 
-// -----------------------------------------------------
-// オリジナルタクソノミーのデフォルトタームを作成（存在しない場合）
-// -----------------------------------------------------
-function create_default_news_category() {
-// デフォルトタームが存在しない場合は作成
-$default_term_slug = 'notice';
-$default_term_name = 'お知らせ';
 
-if (!term_exists($default_term_slug, 'news_category')) {
-wp_insert_term(
-$default_term_name,
-'news_category',
-array(
-'slug' => $default_term_slug,
-'description' => 'デフォルトのお知らせカテゴリー'
-)
-);
-}
-}
-add_action('init', 'create_default_news_category', 20);
+
+
 
 // -----------------------------------------------------
 // タームに背景色設定機能を追加
@@ -569,7 +514,7 @@ add_action("{$taxonomy}_add_form_fields", function() {
 
 // タクソノミーに背景色機能を追加（使用例）
 // 単一のタクソノミーの場合
-add_term_background_color_field('news-category');
+add_term_background_color_field('sample-category');
 
 // 複数のタクソノミーの場合
 // add_term_background_color_field(['news-category', 'news-tag', 'category']);
@@ -577,7 +522,7 @@ add_term_background_color_field('news-category');
 // タームの背景色を取得する関数
 function get_term_background_color($term_id) {
     $bg_color = get_term_meta($term_id, 'term_bg_color', true);
-    return !empty($bg_color) ? $bg_color : '#ffffff';
+    return !empty($bg_color) ? $bg_color : '';
 }
 
 // タームの背景色をCSSスタイルとして出力する関数
