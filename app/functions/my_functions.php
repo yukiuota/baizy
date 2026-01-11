@@ -170,8 +170,20 @@ return false;
 
 
 // -----------------------------------------------------
-// HTMLエスケープ短縮
+// エスケープ短縮
 // -----------------------------------------------------
-function e($str) {
-echo esc_html($str);
+function e($str) { // HTML
+  echo esc_html($str);
+}
+
+function e_attr($str) { // 属性
+  echo esc_attr($str);
+}
+
+function e_url($str) { // URL
+  echo esc_url($str);
+}
+
+function e_js($str) { // JS
+  echo esc_js($str);
 }
