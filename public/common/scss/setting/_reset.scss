@@ -172,6 +172,10 @@ select {
   color: var(--main-font-color);
 }
 
+:where(:root, body) {
+  overflow-x: clip;
+}
+
 @include var.sp {
   body {
     font-weight: var(--main-font-weight);
