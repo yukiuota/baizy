@@ -21,6 +21,7 @@ class ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11
         'b4e4b14d690ff26ec47cc0186ffc3511' => __DIR__ . '/../..' . '/app/functions/ajax_pagination.php',
         'c2ebda86fabc01e705e3666e56fa5c1a' => __DIR__ . '/../..' . '/app/functions/comment.php',
         '385f9a15ff1ad282452aba7a8ae9a887' => __DIR__ . '/../..' . '/app/functions/test.php',
+        '5fa7b9358ac75d9db735be0ee36a949a' => __DIR__ . '/../..' . '/app/functions/acf_json_export.php',
     );
 
     public static $classMap = array (

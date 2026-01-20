@@ -24,7 +24,8 @@
             "app/functions/ajax_search.php",
             "app/functions/ajax_pagination.php",
             "app/functions/comment.php",
-            "app/functions/test.php"
+            "app/functions/test.php",
+            "app/functions/acf_json_export.php"
         ]
     }
 }
