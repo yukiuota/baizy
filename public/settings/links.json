@@ -1,0 +1,14 @@
+{
+    "company_site": {
+        "name": "会社サイト",
+        "url": "https://example.com/"
+    },
+    "contact_form": {
+        "name": "お問い合わせ",
+        "url": "https://example.com/contact/"
+    },
+    "privacy_policy": {
+        "name": "プライバシーポリシー",
+        "url": "https://example.com/privacy/"
+    }
+}
