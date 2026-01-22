@@ -14,13 +14,14 @@ class Baizy_Theme_Setup {
     private $text_domain = 'baizy';
     /** @var string 言語ファイルパス */
     private $languages_path = BAIZY_THEME_PATH . '/app/languages';
-    
+
     /**
      * コンストラクタ
      */
     public function __construct() {
         add_action( 'after_setup_theme', array( $this, 'setup_theme' ) );
         add_filter( 'body_class', array( $this, 'add_slug_to_body_class' ) );
+        add_action( 'template_redirect', array( $this, 'disable_author_archive' ) );
     }
     
     /**
@@ -130,12 +131,23 @@ class Baizy_Theme_Setup {
      */
     public function add_slug_to_body_class( $classes ) {
         global $post;
-        
+
         if ( isset( $post ) ) {
             $classes[] = $post->post_name;
         }
-        
+
         return $classes;
+    }
+
+    /**
+     * 著者アーカイブページを無効化
+     * セキュリティ対策：ユーザー名の露出を防ぐ
+     */
+    public function disable_author_archive() {
+        if ( is_author() ) {
+            wp_safe_redirect( home_url( '/404' ), 301 );
+            exit;
+        }
     }
 }
 
@@ -164,7 +176,10 @@ class Baizy_Scripts_Styles {
     private $async_scripts = array(
         // 'analytics-script', // 例:Google Analyticsなどの非同期スクリプト
     );
-    
+
+    /** @var array jQuery関連スクリプト（属性を追加しない） */
+    private $jquery_scripts = array( 'jquery', 'jquery-core', 'jquery-migrate' );
+
     /**
      * コンストラクタ
      */
@@ -175,21 +190,32 @@ class Baizy_Scripts_Styles {
     }
     
     /**
+     * ファイルのバージョン番号を取得
+     *
+     * @param string $file_path ファイルパス
+     * @return string|null バージョン番号（ファイルが存在しない場合はnull）
+     */
+    private function get_file_version( $file_path ) {
+        return file_exists( $file_path ) ? filemtime( $file_path ) : null;
+    }
+
+    /**
      * テーマスタイルの読み込み
      */
     public function enqueue_styles() {
         // メインテーマスタイルシート
         $main_css_path = get_template_directory() . '/public/common/css/common.css';
-        if ( file_exists( $main_css_path ) ) {
-            $main_css_version = filemtime( $main_css_path );
-            wp_enqueue_style( 
-                'baizy-main', 
-                BAIZY_THEME_URI . '/public/common/css/common.css', 
-                array(), 
-                $main_css_version 
+        $version = $this->get_file_version( $main_css_path );
+
+        if ( $version ) {
+            wp_enqueue_style(
+                'baizy-main',
+                BAIZY_THEME_URI . '/public/common/css/common.css',
+                array(),
+                $version
             );
         }
-        
+
         // bodyクラス固有のスタイルシート
         $this->enqueue_body_class_styles();
     }
@@ -199,21 +225,22 @@ class Baizy_Scripts_Styles {
      */
     private function enqueue_body_class_styles() {
         $body_classes = get_body_class();
-        
+
         if ( empty( $body_classes ) ) {
             return;
         }
-        
+
         foreach ( $body_classes as $class_name ) {
-            $css_file_path = get_template_directory() . '/public/common/css/' . sanitize_file_name( $class_name ) . '.css';
-            
-            if ( file_exists( $css_file_path ) ) {
-                $css_file_version = filemtime( $css_file_path );
-                wp_enqueue_style( 
-                    'baizy-body-class-' . sanitize_html_class( $class_name ), 
-                    BAIZY_THEME_URI . '/public/common/css/' . sanitize_file_name( $class_name ) . '.css', 
-                    array( 'baizy-main' ), 
-                    $css_file_version 
+            $sanitized_filename = sanitize_file_name( $class_name );
+            $css_file_path = get_template_directory() . '/public/common/css/' . $sanitized_filename . '.css';
+            $version = $this->get_file_version( $css_file_path );
+
+            if ( $version ) {
+                wp_enqueue_style(
+                    'baizy-body-class-' . sanitize_html_class( $class_name ),
+                    BAIZY_THEME_URI . '/public/common/css/' . $sanitized_filename . '.css',
+                    array( 'baizy-main' ),
+                    $version
                 );
             }
         }
@@ -225,16 +252,17 @@ class Baizy_Scripts_Styles {
     public function enqueue_scripts() {
         // jQuery（WordPress標準）
         wp_enqueue_script( 'jquery' );
-        
+
         // メインテーマスクリプト
         $main_js_path = get_template_directory() . '/public/common/js/script.js';
-        if ( file_exists( $main_js_path ) ) {
-            $main_js_version = filemtime( $main_js_path );
-            wp_enqueue_script( 
-                'baizy-main-script', 
-                BAIZY_THEME_URI . '/public/common/js/script.js', 
-                array( 'jquery' ), 
-                $main_js_version, 
+        $version = $this->get_file_version( $main_js_path );
+
+        if ( $version ) {
+            wp_enqueue_script(
+                'baizy-main-script',
+                BAIZY_THEME_URI . '/public/common/js/script.js',
+                array( 'jquery' ),
+                $version,
                 true // フッターで読み込み
             );
         }
@@ -242,28 +270,27 @@ class Baizy_Scripts_Styles {
     
     /**
      * スクリプトタグにdefer/async属性を追加
-     * 
+     *
      * @param string $tag スクリプトタグ
      * @param string $handle スクリプトハンドル
      * @param string $src スクリプトソース
      * @return string 変更されたスクリプトタグ
      */
     public function add_script_attributes( $tag, $handle, $src ) {
-        // jQueryは通常通り読み込み、他のスクリプトはdefer/async適用
-        if ( $handle === 'jquery' || $handle === 'jquery-core' || $handle === 'jquery-migrate' ) {
+        // jQueryは通常通り読み込み
+        if ( in_array( $handle, $this->jquery_scripts, true ) ) {
             return $tag;
         }
 
-        if ( in_array( $handle, $this->defer_scripts, true ) ) {
-            $tag = str_replace( ' src', ' defer src', $tag );
+        // defer属性を追加
+        if ( in_array( $handle, $this->defer_scripts, true ) ||
+             in_array( $handle, $this->jquery_dependent_defer_scripts, true ) ) {
+            return str_replace( ' src', ' defer src', $tag );
         }
 
-        if ( in_array( $handle, $this->jquery_dependent_defer_scripts, true ) ) {
-            $tag = str_replace( ' src', ' defer src', $tag );
-        }
-
+        // async属性を追加
         if ( in_array( $handle, $this->async_scripts, true ) ) {
-            $tag = str_replace( ' src', ' async src', $tag );
+            return str_replace( ' src', ' async src', $tag );
         }
 
         return $tag;
@@ -400,18 +427,6 @@ class Baizy_Customizer {
         return wp_kses( $input, $allowed_html );
     }
 }
-
-// =============================================================================
-// ユーザー名の保護
-// =============================================================================
-
-function disable_author_archive() {
-  if (is_author()) {
-    wp_safe_redirect(home_url( '/404' ), 301);
-    exit;
-  }
-}
-add_action('template_redirect', 'disable_author_archive');
 
 // =============================================================================
 // 初期化
