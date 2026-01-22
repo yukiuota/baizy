@@ -165,10 +165,10 @@ function display_prev_next_post_links() {
   $prev_post = get_previous_post();
   $next_post = get_next_post();
   if ($prev_post) {
-      echo '<a href="' . get_permalink($prev_post->ID) . '">Prev</a>';
+      echo '<a href="' . esc_url( get_permalink($prev_post->ID) ) . '">Prev</a>';
   }
   if ($next_post) {
-      echo '<a href="' . get_permalink($next_post->ID) . '">Next</a>';
+      echo '<a href="' . esc_url( get_permalink($next_post->ID) ) . '">Next</a>';
   }
 }
 
@@ -202,6 +202,7 @@ function custom_taxonomy_monthly_list($post_type, $taxonomy_slug, $post_id)
         )
       );
       $prev_month = null; // 初期値として null をセット
+      $prev_year = null; // 初期値として null をセット
       $the_query = new WP_Query($args);
       if ($the_query->have_posts()) {
         echo '<ul>';
@@ -501,6 +502,11 @@ add_action("{$taxonomy}_add_form_fields", function() {
 
         // ターム作成時に保存
         add_action("created_{$taxonomy}", function($term_id) {
+            // nonceチェック
+            if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'add-tag')) {
+                return;
+            }
+
             if (isset($_POST['term_bg_color']) && !empty($_POST['term_bg_color'])) {
                 update_term_meta($term_id, 'term_bg_color', sanitize_hex_color($_POST['term_bg_color']));
             }
@@ -508,6 +514,11 @@ add_action("{$taxonomy}_add_form_fields", function() {
 
         // ターム編集時に保存
         add_action("edited_{$taxonomy}", function($term_id) {
+            // nonceチェック
+            if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'update-tag_' . $term_id)) {
+                return;
+            }
+
             if (isset($_POST['term_bg_color']) && !empty($_POST['term_bg_color'])) {
                 update_term_meta($term_id, 'term_bg_color', sanitize_hex_color($_POST['term_bg_color']));
             }
@@ -531,5 +542,13 @@ function get_term_background_color($term_id) {
 // タームの背景色をCSSスタイルとして出力する関数
 function get_term_background_style($term_id) {
     $bg_color = get_term_background_color($term_id);
-    return 'style="background-color: ' . esc_attr($bg_color) . ';"';
+    if (empty($bg_color)) {
+        return '';
+    }
+    // CSS値として安全に出力
+    $safe_color = sanitize_hex_color($bg_color);
+    if ($safe_color) {
+        return 'style="background-color: ' . esc_attr($safe_color) . ';"';
+    }
+    return '';
 }
