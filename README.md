@@ -82,6 +82,23 @@ pnpm perf:localhost
 
 ブロックエディタ（管理画面）で `app/blocks/build/custom-blocks.js` を読み込みます。
 
+### カスタムフィールドのJSON同期
+
+ACF（Advanced Custom Fields）とSCF（Smart Custom Fields）のフィールドグループ設定を `/data/field-groups/` ディレクトリでJSON形式で管理します。
+
+#### ACF JSON同期
+
+- ACFの標準JSON同期機能を使用
+- フィールドグループの保存・読み込み先を `/data/field-groups/` に設定
+- 管理画面での設定変更が自動的にJSONファイルとして保存されます
+
+#### SCF JSONエクスポート
+
+- SCFのカスタムフィールド設定を `scf-{設定ID}.json` 形式でエクスポート
+- `smart-cf` 投稿タイプの保存時に自動的にエクスポートされます
+
+実装: [app/functions/acf_json_export.php](app/functions/acf_json_export.php)
+
 ### 画像表示ヘルパー
 
 ```html
