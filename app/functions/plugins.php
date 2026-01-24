@@ -35,6 +35,11 @@ function enqueue_custom_assets_for_specific_page() {
         
         // JavaScriptファイルの読み込み
         wp_enqueue_script('custom-page-script', BAIZY_THEME_URI . '/app/plugins/p_cf7/form.js', array('jquery'), '1.0.0', true);
+
+        // JavaScriptにサンクスページのURLを渡す
+        wp_localize_script('custom-page-script', 'cf7CustomSettings', array(
+            'thanksPageUrl' => esc_url( home_url( '/thanks/' ) ),
+        ));
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_assets_for_specific_page');

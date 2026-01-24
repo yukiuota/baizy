@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 確認画面が表示されている場合のみサンクスページに遷移
       const confirmSection = document.querySelector(".c-form-confirm");
       if (confirmSection && confirmSection.style.display !== "none") {
-        location.href = "http://localhost:10023/thanks/";
+        location.href = cf7CustomSettings.thanksPageUrl;
       }
     },
     false,
