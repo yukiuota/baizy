@@ -106,16 +106,6 @@ class Baizy_Theme_Setup {
     }
     
     /**
-     * ナビゲーションメニューの登録
-     */
-    private function register_nav_menus() {
-        register_nav_menus( array(
-            'primary' => __( 'Primary Menu', 'baizy' ),
-            'footer'  => __( 'Footer Menu', 'baizy' ),
-        ) );
-    }
-    
-    /**
      * 自動段落整形を無効化
      */
     private function disable_auto_paragraph() {
@@ -251,8 +241,6 @@ class Baizy_Scripts_Styles {
      */
     public function enqueue_scripts() {
         // jQuery（WordPress標準）
-        wp_enqueue_script( 'jquery' );
-
         // メインテーマスクリプト
         $main_js_path = get_template_directory() . '/public/common/js/script.js';
         $version = $this->get_file_version( $main_js_path );
