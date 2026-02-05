@@ -209,6 +209,9 @@ class Baizy_Scripts_Styles {
     
     /**
      * bodyクラス固有のスタイルの読み込み
+     *
+     * ディレクトリを1回スキャンしてファイル名マップを作成し、
+     * body classとの照合はメモリ上で行う。
      */
     private function enqueue_body_class_styles() {
         $body_classes = get_body_class();
@@ -217,17 +220,29 @@ class Baizy_Scripts_Styles {
             return;
         }
 
+        // CSSディレクトリを1回だけスキャンしてファイル名マップを作成
+        $css_dir   = get_template_directory() . '/public/common/css/';
+        $css_files = glob( $css_dir . '*.css' );
+
+        if ( empty( $css_files ) ) {
+            return;
+        }
+
+        $css_map = array();
+        foreach ( $css_files as $file ) {
+            $css_map[ basename( $file, '.css' ) ] = $file;
+        }
+
+        // body classとマップを照合（file I/Oなし）
         foreach ( $body_classes as $class_name ) {
             $sanitized_filename = sanitize_file_name( $class_name );
-            $css_file_path = get_template_directory() . '/public/common/css/' . $sanitized_filename . '.css';
-            $version = $this->get_file_version( $css_file_path );
 
-            if ( $version ) {
+            if ( isset( $css_map[ $sanitized_filename ] ) ) {
                 wp_enqueue_style(
                     'baizy-body-class-' . sanitize_html_class( $class_name ),
                     BAIZY_THEME_URI . '/public/common/css/' . $sanitized_filename . '.css',
                     array( 'baizy-main' ),
-                    $version
+                    filemtime( $css_map[ $sanitized_filename ] )
                 );
             }
         }
