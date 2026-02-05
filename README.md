@@ -49,8 +49,6 @@ pnpm start
 - 出力先: `app/blocks/build/custom-blocks.js`
 - WordPress / React は外部依存として扱います（`wp.*` グローバルを参照）
 
-※ `webpack.config.js` はリポジトリに残っていますが、現状の pnpm スクリプトは Vite ビルド（`vite.config.ts`）を使用します。
-
 ## 主な pnpm スクリプト
 
 ```bash
