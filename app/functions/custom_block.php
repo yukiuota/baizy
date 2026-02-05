@@ -11,102 +11,26 @@ add_action( 'after_setup_theme', function() {
 } );
 
 /**
- * patternsディレクトリから全てのパターンファイルを読み込んで登録
+ * カスタムパターンカテゴリーを登録
+ *
+ * パターンファイル自体は WordPress 6.0+ の組み込み機能により
+ * patterns/ ディレクトリから自動登録されるため、手動登録は不要。
+ * ここではカテゴリーのラベルのみ登録する。
  */
-function baizy_register_block_patterns() {
-    $patterns_dir = get_template_directory() . '/patterns/';
-    
-    // patternsディレクトリが存在するかチェック
-    if ( ! is_dir( $patterns_dir ) ) {
-        return;
-    }
-    
-    // patternsディレクトリ内のPHPファイルを取得
-    $pattern_files = glob( $patterns_dir . '*.php' );
-    
-    if ( empty( $pattern_files ) ) {
-        return;
-    }
-    
-    foreach ( $pattern_files as $pattern_file ) {
-        // ファイル内容を取得
-        $pattern_content = file_get_contents( $pattern_file );
-        
-        // ヘッダーコメントからメタデータを抽出
-        $headers = array(
-            'title'       => 'Title',
-            'slug'        => 'Slug',
-            'description' => 'Description',
-            'categories'  => 'Categories',
-            'keywords'    => 'Keywords',
-            'block_types' => 'Block Types',
-        );
-        
-        $metadata = array();
-        foreach ( $headers as $key => $header ) {
-            if ( preg_match( '/^\s*\*\s*' . $header . ':\s*(.+)$/m', $pattern_content, $matches ) ) {
-                $value = trim( $matches[1] );
-                if ( in_array( $key, array( 'categories', 'keywords', 'block_types' ) ) ) {
-                    // カンマ区切りの値を配列に変換
-                    $metadata[ $key ] = array_map( 'trim', explode( ',', $value ) );
-                } else {
-                    $metadata[ $key ] = $value;
-                }
-            }
-        }
-        
-        // 必須フィールドをチェック
-        if ( empty( $metadata['title'] ) || empty( $metadata['slug'] ) ) {
-            continue;
-        }
-        
-        // パターンのHTMLコンテンツを抽出（PHPコードを実行してHTMLを取得）
-        ob_start();
-        include $pattern_file;
-        $pattern_html = ob_get_clean();
-        
-        // パターンを登録
-        $pattern_args = array(
-            'title'       => $metadata['title'],
-            'content'     => $pattern_html,
-            'description' => isset( $metadata['description'] ) ? $metadata['description'] : '',
-            'categories'  => isset( $metadata['categories'] ) ? $metadata['categories'] : array(),
-            'keywords'    => isset( $metadata['keywords'] ) ? $metadata['keywords'] : array(),
-            'blockTypes'  => isset( $metadata['block_types'] ) ? $metadata['block_types'] : array(),
-        );
-        
-        register_block_pattern( $metadata['slug'], $pattern_args );
-        
-        // カテゴリーも登録（存在しない場合）
-        if ( ! empty( $metadata['categories'] ) ) {
-            foreach ( $metadata['categories'] as $category ) {
-                if ( ! WP_Block_Pattern_Categories_Registry::get_instance()->is_registered( $category ) ) {
-                    // カテゴリーラベルをカスタマイズ
-                    $category_labels = array(
-                        'baizy-hero' => 'ヒーローセクション',
-                        'baizy-content' => 'コンテンツ',
-                        'baizy-footer' => 'フッター',
-                        'baizy-header' => 'ヘッダー',
-                    );
-                    
-                    $label = isset( $category_labels[ $category ] ) 
-                        ? $category_labels[ $category ] 
-                        : ucwords( str_replace( '-', ' ', $category ) );
-                    
-                    register_block_pattern_category( $category, array( 'label' => $label ) );
-                    
-                    // デバッグ用ログ（開発時のみ）
-                    if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                        error_log( 'Registered block pattern category: ' . $category );
-                    }
-                }
-            }
-        }
+function baizy_register_block_pattern_categories() {
+    $categories = array(
+        'sample'        => 'サンプル',
+        'baizy-hero'    => 'ヒーローセクション',
+        'baizy-content' => 'コンテンツ',
+        'baizy-footer'  => 'フッター',
+        'baizy-header'  => 'ヘッダー',
+    );
+
+    foreach ( $categories as $slug => $label ) {
+        register_block_pattern_category( $slug, array( 'label' => $label ) );
     }
 }
-
-// WordPressの初期化後にパターンを登録
-add_action( 'init', 'baizy_register_block_patterns' );
+add_action( 'init', 'baizy_register_block_pattern_categories' );
 
 // ----------------------------------------------------- //
 // テーマ専用のカスタムブロック

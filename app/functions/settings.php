@@ -37,9 +37,6 @@ class Baizy_Theme_Setup {
         // テーマサポート設定
         $this->add_theme_supports();
         
-        // ナビゲーションメニューの登録
-        $this->register_nav_menus();
-        
         // 自動段落整形を無効化
         $this->disable_auto_paragraph();
     }
