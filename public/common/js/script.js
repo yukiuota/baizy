@@ -85,41 +85,29 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const observerOptions = {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.1, // 要素の表示領域の閾値
-  };
+  if (!("IntersectionObserver" in window)) {
+    return;
+  }
 
-  const handleFadeIn = (entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const target = entry.target;
-        const delay = target.getAttribute("data-delay") || 0; // デフォルトの遅延時間を設定 (ミリ秒)
-        setTimeout(() => {
-          target.classList.add("view-on");
-          observer.unobserve(target);
-        }, delay);
-      }
-    });
-  };
-
-  const observeElementsWithClass = (className) => {
-    const elements = document.querySelectorAll("." + className);
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver(handleFadeIn, observerOptions);
-      elements.forEach((element) => {
-        observer.observe(element);
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target;
+          const delay = target.getAttribute("data-delay") || 0;
+          setTimeout(() => {
+            target.classList.add("view-on");
+            obs.unobserve(target);
+          }, delay);
+        }
       });
-    }
-  };
+    },
+    { root: null, rootMargin: "0px", threshold: 0.1 }
+  );
 
-  // 各クラスに対してIntersectionObserverを実行
-  observeElementsWithClass("view01");
-  observeElementsWithClass("view02");
-  observeElementsWithClass("view03");
-  observeElementsWithClass("view04");
-  observeElementsWithClass("view05");
+  document
+    .querySelectorAll(".view01, .view02, .view03, .view04, .view05")
+    .forEach((el) => observer.observe(el));
 });
 
 // スライドアニメーション
