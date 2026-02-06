@@ -1,0 +1,41 @@
+{
+  "liveSassCompile.settings.formats": [ //Sassの出力内容の設定
+    {
+      //"format": "compressed", //nested、compact、compressedのどれかを選ぶ
+      "format": "expanded", //nested、compact、compressedのどれかを選ぶ
+      "extensionName": ".css", //style.cssとして出力
+      "savePath": "/public/common/css" //EJSテンプレ時
+    }
+  ],
+  "liveSassCompile.settings.excludeList": [
+
+
+    //対象外とするフォルダを指定
+    "/**/node_modules/**",
+    // "**/node_modules/**",
+    // ".vscode/**",
+    // ".history/**",
+    "/wp-admin/",
+    "/wp-content/",
+    "/wp-includes/"
+  ],
+  "liveSassCompile.settings.autoprefix": [
+    //ベンダープレフィックスの指定
+    ">= 5%",
+    "last 2 versions"
+  ],
+  "html.format.wrapLineLength": 0,
+  "liveSassCompile.settings.generateMap": false,
+  "editor.minimap.enabled": false,
+  "editor.formatOnSave": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "explorer.confirmDelete": false,
+  "editor.defaultFormatter": "HookyQR.beautify",
+  "beautify.config": "",
+  "editor.fontSize": 20,
+  "workbench.colorTheme": "Dracula Theme",
+  "window.zoomLevel": -1,
+  "editor.stickyScroll.enabled": true,
+  "git.useEditorAsCommitInput": false,
+  "workspaceExplorer.workspaceStorageDirectory": "/Users/uotayuki/Documents/workspace"
+}
