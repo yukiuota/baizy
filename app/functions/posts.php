@@ -401,7 +401,7 @@ remove_filter( 'the_excerpt', 'wpautop' );
 // -----------------------------------------------------
 // オリジナルタクソノミーのデフォルトタームを設定
 // -----------------------------------------------------
-function set_default_news_category($post_id, $post, $update) {
+function set_default_news-category($post_id, $post, $update) {
 // news投稿タイプのみ対象
 if ($post->post_type !== 'news') {
 return;
@@ -418,7 +418,7 @@ return;
 }
 
 // 現在のタームを取得
-$current_terms = wp_get_object_terms($post_id, 'news_category');
+$current_terms = wp_get_object_terms($post_id, 'news-category');
 
 // タームが設定されていない、またはエラーの場合のみデフォルトを設定
 if (empty($current_terms) || is_wp_error($current_terms)) {
@@ -426,13 +426,13 @@ if (empty($current_terms) || is_wp_error($current_terms)) {
 $default_term = 'notice'; // ここにデフォルトにしたいタームのスラッグを入力
 
 // タームが存在するかチェック
-$term = get_term_by('slug', $default_term, 'news_category');
+$term = get_term_by('slug', $default_term, 'news-category');
 if ($term) {
-wp_set_object_terms($post_id, $term->term_id, 'news_category');
+wp_set_object_terms($post_id, $term->term_id, 'news-category');
 }
 }
 }
-add_action('wp_insert_post', 'set_default_news_category', 10, 3);
+add_action('wp_insert_post', 'set_default_news-category', 10, 3);
 
 
 

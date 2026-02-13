@@ -49,8 +49,7 @@ function custom_ajax_pagination() {
       // Ajaxオブジェクトの設定
       wp_localize_script('ajax-pagination', 'ajax_object', array(
           'ajax_url' => admin_url('admin-ajax.php'),
-          'nonce' => wp_create_nonce('ajax_pagination_nonce'),
-          'security' => wp_create_nonce('ajax_pagination_nonce')
+          'nonce' => wp_create_nonce('ajax_pagination_nonce')
       ));
   }
   add_action('wp_enqueue_scripts', 'enqueue_ajax_pagination_scripts', 20);
