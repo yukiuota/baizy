@@ -46,11 +46,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       xhr.onload = function () {
         if (xhr.status >= 200 && xhr.status < 400) {
-          if (xhr.responseText.includes("wp_die")) {
+          try {
+            var response = JSON.parse(xhr.responseText);
+            document.getElementById("ajax-posts").innerHTML = response.output;
+          } catch (e) {
             document.getElementById("ajax-posts").innerHTML = "<p>エラーが発生しました。</p>";
-            return;
           }
-          document.getElementById("ajax-posts").innerHTML = xhr.responseText;
         } else {
           document.getElementById("ajax-posts").innerHTML = "<p>エラーが発生しました。</p>";
         }

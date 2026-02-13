@@ -82,6 +82,7 @@ function filter_posts() {
         $output = '<p>該当する記事がありません。</p>';
     }
 
-    echo $output;
-    wp_die();
+    wp_send_json(array(
+        'output' => $output,
+    ));
 }
