@@ -29,7 +29,8 @@ add_action( 'wp_enqueue_scripts', 'my_enqueue_cf7_assets' );
 
 // Contact Form7のカスタマイズするCSS・JSの読み込み
 function enqueue_custom_assets_for_specific_page() {
-    if (is_page('contact')) { // 固定ページのスラッグ指定
+    global $post;
+    if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
         // CSSファイルの読み込み
         wp_enqueue_style('custom-page-style', BAIZY_THEME_URI . '/app/plugins/p_cf7/style.css', array(), '1.0.0');
         
