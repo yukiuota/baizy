@@ -62,10 +62,7 @@ function register_custom_block_category( $categories, $post ) {
     );
 }
 
-// WordPress 5.8以降用のフック
 add_filter( 'block_categories_all', 'register_custom_block_category', 10, 2 );
-// 古いバージョン互換性のためのフック
-add_filter( 'block_categories', 'register_custom_block_category', 10, 2 );
 
 
 
