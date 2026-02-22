@@ -401,7 +401,7 @@ remove_filter( 'the_excerpt', 'wpautop' );
 // -----------------------------------------------------
 // オリジナルタクソノミーのデフォルトタームを設定
 // -----------------------------------------------------
-function set_default_news-category($post_id, $post, $update) {
+function set_default_news_category($post_id, $post, $update) {
 // news投稿タイプのみ対象
 if ($post->post_type !== 'news') {
 return;
@@ -432,7 +432,7 @@ wp_set_object_terms($post_id, $term->term_id, 'news-category');
 }
 }
 }
-add_action('wp_insert_post', 'set_default_news-category', 10, 3);
+add_action('wp_insert_post', 'set_default_news_category', 10, 3);
 
 
 
