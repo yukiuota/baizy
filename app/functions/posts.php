@@ -189,21 +189,9 @@ function custom_taxonomy_monthly_list($post_type, $taxonomy_slug, $post_id)
       $term_slug = $term->slug;
 
       $home_url = esc_url( home_url() );
-      $args = array(
-        'post_type' => $post_type,
-        'post_status' => 'publish',
-        'posts_per_page' => -1,
-        'tax_query' => array(
-          array(
-            'taxonomy' => $taxonomy_slug,
-            'field' => 'slug',
-            'terms' => $term_slug,
-          )
-        )
-      );
-      $prev_month = null; // 初期値として null をセット
-      $prev_year = null; // 初期値として null をセット
-      $the_query = new WP_Query($args);
+      $prev_month = null;
+      $prev_year = null;
+      $the_query = \Baizy\Models\PostModel::getByTaxTerm( $post_type, $taxonomy_slug, $term_slug );
       if ($the_query->have_posts()) {
         echo '<ul>';
         while ($the_query->have_posts()) {
@@ -245,30 +233,7 @@ function custom_taxonomy_monthly_list($post_type, $taxonomy_slug, $post_id)
 // -----------------------------------------------------
 function display_terms_of_post($taxonomy, $post_id = null)
 {
-  // 投稿IDが指定されていない場合は現在の投稿IDを取得
-  if ($post_id === null) {
-    $post_id = get_the_ID();
-  }
-  
-  // タームを取得
-  $terms = get_the_terms($post_id, $taxonomy);
-  if ($terms && !is_wp_error($terms)) {
-    $term_data = array();
-    foreach ($terms as $term) {
-      $term_data[] = array(
-        'name' => $term->name,
-        'name_escaped' => esc_html($term->name),
-        'slug' => $term->slug,
-        'slug_escaped' => esc_attr($term->slug),
-        'term_id' => $term->term_id,
-        'taxonomy' => $term->taxonomy,
-        'link' => get_term_link($term),
-        'link_escaped' => esc_url(get_term_link($term)),
-      );
-    }
-    return $term_data;
-  }
-  return array();
+  return \Baizy\Models\TaxonomyModel::getTermsOfPost( $taxonomy, $post_id ?? 0 );
 }
 // 使用例（Controller側）:
 // $post_id = get_the_ID();
@@ -535,20 +500,10 @@ add_term_background_color_field('sample-category');
 
 // タームの背景色を取得する関数
 function get_term_background_color($term_id) {
-    $bg_color = get_term_meta($term_id, 'term_bg_color', true);
-    return !empty($bg_color) ? $bg_color : '';
+    return \Baizy\Models\TaxonomyModel::getTermBackgroundColor( (int) $term_id );
 }
 
 // タームの背景色をCSSスタイルとして出力する関数
 function get_term_background_style($term_id) {
-    $bg_color = get_term_background_color($term_id);
-    if (empty($bg_color)) {
-        return '';
-    }
-    // CSS値として安全に出力
-    $safe_color = sanitize_hex_color($bg_color);
-    if ($safe_color) {
-        return 'style="background-color: ' . esc_attr($safe_color) . ';"';
-    }
-    return '';
+    return \Baizy\Models\TaxonomyModel::getTermBackgroundStyle( (int) $term_id );
 }

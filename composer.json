@@ -10,6 +10,9 @@
         "php": ">=7.4"
     },
     "autoload": {
+        "psr-4": {
+            "Baizy\\": "app/"
+        },
         "files": [
             "app/functions/settings.php",
             "app/functions/my_functions.php",
@@ -20,9 +23,6 @@
             "app/functions/widget.php",
             "app/functions/custom_block.php",
             "app/functions/plugins.php",
-            "app/functions/ajax_more.php",
-            "app/functions/ajax_search.php",
-            "app/functions/ajax_pagination.php",
             "app/functions/comment.php",
             "app/functions/test.php",
             "app/functions/acf_json_export.php"

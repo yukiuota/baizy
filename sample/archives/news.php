@@ -26,7 +26,7 @@
     </div>
 
     <div id="js-pagination" class="pagination">
-        <?php custom_ajax_pagination(); ?>
+        <?php custom_pagination(); ?>
     </div>
 </div>
 

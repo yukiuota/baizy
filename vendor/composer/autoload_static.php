@@ -16,12 +16,23 @@ class ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11
         'de9caf0f03adcf96f9519e50c0c4e9b2' => __DIR__ . '/../..' . '/app/functions/widget.php',
         'f733c843461eaf9623927a85e1f2d55b' => __DIR__ . '/../..' . '/app/functions/custom_block.php',
         '0d8f821e89536918effaab9f83c078f9' => __DIR__ . '/../..' . '/app/functions/plugins.php',
-        '1b8021605906c2b31af48a7257a0f036' => __DIR__ . '/../..' . '/app/functions/ajax_more.php',
-        '2d5ce76f24ca58363d0563bfabcba69f' => __DIR__ . '/../..' . '/app/functions/ajax_search.php',
-        'b4e4b14d690ff26ec47cc0186ffc3511' => __DIR__ . '/../..' . '/app/functions/ajax_pagination.php',
         'c2ebda86fabc01e705e3666e56fa5c1a' => __DIR__ . '/../..' . '/app/functions/comment.php',
         '385f9a15ff1ad282452aba7a8ae9a887' => __DIR__ . '/../..' . '/app/functions/test.php',
         '5fa7b9358ac75d9db735be0ee36a949a' => __DIR__ . '/../..' . '/app/functions/acf_json_export.php',
+    );
+
+    public static $prefixLengthsPsr4 = array (
+        'B' =>
+        array (
+            'Baizy\\' => 6,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Baizy\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/app',
+        ),
     );
 
     public static $classMap = array (
@@ -31,6 +42,8 @@ class ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11::$classMap;
 
         }, null, ClassLoader::class);

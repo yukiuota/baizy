@@ -154,9 +154,6 @@ class Baizy_Scripts_Styles {
 
     /** @var array jQuery依存のdefer適用スクリプト */
     private $jquery_dependent_defer_scripts = array(
-        'custom-ajax-search-script', // Ajax検索（jQuery依存）
-        'custom-ajax-script',        // Ajax more（jQuery依存）
-        'ajax-pagination',           // Ajaxページネーション（jQuery依存）
     );
 
     /** @var array async適用スクリプト */
