@@ -110,21 +110,21 @@ class Custom_HTML_Widget extends WP_Widget {
         ?>
 <div class="custom-html-widget-form">
     <p>
-        <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'タイトル:', 'textdomain' ); ?></label>
+        <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'タイトル:', 'textdomain' ); ?></label>
         <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
     </p>
     <p>
-        <label for="<?php echo $this->get_field_id( 'html_content' ); ?>"><?php _e( 'HTMLコンテンツ:', 'textdomain' ); ?></label>
+        <label for="<?php echo $this->get_field_id( 'html_content' ); ?>"><?php esc_html_e( 'HTMLコンテンツ:', 'textdomain' ); ?></label>
         <textarea class="widefat html-content-textarea" id="<?php echo $this->get_field_id( 'html_content' ); ?>" name="<?php echo $this->get_field_name( 'html_content' ); ?>" rows="10" style="font-family: monospace;"><?php echo esc_textarea( $html_content ); ?></textarea>
     </p>
 
     <!-- プレビューエリア -->
     <div class="html-preview-container">
-        <p><strong><?php _e( 'プレビュー:', 'textdomain' ); ?></strong></p>
+        <p><strong><?php esc_html_e( 'プレビュー:', 'textdomain' ); ?></strong></p>
         <div class="html-preview" style="border: 1px solid #ddd; padding: 10px; background: #f9f9f9; min-height: 50px;">
             <?php echo do_shortcode( $html_content ); ?>
         </div>
-        <p><small><?php _e( 'HTMLを編集すると、リアルタイムでプレビューが更新されます。', 'textdomain' ); ?></small></p>
+        <p><small><?php esc_html_e( 'HTMLを編集すると、リアルタイムでプレビューが更新されます。', 'textdomain' ); ?></small></p>
     </div>
 </div>
 

@@ -40,8 +40,8 @@ function create_breadcrumb()
   // パンくずのどのページでも変わらない部分を出力
   echo
   '<div class="p-breadcrumb">' .
-    '<ul class="p-breadcrumb__lists" itemscope itemtype="http://schema.org/BreadcrumbList">' .
-    '<li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem" class="p-breadcrumb__item">' .
+    '<ul class="p-breadcrumb__lists" itemscope itemtype="https://schema.org/BreadcrumbList">' .
+    '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
     '<a itemprop="item" href="' . esc_url(home_url()) . '">' .
     '<span itemprop="name">TOP</span>' .
     '</a>' .
@@ -51,7 +51,7 @@ function create_breadcrumb()
   // 固定ページ（page-○○.php）
   if (is_page()) {
     echo
-    '<li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem" class="p-breadcrumb__item">' .
+    '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
       '<a itemprop="item" href="' . esc_url(home_url($_SERVER["REQUEST_URI"])) . '">' .
       '<span itemprop="name">' . esc_html(single_post_title('', false)) . '</span>' .
       '</a>' .
@@ -62,7 +62,7 @@ function create_breadcrumb()
   // カスタム投稿 TOPページ（archive-○○.php）
   if (is_post_type_archive()) {
     echo
-    '<li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem" class="p-breadcrumb__item">' .
+    '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
       '<a itemprop="item" href="' . esc_url(home_url($wp_obj->name)) . '">' .
       '<span itemprop="name">' . esc_html($wp_obj->label) . '</span>' .
       '</a>' .
@@ -75,13 +75,13 @@ function create_breadcrumb()
     $post_slug = get_post_type();
     $post_label = get_post_type_object($post_slug)->label;
     echo
-    '<li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem" class="p-breadcrumb__item">' .
+    '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
       '<a itemprop="item" href="' . esc_url(home_url($post_slug)) . '">' .
       '<span itemprop="name">' . esc_html($post_label) . '</span>' .
       '</a>' .
       '<meta itemprop="position" content="2">' .
       '</li>' .
-      '<li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem" class="p-breadcrumb__item">' .
+      '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
       '<a itemprop="item" href="' . esc_url(home_url($post_slug . '/' . $wp_obj->slug)) . '">' .
       '<span itemprop="name">「' . esc_html($wp_obj->name) . '」カテゴリー一覧</span>' .
       '</a>' .
@@ -99,7 +99,7 @@ function create_breadcrumb()
     // 通常の投稿（post）の場合はアーカイブページを表示しない
     if ($post_slug !== 'post') {
       echo
-      '<li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem" class="p-breadcrumb__item">' .
+      '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
         '<a itemprop="item" href="' . esc_url(home_url($post_slug)) . '">' .
         '<span itemprop="name">' . esc_html($post_label) . '</span>' .
         '</a>' .
@@ -110,7 +110,7 @@ function create_breadcrumb()
     // 投稿詳細ページ
     $position = ($post_slug === 'post') ? '2' : '3';
     echo
-    '<li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem" class="p-breadcrumb__item">' .
+    '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
       '<a itemprop="item" href="' . esc_url(get_permalink($post_id)) . '">' .
       '<span itemprop="name">' . esc_html($post_title) . '</span>' .
       '</a>' .
@@ -121,7 +121,7 @@ function create_breadcrumb()
   // 404（404.php）
   if (is_404()) {
     echo
-    '<li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem" class="p-breadcrumb__item">' .
+    '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
       '<a itemprop="item" href="' . esc_url(home_url($_SERVER["REQUEST_URI"])) . '">' .
       '<span itemprop="name">404 Not Found</span>' .
       '</a>' .
