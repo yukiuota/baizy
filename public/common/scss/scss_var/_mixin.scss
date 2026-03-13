@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+@use "sass:math";
 @use "scss-variables"as var;
 
 // ブレイクポイント指定
@@ -62,5 +63,5 @@
 
 // pxをremに変換
 @function rm($px) {
-  @return ($px / 16) * 1rem;
+  @return math.div($px, 16) * 1rem;
 }

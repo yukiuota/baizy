@@ -6,6 +6,8 @@
   "scripts": {
     "build": "vite build",
     "start": "vite build --watch",
+    "sass:build": "sass public/common/scss/common.scss:public/common/css/common.css public/common/scss/editor-style.scss:public/common/css/editor-style.css public/common/scss/pages/home.scss:public/common/css/home.css --style=compressed --no-source-map",
+    "sass:watch": "sass --watch public/common/scss/common.scss:public/common/css/common.css public/common/scss/editor-style.scss:public/common/css/editor-style.css public/common/scss/pages/home.scss:public/common/css/home.css --style=compressed --no-source-map",
     "test": "echo \"Error: no test specified\" && exit 1",
     "mcp:start": "chrome-devtools-mcp",
     "mcp:headless": "chrome-devtools-mcp --headless=true --isolated=true",
