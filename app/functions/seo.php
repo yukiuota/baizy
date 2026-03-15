@@ -9,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 // body上部タグ埋め込み
 // -----------------------------------------------------
 function include_body_top() {
-  include get_template_directory() . '/public/include/tags/body_top.php';
+  include get_template_directory() . '/resources/include/tags/body_top.php';
 }
 add_action('wp_body_open', 'include_body_top');
 

@@ -25,8 +25,8 @@
 ### 🔍 読み込まれたリソース
 1. **CSS ファイル**
    - `/wp-includes/css/dist/block-library/style.min.css` (8ms)
-   - `/wp-content/themes/baizy/public/common/css/common.css` (8.8ms)
-   - `/wp-content/themes/baizy/public/common/css/home.css` (9.3ms)
+   - `/wp-content/themes/baizy/resources/common/css/common.css` (8.8ms)
+   - `/wp-content/themes/baizy/resources/common/css/home.css` (9.3ms)
 
 2. **JavaScript ファイル**
    - `/wp-includes/js/jquery/jquery-migrate.min.js` (10.3ms)

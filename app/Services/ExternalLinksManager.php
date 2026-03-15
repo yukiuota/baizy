@@ -13,7 +13,7 @@ class ExternalLinksManager {
         }
 
         $template_dir = get_template_directory();
-        $json_path    = $template_dir . '/public/settings/links.json';
+        $json_path    = $template_dir . '/resources/settings/links.json';
         $real_path    = realpath( $json_path );
         $real_dir     = realpath( $template_dir );
 

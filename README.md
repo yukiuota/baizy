@@ -4,7 +4,7 @@
 
 - カスタムブロック（Gutenberg）は React + TypeScript で実装し、Vite でビルドします
 - ビルド成果物はブロックエディタ用に読み込まれます（`app/blocks/build/custom-blocks.js`）
-- 共通スタイルは SCSS で管理し、Sass CLI でコンパイルします（`public/common/scss/` → `public/common/css/`）
+- 共通スタイルは SCSS で管理し、Sass CLI でコンパイルします（`resources/common/scss/` → `resources/common/css/`）
 
 ## 必要環境
 
@@ -52,7 +52,7 @@ pnpm start
 
 ### 共通 SCSS
 
-`public/common/scss/` 以下の SCSS を `public/common/css/` へコンパイルします。
+`resources/common/scss/` 以下の SCSS を `resources/common/css/` へコンパイルします。
 
 1) 一回だけコンパイル
 
@@ -70,9 +70,9 @@ pnpm sass:watch
 
 | 入力 | 出力 |
 |------|------|
-| `public/common/scss/common.scss` | `public/common/css/common.css` |
-| `public/common/scss/editor-style.scss` | `public/common/css/editor-style.css` |
-| `public/common/scss/pages/home.scss` | `public/common/css/home.css` |
+| `resources/common/scss/common.scss` | `resources/common/css/common.css` |
+| `resources/common/scss/editor-style.scss` | `resources/common/css/editor-style.css` |
+| `resources/common/scss/pages/home.scss` | `resources/common/css/home.css` |
 
 ブロックビルドと SCSS 監視を同時に動かす場合は、ターミナルを2つ開いて `pnpm start` と `pnpm sass:watch` を並行実行してください。
 
@@ -101,9 +101,9 @@ pnpm perf:localhost
 - `app/blocks/src/` ブロック関連ソース（React/TS）
 - `app/blocks/build/` ブロックのビルド出力先（`custom-blocks.js`）
 - `app/functions/` functions.php 相当の機能群（Composer オートロード）
-- `public/common/scss/` 共通スタイルの SCSS ソース
-- `public/common/css/` コンパイル後の CSS（Sass CLI 出力）
-- `public/` 共通 CSS/JS・ページテンプレートなど
+- `resources/common/scss/` 共通スタイルの SCSS ソース
+- `resources/common/css/` コンパイル後の CSS（Sass CLI 出力）
+- `resources/` 共通 CSS/JS・ページテンプレートなど
 - `include/` 分割テンプレート
 - `patterns/` ブロックパターン（PHP）
 - `style.css` テーマ情報（ヘッダー必須）

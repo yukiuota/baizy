@@ -5,8 +5,8 @@ node_modules
 
 # Build outputs
 app/blocks/build/
-public/common/css/*.css.map
-public/common/js/*.map
+resources/common/css/*.css.map
+resources/common/js/*.map
 
 # Local WordPress (if this theme is in a full WP tree, avoid committing env-specific assets)
 wp-content/uploads/

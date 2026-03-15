@@ -3,7 +3,7 @@
         'name' => 'baizy/theme',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '6ed4a03d067f939223e462c02c27bfc18b787ded',
+        'reference' => 'e55bb44ada8e678250379357b0a1c64de576c145',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'baizy/theme' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '6ed4a03d067f939223e462c02c27bfc18b787ded',
+            'reference' => 'e55bb44ada8e678250379357b0a1c64de576c145',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -164,7 +164,7 @@ add_action('pre_get_posts', 'filter_posts_by_custom_taxonomy');
 // 管理画面にCSSを反映
 // -----------------------------------------------------
 add_action('admin_init', function () {
-  add_editor_style('public/common/css/editor-style.css');
+  add_editor_style('resources/common/css/editor-style.css');
 });
 
 

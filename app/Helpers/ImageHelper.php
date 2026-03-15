@@ -6,27 +6,27 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class ImageHelper {
 
     /**
-     * テーマの /public/img/ 以下の画像 URL を返す
+     * テーマの /resources/img/ 以下の画像 URL を返す
      *
-     * @param string $path  /public/img/ からの相対パス
+     * @param string $path  /resources/img/ からの相対パス
      * @return string       エスケープ済みURL。ファイル不在の場合は空文字
      */
     public static function url( string $path ): string {
-        $img_dir = get_template_directory() . '/public/img/';
+        $img_dir = get_template_directory() . '/resources/img/';
         if ( ! is_dir( $img_dir ) || ! file_exists( $img_dir . $path ) ) {
             return '';
         }
-        return esc_url( BAIZY_THEME_URI . '/public/img/' . $path );
+        return esc_url( BAIZY_THEME_URI . '/resources/img/' . $path );
     }
 
     /**
      * 画像の width / height / loading 属性文字列を出力する
      *
-     * @param string $path  /public/img/ からの相対パス
+     * @param string $path  /resources/img/ からの相対パス
      * @param bool   $lazy  loading="lazy" を付与するか（デフォルト: true）
      */
     public static function attributes( string $path, bool $lazy = true ): void {
-        $img_dir  = get_template_directory() . '/public/img/';
+        $img_dir  = get_template_directory() . '/resources/img/';
         $full     = $img_dir . $path;
 
         if ( ! is_dir( $img_dir ) || ! file_exists( $full ) || ! is_file( $full ) ) {

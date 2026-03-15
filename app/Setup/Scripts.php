@@ -31,10 +31,10 @@ class Scripts {
     }
 
     public function enqueue_styles(): void {
-        $path    = get_template_directory() . '/public/common/css/common.css';
+        $path    = get_template_directory() . '/resources/common/css/common.css';
         $version = $this->get_file_version( $path );
         if ( $version ) {
-            wp_enqueue_style( 'baizy-main', BAIZY_THEME_URI . '/public/common/css/common.css', [], $version );
+            wp_enqueue_style( 'baizy-main', BAIZY_THEME_URI . '/resources/common/css/common.css', [], $version );
         }
         $this->enqueue_body_class_styles();
     }
@@ -44,7 +44,7 @@ class Scripts {
         if ( empty( $body_classes ) ) {
             return;
         }
-        $css_dir   = get_template_directory() . '/public/common/css/';
+        $css_dir   = get_template_directory() . '/resources/common/css/';
         $css_files = glob( $css_dir . '*.css' );
         if ( empty( $css_files ) ) {
             return;
@@ -58,7 +58,7 @@ class Scripts {
             if ( isset( $css_map[ $filename ] ) ) {
                 wp_enqueue_style(
                     'baizy-body-class-' . sanitize_html_class( $class_name ),
-                    BAIZY_THEME_URI . '/public/common/css/' . $filename . '.css',
+                    BAIZY_THEME_URI . '/resources/common/css/' . $filename . '.css',
                     [ 'baizy-main' ],
                     filemtime( $css_map[ $filename ] )
                 );
@@ -67,10 +67,10 @@ class Scripts {
     }
 
     public function enqueue_scripts(): void {
-        $path    = get_template_directory() . '/public/common/js/script.js';
+        $path    = get_template_directory() . '/resources/common/js/script.js';
         $version = $this->get_file_version( $path );
         if ( $version ) {
-            wp_enqueue_script( 'baizy-main-script', BAIZY_THEME_URI . '/public/common/js/script.js', [ 'jquery' ], $version, true );
+            wp_enqueue_script( 'baizy-main-script', BAIZY_THEME_URI . '/resources/common/js/script.js', [ 'jquery' ], $version, true );
         }
     }
 

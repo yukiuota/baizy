@@ -14,7 +14,7 @@
 
 <?php 
 // 検索フォーム機能をインクルード
-baizy_template_part('public/include/search/search');
+baizy_template_part('resources/include/search/search');
 
 // 引数でカスタマイズすることも可能
 custom_search_form([

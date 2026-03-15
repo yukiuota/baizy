@@ -2,23 +2,23 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 echo '<div id="container">';
-baizy_template_part( 'public/include/header/header_base' ); // header読み込み
+baizy_template_part( 'resources/include/header/header_base' ); // header読み込み
 
 if ( is_front_page() && is_page() ) :
     // 固定ページがトップページに設定されている場合
-    baizy_template_part( 'public/pages/page-base' );
+    baizy_template_part( 'resources/pages/page-base' );
 elseif ( is_home() || is_front_page() ) :
     // ホームページ・フロントページ
-    baizy_template_part( 'public/pages/top' );
+    baizy_template_part( 'resources/pages/top' );
 elseif ( is_single() ) :
     // 単一投稿ページ
     $page = get_post( get_the_ID() );
-    $template = locate_template( 'public/single/' . $page->post_type . '.php' );
+    $template = locate_template( 'resources/single/' . $page->post_type . '.php' );
     
     if ( $template ) {
-        baizy_template_part( 'public/single/' . $page->post_type );
+        baizy_template_part( 'resources/single/' . $page->post_type );
     } else {
-        baizy_template_part( 'public/single/single-base' );
+        baizy_template_part( 'resources/single/single-base' );
     }
 elseif ( is_page() ) :
     // 固定ページ
@@ -30,25 +30,25 @@ elseif ( is_page() ) :
     if ( !empty( $current_path ) ) {
         // スラッシュをハイフンに変換してテンプレートを検索
         $template_name = str_replace( '/', '-', $current_path );
-        $template_part = 'public/pages/' . $template_name;
+        $template_part = 'resources/pages/' . $template_name;
         
         if ( locate_template( $template_part . '.php' ) ) {
             baizy_template_part( $template_part );
         } else {
             // フォールバック：通常のスラッグベースの検索
             $slug = basename( get_permalink( $post->ID ) );
-            $template_part = 'public/pages/' . $slug;
+            $template_part = 'resources/pages/' . $slug;
             if ( ! locate_template( $template_part . '.php' ) ) {
-                $template_part = 'public/pages/page-base';
+                $template_part = 'resources/pages/page-base';
             }
             baizy_template_part( $template_part );
         }
     } else {
         // パスが空の場合の通常の処理
         $slug = basename( get_permalink( $post->ID ) );
-        $template_part = 'public/pages/' . $slug;
+        $template_part = 'resources/pages/' . $slug;
         if ( ! locate_template( $template_part . '.php' ) ) {
-            $template_part = 'public/pages/page-base';
+            $template_part = 'resources/pages/page-base';
         }
         baizy_template_part( $template_part );
     }
@@ -79,24 +79,24 @@ elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() ||
     }
 
     // テンプレートが存在するか確認
-    if (locate_template( 'public/archives/' . $post_type . '.php' )) {
-        baizy_template_part( 'public/archives/' . $post_type);
+    if (locate_template( 'resources/archives/' . $post_type . '.php' )) {
+        baizy_template_part( 'resources/archives/' . $post_type);
     } else {
         // デフォルトテンプレート
-        if (locate_template( 'public/archives/archive-base.php' )) {
-            baizy_template_part( 'public/archives/archive-base' );
+        if (locate_template( 'resources/archives/archive-base.php' )) {
+            baizy_template_part( 'resources/archives/archive-base' );
         } else {
             echo '<div class="container"><p>テンプレートが見つかりませんでした。</p></div>';
         }
     }
 elseif ( is_404() ) :
     // 404ページ
-    baizy_template_part( 'public/pages/not-page' );
+    baizy_template_part( 'resources/pages/not-page' );
 else :
     // その他の場合のフォールバック
-    baizy_template_part( 'public/archives/archive-base' );
+    baizy_template_part( 'resources/archives/archive-base' );
 endif;
 
-baizy_template_part( 'public/include/footer/footer_base' ); // footer読み込み
+baizy_template_part( 'resources/include/footer/footer_base' ); // footer読み込み
 echo '</div>'; // /#container
 ?>
