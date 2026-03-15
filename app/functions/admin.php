@@ -206,14 +206,14 @@ add_action('admin_enqueue_scripts', function($hook) {
   
   wp_enqueue_style(
     'color-palette-admin-css',
-    get_template_directory_uri() . '/app/admin/css/color-palette-admin.css',
+    get_template_directory_uri() . '/app/admin/css/color_palette_admin.css',
     array(),
     '1.0.0'
   );
   
   wp_enqueue_script(
     'color-palette-admin-js',
-    get_template_directory_uri() . '/app/admin/js/color-palette-admin.js',
+    get_template_directory_uri() . '/app/admin/js/color_palette_admin.js',
     array('jquery'),
     '1.0.0',
     true
@@ -253,7 +253,7 @@ function render_custom_color_palette_page() {
   $saved_colors = get_option('custom_color_palette', array());
   
   // ビューファイルを読み込み
-  include get_template_directory() . '/app/admin/views/color-palette-settings.php';
+  include get_template_directory() . '/app/admin/views/color_palette_settings.php';
 }
 
 /**

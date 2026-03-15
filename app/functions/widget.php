@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// クラス実装は app/Widgets/CustomHtmlWidget.php を参照
+// クラス実装は app/widgets/custom_html_widget.php を参照
 
 // ウィジェットエリアの登録
 function register_theme_widget_areas(): void {

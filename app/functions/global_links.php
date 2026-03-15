@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// クラス実装は app/Services/ExternalLinksManager.php を参照
+// クラス実装は app/services/external_links_manager.php を参照
 
 function external_url_shortcode( $atts ): string {
     $atts = shortcode_atts( [ 'key' => '' ], $atts );
