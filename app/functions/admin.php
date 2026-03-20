@@ -92,7 +92,7 @@ function add_custom_taxonomies_term_filter()
     }
     
     // 現在選択されているタームを取得
-    $selected = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
+    $selected = isset($_GET[$taxonomy]) ? sanitize_text_field( wp_unslash( $_GET[$taxonomy] ) ) : '';
     
     // セレクトボックスを出力
     echo '<select name="' . esc_attr($taxonomy) . '" id="' . esc_attr($taxonomy) . '" style="margin-right: 10px;">';
@@ -127,7 +127,7 @@ function filter_posts_by_custom_taxonomy($query) {
   // 投稿タイプとタクソノミーの対応表（共通設定を使用）
   $post_type_taxonomies = get_post_type_taxonomies_config();
   
-  $current_post_type = isset($_GET['post_type']) ? $_GET['post_type'] : 'post';
+  $current_post_type = isset($_GET['post_type']) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
   
   // 現在の投稿タイプに対応するタクソノミーがあるかチェック
   if (!isset($post_type_taxonomies[$current_post_type])) {

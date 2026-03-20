@@ -3,7 +3,7 @@
 <header class="header">
     <div class="header__inner">
         <?php $tag = (is_home() || is_front_page()) ? 'h1' : 'p'; ?>
-        <<?php echo $tag; ?> class="header__logo"><a href="<?php echo esc_url( home_url() ); ?>"></a></<?php echo $tag; ?>>
+        <<?php echo esc_attr( $tag ); ?> class="header__logo"><a href="<?php echo esc_url( home_url() ); ?>"></a></<?php echo esc_attr( $tag ); ?>>
 
         <!-- header-btn -->
         <div class="header-btn">

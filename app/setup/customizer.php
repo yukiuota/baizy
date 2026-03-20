@@ -49,13 +49,15 @@ class Customizer {
         if ( empty( $input ) ) {
             return '';
         }
-        $allowed        = wp_kses_allowed_html( 'post' );
-        $allowed['script'] = [ 'type' => true, 'src' => true, 'async' => true, 'defer' => true, 'crossorigin' => true, 'integrity' => true ];
-        $allowed['style']  = [ 'type' => true, 'media' => true ];
-        $allowed['meta']   = [ 'name' => true, 'content' => true, 'property' => true, 'charset' => true ];
-        $allowed['link']   = [ 'rel' => true, 'href' => true, 'type' => true, 'media' => true, 'sizes' => true, 'crossorigin' => true ];
-        $allowed['noscript'] = [];
-        $allowed['iframe']   = [ 'src' => true, 'height' => true, 'width' => true, 'frameborder' => true, 'style' => true, 'allowfullscreen' => true ];
+        // head/body へのコード埋め込み用に必要最小限のタグのみ許可（管理者専用機能）
+        $allowed = [
+            'script'   => [ 'type' => true, 'src' => true, 'async' => true, 'defer' => true, 'crossorigin' => true, 'integrity' => true, 'id' => true ],
+            'style'    => [ 'type' => true, 'media' => true, 'id' => true ],
+            'meta'     => [ 'name' => true, 'content' => true, 'property' => true, 'charset' => true, 'http-equiv' => true ],
+            'link'     => [ 'rel' => true, 'href' => true, 'type' => true, 'media' => true, 'sizes' => true, 'crossorigin' => true, 'integrity' => true ],
+            'noscript' => [],
+            'iframe'   => [ 'src' => true, 'height' => true, 'width' => true, 'frameborder' => true, 'style' => true, 'allowfullscreen' => true ],
+        ];
         return wp_kses( $input, $allowed );
     }
 }
