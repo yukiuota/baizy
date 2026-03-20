@@ -6,6 +6,7 @@ $news = ( new Baizy\Controllers\TopController() )->getNews();
 
 <!-- トップページのHTMLをここに記述 -->
 
+<?php if ( $news ) : ?>
 <ul class="news-list">
 <?php foreach ( $news as $post ) :
     setup_postdata( $post );
@@ -13,3 +14,6 @@ $news = ( new Baizy\Controllers\TopController() )->getNews();
 endforeach;
 wp_reset_postdata(); ?>
 </ul>
+<?php else : ?>
+<p>ニュースはありません。</p>
+<?php endif; ?>

@@ -11,13 +11,16 @@ class ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11
         'f94564f0595199e320075a3fe9c4194f' => __DIR__ . '/../..' . '/app/functions/my_functions.php',
         'c3f1dcd180e273cba3ce5770fa87c3bc' => __DIR__ . '/../..' . '/app/functions/seo.php',
         '0270cafbe3843b4e42635a0977ee58c7' => __DIR__ . '/../..' . '/app/functions/admin.php',
-        'd2e53e5d45ea933f279a91fdb59f02e1' => __DIR__ . '/../..' . '/app/functions/posts.php',
+        '499496bfe3aa2459db05920d43d20dd8' => __DIR__ . '/../..' . '/app/functions/post_types.php',
+        '4c0a31f50ff2781aab9eb5ae7f4514bd' => __DIR__ . '/../..' . '/app/functions/pagination.php',
+        '6fe15d9943d102cb41dde74e505559a2' => __DIR__ . '/../..' . '/app/functions/taxonomy_display.php',
+        'bf82ba1ebbd5f45b01c60021202c232c' => __DIR__ . '/../..' . '/app/functions/excerpt.php',
+        '3613b70f29e02d1d72895278cc485bdf' => __DIR__ . '/../..' . '/app/functions/term_color.php',
         'dac31246f5fc020aa31a0be05a33b490' => __DIR__ . '/../..' . '/app/functions/global_links.php',
         'de9caf0f03adcf96f9519e50c0c4e9b2' => __DIR__ . '/../..' . '/app/functions/widget.php',
         'f733c843461eaf9623927a85e1f2d55b' => __DIR__ . '/../..' . '/app/functions/custom_block.php',
         '0d8f821e89536918effaab9f83c078f9' => __DIR__ . '/../..' . '/app/functions/plugins.php',
         'c2ebda86fabc01e705e3666e56fa5c1a' => __DIR__ . '/../..' . '/app/functions/comment.php',
-        '385f9a15ff1ad282452aba7a8ae9a887' => __DIR__ . '/../..' . '/app/functions/test.php',
         '5fa7b9358ac75d9db735be0ee36a949a' => __DIR__ . '/../..' . '/app/functions/acf_json_export.php',
     );
 

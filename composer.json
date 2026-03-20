@@ -26,13 +26,16 @@
             "app/functions/my_functions.php",
             "app/functions/seo.php",
             "app/functions/admin.php",
-            "app/functions/posts.php",
+            "app/functions/post_types.php",
+            "app/functions/pagination.php",
+            "app/functions/taxonomy_display.php",
+            "app/functions/excerpt.php",
+            "app/functions/term_color.php",
             "app/functions/global_links.php",
             "app/functions/widget.php",
             "app/functions/custom_block.php",
             "app/functions/plugins.php",
             "app/functions/comment.php",
-            "app/functions/test.php",
             "app/functions/acf_json_export.php"
         ]
     }
