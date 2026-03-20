@@ -13,6 +13,14 @@
         "psr-4": {
             "Baizy\\": "app/"
         },
+        "classmap": [
+            "app/setup/",
+            "app/models/",
+            "app/controllers/",
+            "app/helpers/",
+            "app/services/",
+            "app/widgets/"
+        ],
         "files": [
             "app/functions/settings.php",
             "app/functions/my_functions.php",

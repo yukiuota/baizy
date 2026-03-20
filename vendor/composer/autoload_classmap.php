@@ -6,5 +6,16 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Baizy\\Controllers\\TopController' => $baseDir . '/app/controllers/top_controller.php',
+    'Baizy\\Helpers\\EscapeHelper' => $baseDir . '/app/helpers/escape_helper.php',
+    'Baizy\\Helpers\\ImageHelper' => $baseDir . '/app/helpers/image_helper.php',
+    'Baizy\\Helpers\\TemplateHelper' => $baseDir . '/app/helpers/template_helper.php',
+    'Baizy\\Models\\PostModel' => $baseDir . '/app/models/post_model.php',
+    'Baizy\\Models\\TaxonomyModel' => $baseDir . '/app/models/taxonomy_model.php',
+    'Baizy\\Services\\ExternalLinksManager' => $baseDir . '/app/services/external_links_manager.php',
+    'Baizy\\Setup\\Customizer' => $baseDir . '/app/setup/customizer.php',
+    'Baizy\\Setup\\Scripts' => $baseDir . '/app/setup/scripts.php',
+    'Baizy\\Setup\\ThemeSetup' => $baseDir . '/app/setup/theme_setup.php',
+    'Baizy\\Widgets\\CustomHtmlWidget' => $baseDir . '/app/widgets/custom_html_widget.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );

@@ -22,20 +22,31 @@ class ComposerStaticInitecbc3cc93606430e370ad22be4aa0b11
     );
 
     public static $prefixLengthsPsr4 = array (
-        'B' =>
+        'B' => 
         array (
             'Baizy\\' => 6,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Baizy\\' =>
+        'Baizy\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
     );
 
     public static $classMap = array (
+        'Baizy\\Controllers\\TopController' => __DIR__ . '/../..' . '/app/controllers/top_controller.php',
+        'Baizy\\Helpers\\EscapeHelper' => __DIR__ . '/../..' . '/app/helpers/escape_helper.php',
+        'Baizy\\Helpers\\ImageHelper' => __DIR__ . '/../..' . '/app/helpers/image_helper.php',
+        'Baizy\\Helpers\\TemplateHelper' => __DIR__ . '/../..' . '/app/helpers/template_helper.php',
+        'Baizy\\Models\\PostModel' => __DIR__ . '/../..' . '/app/models/post_model.php',
+        'Baizy\\Models\\TaxonomyModel' => __DIR__ . '/../..' . '/app/models/taxonomy_model.php',
+        'Baizy\\Services\\ExternalLinksManager' => __DIR__ . '/../..' . '/app/services/external_links_manager.php',
+        'Baizy\\Setup\\Customizer' => __DIR__ . '/../..' . '/app/setup/customizer.php',
+        'Baizy\\Setup\\Scripts' => __DIR__ . '/../..' . '/app/setup/scripts.php',
+        'Baizy\\Setup\\ThemeSetup' => __DIR__ . '/../..' . '/app/setup/theme_setup.php',
+        'Baizy\\Widgets\\CustomHtmlWidget' => __DIR__ . '/../..' . '/app/widgets/custom_html_widget.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
