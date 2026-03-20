@@ -24,9 +24,9 @@ function custom_pagination() {
         echo '<div id="js-pagination" class="pagination">';
         foreach ( $pagination_links as $link ) {
             if ( strpos( $link, 'current' ) !== false ) {
-                echo '<span aria-current="page" class="current">' . $link . '</span>';
+                echo '<span aria-current="page" class="current">' . wp_kses_post( $link ) . '</span>';
             } else {
-                echo str_replace( '<a', '<a class="cp_pagenum"', $link );
+                echo wp_kses_post( str_replace( '<a', '<a class="cp_pagenum"', $link ) );
             }
         }
         echo '</div>';

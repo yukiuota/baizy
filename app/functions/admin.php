@@ -265,10 +265,10 @@ function render_color_row($index, $color) {
   ?>
 <div class="color-row">
     <label>カラー名:</label>
-    <input type="text" name="color_name[<?php echo $index; ?>]" value="<?php echo $name; ?>" placeholder="例: プライマリー" required>
+    <input type="text" name="color_name[<?php echo absint( $index ); ?>]" value="<?php echo $name; ?>" placeholder="例: プライマリー" required>
     <label>カラーコード:</label>
-    <input type="color" name="color_code[<?php echo $index; ?>]" value="<?php echo $color_code; ?>" required>
-    <input type="text" name="color_code[<?php echo $index; ?>]" value="<?php echo $color_code; ?>" class="color-code-text" pattern="^#[0-9A-Fa-f]{6}$" required>
+    <input type="color" name="color_code[<?php echo absint( $index ); ?>]" value="<?php echo $color_code; ?>" required>
+    <input type="text" name="color_code[<?php echo absint( $index ); ?>]" value="<?php echo $color_code; ?>" class="color-code-text" pattern="^#[0-9A-Fa-f]{6}$" required>
     <span class="dashicons dashicons-trash remove-color-btn"></span>
 </div>
 <?php

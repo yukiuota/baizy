@@ -52,7 +52,7 @@ function create_breadcrumb()
   if (is_page()) {
     echo
     '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
-      '<a itemprop="item" href="' . esc_url( home_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) ) . '">' .
+      '<a itemprop="item" href="' . esc_url( get_permalink() ) . '">' .
       '<span itemprop="name">' . esc_html(single_post_title('', false)) . '</span>' .
       '</a>' .
       '<meta itemprop="position" content="2">' .
@@ -122,9 +122,7 @@ function create_breadcrumb()
   if (is_404()) {
     echo
     '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
-      '<a itemprop="item" href="' . esc_url( home_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) ) . '">' .
       '<span itemprop="name">404 Not Found</span>' .
-      '</a>' .
       '<meta itemprop="position" content="2">' .
       '</li>';
   }
