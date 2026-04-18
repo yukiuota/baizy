@@ -1,5 +1,7 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	return;
+}
 
 // ----------------------------------------------------- //
 // プラグインカスタマイズ
@@ -15,40 +17,44 @@ add_filter( 'wpcf7_load_css', '__return_false' );
 
 // ショートコードがあるページだけ自動判定して Contact Form7 の JS と CSS を読み込む
 function my_enqueue_cf7_assets() {
-    global $post;
-    if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
-        if ( function_exists( 'wpcf7_enqueue_scripts' ) ) {
-            wpcf7_enqueue_scripts();
-        }
-        if ( function_exists( 'wpcf7_enqueue_styles' ) ) {
-            wpcf7_enqueue_styles();
-        }
-    }
+	global $post;
+	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
+		if ( function_exists( 'wpcf7_enqueue_scripts' ) ) {
+			wpcf7_enqueue_scripts();
+		}
+		if ( function_exists( 'wpcf7_enqueue_styles' ) ) {
+			wpcf7_enqueue_styles();
+		}
+	}
 }
 add_action( 'wp_enqueue_scripts', 'my_enqueue_cf7_assets' );
 
 // Contact Form7のカスタマイズするCSS・JSの読み込み
 function enqueue_custom_assets_for_specific_page() {
-    global $post;
-    if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
-        // CSSファイルの読み込み
-        wp_enqueue_style('custom-page-style', BAIZY_THEME_URI . '/app/plugins/p_cf7/style.css', array(), '1.0.0');
-        
-        // JavaScriptファイルの読み込み
-        wp_enqueue_script('custom-page-script', BAIZY_THEME_URI . '/app/plugins/p_cf7/form.js', array('jquery'), '1.0.0', true);
+	global $post;
+	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
+		// CSSファイルの読み込み
+		wp_enqueue_style( 'custom-page-style', BAIZY_THEME_URI . '/app/plugins/p_cf7/style.css', array(), '1.0.0' );
 
-        // JavaScriptにサンクスページのURLを渡す
-        wp_localize_script('custom-page-script', 'cf7CustomSettings', array(
-            'thanksPageUrl' => esc_url( home_url( '/thanks/' ) ),
-        ));
-    }
+		// JavaScriptファイルの読み込み
+		wp_enqueue_script( 'custom-page-script', BAIZY_THEME_URI . '/app/plugins/p_cf7/form.js', array( 'jquery' ), '1.0.0', true );
+
+		// JavaScriptにサンクスページのURLを渡す
+		wp_localize_script(
+			'custom-page-script',
+			'cf7CustomSettings',
+			array(
+				'thanksPageUrl' => esc_url( home_url( '/thanks/' ) ),
+			)
+		);
+	}
 }
-add_action('wp_enqueue_scripts', 'enqueue_custom_assets_for_specific_page');
+add_action( 'wp_enqueue_scripts', 'enqueue_custom_assets_for_specific_page' );
 
 
 
 // Contact Form 7で自動挿入されるPタグ、brタグを削除
-add_filter('wpcf7_autop_or_not', 'wpcf7_autop_return_false');
+add_filter( 'wpcf7_autop_or_not', 'wpcf7_autop_return_false' );
 function wpcf7_autop_return_false() {
-  return false;
+	return false;
 }

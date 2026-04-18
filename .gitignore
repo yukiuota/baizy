@@ -15,3 +15,6 @@ wp-content/cache/
 # Env files
 .env
 *.local
+
+# Composer
+vendor/
