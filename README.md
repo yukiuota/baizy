@@ -25,6 +25,20 @@ composer install
 composer dump-autoload
 ```
 
+### コード品質チェック（phpcs）
+
+WordPress コーディング規約に沿ったスタティック解析を実行できます。
+
+```bash
+# チェック実行
+composer phpcs
+
+# 自動修正
+composer phpcbf
+```
+
+ルールセットは [`phpcs.xml`](phpcs.xml) で管理しています。
+
 ### カスタムブロック（Gutenberg）
 
 1) 依存関係をインストール
@@ -140,6 +154,7 @@ baizy/
 │   └── single/         投稿詳細テンプレート
 ├── sample/             サンプルテンプレート（参照用）
 ├── vendor/             Composer オートロード
+├── phpcs.xml           PHP CodeSniffer 設定（WordPress 規約）
 ├── functions.php       エントリポイント（require のみ）
 ├── style.css           テーマ情報（ヘッダー必須）
 └── theme.json          テーマ設定
