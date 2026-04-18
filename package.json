@@ -38,19 +38,19 @@
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@types/wordpress__block-editor": "^15.0.5",
+    "@types/wordpress__block-editor": "^15.0.6",
     "@types/wordpress__blocks": "^15.10.2",
     "@vitejs/plugin-react": "^6.0.1",
-    "@wordpress/block-editor": "^15.15.0",
-    "@wordpress/blocks": "^15.15.0",
-    "@wordpress/components": "^32.4.0",
-    "@wordpress/element": "^6.42.0",
-    "@wordpress/scripts": "^31.7.0",
+    "@wordpress/block-editor": "^15.17.0",
+    "@wordpress/blocks": "^15.17.0",
+    "@wordpress/components": "^32.6.0",
+    "@wordpress/element": "^6.44.0",
+    "@wordpress/scripts": "^31.8.0",
     "chrome-devtools-mcp": "^0.20.2",
-    "puppeteer": "^24.40.0",
-    "ts-loader": "^9.5.4",
+    "puppeteer": "^24.41.0",
+    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "vite": "^8.0.1",
+    "vite": "^8.0.8",
     "vite-plugin-css-injected-by-js": "^4.0.1"
   }
 }
