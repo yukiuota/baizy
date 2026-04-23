@@ -39,6 +39,16 @@ composer phpcbf
 
 ルールセットは [`phpcs.xml`](phpcs.xml) で管理しています。
 
+#### Claude Code スキル `/wp-phpcs`
+
+Claude Code を使っている場合、`/wp-phpcs` スキルで phpcs チェック・自動修正・手動修正・WordPress 観点でのレビューまでを一括で実行できます。
+
+```
+/wp-phpcs
+```
+
+スキルの定義は [`.claude/skills/wp-phpcs-skill/SKILL.md`](.claude/skills/wp-phpcs-skill/SKILL.md) を参照してください。
+
 ### カスタムブロック（Gutenberg）
 
 1) 依存関係をインストール
