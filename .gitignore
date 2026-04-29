@@ -18,3 +18,5 @@ wp-content/cache/
 
 # Composer
 vendor/
+performance-report.json
+performance-trace.json
