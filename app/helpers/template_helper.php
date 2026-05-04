@@ -30,7 +30,7 @@ class TemplateHelper {
 			$content = apply_filters( "baizy_part__{$slug}", $content );
 		}
 
-		echo wp_kses_post( $content );
+		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		if ( has_filter( "baizy_part_after__{$slug}" ) ) {
 			do_action( "baizy_part_after__{$slug}" );

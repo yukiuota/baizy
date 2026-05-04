@@ -69,51 +69,7 @@ class Customizer {
 	}
 
 	public function sanitize_code( string $input ): string {
-		if ( empty( $input ) ) {
-			return '';
-		}
-		// head/body へのコード埋め込み用に必要最小限のタグのみ許可（管理者専用機能）
-		$allowed = array(
-			'script'   => array(
-				'type'        => true,
-				'src'         => true,
-				'async'       => true,
-				'defer'       => true,
-				'crossorigin' => true,
-				'integrity'   => true,
-				'id'          => true,
-			),
-			'style'    => array(
-				'type'  => true,
-				'media' => true,
-				'id'    => true,
-			),
-			'meta'     => array(
-				'name'       => true,
-				'content'    => true,
-				'property'   => true,
-				'charset'    => true,
-				'http-equiv' => true,
-			),
-			'link'     => array(
-				'rel'         => true,
-				'href'        => true,
-				'type'        => true,
-				'media'       => true,
-				'sizes'       => true,
-				'crossorigin' => true,
-				'integrity'   => true,
-			),
-			'noscript' => array(),
-			'iframe'   => array(
-				'src'             => true,
-				'height'          => true,
-				'width'           => true,
-				'frameborder'     => true,
-				'style'           => true,
-				'allowfullscreen' => true,
-			),
-		);
-		return wp_kses( $input, $allowed );
+		// 管理者専用設定のため wp_unslash のみ適用。wp_kses は script タグ内のコンテンツを破壊する。
+		return wp_unslash( $input );
 	}
 }
