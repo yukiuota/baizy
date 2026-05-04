@@ -343,6 +343,66 @@ pnpm mcp:dev
 - ブラウザ内容が MCP クライアントに公開されるため、機密情報や個人情報を含むページでは使用しないでください
 - サンドボックス環境等で制限が出る場合は `--isolated=true` などのオプションを使用してください
 
+## FTP デプロイ時のアップ不要ファイル
+
+本番サーバーへ FTP でアップロードする際、以下のファイル・ディレクトリは**アップ不要**です。
+
+### 開発ツール・ローカル専用
+
+| パス | 理由 |
+|---|---|
+| `node_modules/` | npm/pnpm の依存パッケージ。本番不要 |
+| `vendor/` | Composer の依存パッケージ（phpcs 等、開発ツールのみ）。本番不要 |
+| `.git/` | Git リポジトリ本体。セキュリティリスク |
+| `.claude/` | Claude Code 設定。開発専用 |
+| `mcp/` | MCP 設定。開発専用 |
+| `phpcs/` | PHPCS ツール本体 |
+
+### 設定・メタファイル
+
+| パス | 理由 |
+|---|---|
+| `.gitignore` | Git 管理用 |
+| `.npmrc` | npm 設定 |
+| `.prettierrc` | コードフォーマッター設定 |
+| `tsconfig.json` | TypeScript コンパイラ設定 |
+| `vite.config.ts` | Vite ビルド設定（ビルド済みなら不要） |
+| `package.json` / `pnpm-lock.yaml` | npm 管理ファイル |
+| `composer.json` / `composer.lock` | Composer 管理ファイル |
+| `phpcs.xml` | PHPCS ルール設定 |
+
+### ドキュメント・レポート
+
+| パス | 理由 |
+|---|---|
+| `README.md` | 開発ドキュメント |
+| `PERFORMANCE_REPORT.md` | パフォーマンスレポート |
+| `performance-report.json` | 自動生成レポート |
+| `performance-trace.json` | 自動生成トレース |
+| `performance-check.js` | パフォーマンス計測スクリプト |
+| `LICENSE` | ライセンスファイル（任意） |
+
+### OS・一時ファイル
+
+| パス | 理由 |
+|---|---|
+| `.DS_Store` | macOS メタデータ |
+| `*.log` | ログファイル |
+
+### ソースファイル（ビルド済みなら不要）
+
+| パス | 理由 |
+|---|---|
+| `resources/common/scss/` | SCSS ソース（`resources/common/css/` にコンパイル済み） |
+| `app/blocks/src/` | TypeScript ソース（`app/blocks/build/` にビルド済み） |
+| `sample/` | サンプルテンプレート（参照用） |
+
+### 必ずアップするもの
+
+`style.css`, `theme.json`, `functions.php`, `index.php`, `header.php`, `footer.php`, `comments.php`, `screenshot.png`, `app/`（ビルド済みアセット含む）, `patterns/`, `data/`, `resources/`（CSS のみ）
+
+---
+
 ## ライセンス
 
 GPL-2.0-or-later
