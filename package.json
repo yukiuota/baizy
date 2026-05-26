@@ -35,25 +35,21 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": ["@parcel/watcher", "core-js", "core-js-pure", "puppeteer", "unrs-resolver"]
-  },
   "devDependencies": {
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@types/wordpress__block-editor": "^15.0.6",
-    "@types/wordpress__blocks": "^15.17.0",
-    "@vitejs/plugin-react": "^6.0.1",
-    "@wordpress/block-editor": "^15.18.0",
-    "@wordpress/blocks": "^15.18.0",
-    "@wordpress/components": "^33.0.0",
-    "@wordpress/element": "^6.45.0",
-    "@wordpress/scripts": "^32.1.0",
-    "chrome-devtools-mcp": "^0.24.0",
-    "puppeteer": "^24.42.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "@wordpress/block-editor": "^15.19.0",
+    "@wordpress/blocks": "^15.19.0",
+    "@wordpress/components": "^33.1.0",
+    "@wordpress/element": "^6.46.0",
+    "@wordpress/scripts": "^32.2.0",
+    "chrome-devtools-mcp": "~1.0.1",
+    "puppeteer": "^24.43.1",
     "ts-loader": "^9.5.7",
     "typescript": "^6.0.3",
-    "vite": "^8.0.10",
+    "vite": "^8.0.14",
     "vite-plugin-css-injected-by-js": "^5.0.1"
   }
 }
