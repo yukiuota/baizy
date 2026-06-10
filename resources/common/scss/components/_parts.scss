@@ -1,11 +1,9 @@
-@charset "UTF-8";
-@use "../scss_var"as var;
+@use "../scss_var" as var;
 
 /*　共通
 ----------------------------------------------- */
+// 横はみ出し防止は setting/_reset.scss の :where(:root, body) で指定済み
 body {
-  overflow-x: clip;
-
   &.js-on {
     overflow: hidden;
   }

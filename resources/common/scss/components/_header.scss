@@ -1,5 +1,4 @@
-@charset "UTF-8";
-@use "../scss_var"as var;
+@use "../scss_var" as var;
 
 /*　header
 ----------------------------------------------- */
@@ -21,7 +20,6 @@
 
 .menu {
   display: block;
-  transition: all 0.4s;
   width: 100%;
   height: 100%;
   background: none;
@@ -31,7 +29,7 @@
 
   span {
     display: inline-block;
-    transition: all 0.4s;
+    transition: top 0.4s, transform 0.4s, opacity 0.4s, background-color 0.4s;
     position: absolute;
     left: 0;
     width: 100%;

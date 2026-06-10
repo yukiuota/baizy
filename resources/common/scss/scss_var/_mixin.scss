@@ -1,23 +1,23 @@
-@charset "UTF-8";
-
 @use "sass:math";
-@use "scss-variables"as var;
+@use "scss-variables" as var;
 
 // ブレイクポイント指定
+// レンジ構文で sp / pc が隙間なく相補になるよう $sp を基準にする
 @mixin pc {
-  @media screen and (min-width: (var.$pc)) {
+  @media screen and (width > #{var.$sp}) {
     @content;
   }
 }
 
+// SP領域（$sp 以下）も含む点に注意
 @mixin tab {
-  @media screen and (max-width: (var.$tab)) {
+  @media screen and (width <= #{var.$tab}) {
     @content;
   }
 }
 
 @mixin sp {
-  @media screen and (max-width: (var.$sp)) {
+  @media screen and (width <= #{var.$sp}) {
     @content;
   }
 }
@@ -26,14 +26,12 @@
 @mixin fadeBefore {
   position: relative;
   opacity: 0;
-  transition: all var(--anime-speed) ease;
+  transition: opacity var(--anime-speed) ease, transform var(--anime-speed) ease;
   transition-delay: var(--anime-delay);
 }
 
 @mixin fadeAfter {
   opacity: 1;
-  transition: all var(--anime-speed) ease;
-  transition-delay: var(--anime-delay);
 }
 
 // レイアウト

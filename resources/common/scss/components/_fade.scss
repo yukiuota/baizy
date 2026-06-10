@@ -1,5 +1,4 @@
-@charset "UTF-8";
-@use "../scss_var"as var;
+@use "../scss_var" as var;
 
 /*　フェード
 ----------------------------------------------- */
@@ -53,6 +52,20 @@
 
   &.view-on {
     @include var.fadeAfter;
+  }
+}
+
+// 「視差効果を減らす」設定のユーザーにはアニメーションせず即時表示
+@media (prefers-reduced-motion: reduce) {
+
+  .view01,
+  .view02,
+  .view03,
+  .view04,
+  .view05 {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
