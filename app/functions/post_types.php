@@ -54,7 +54,7 @@ function baizy_register_post_types() {
 					),
 				),
 			),
-			'template_lock' => 'false',
+			'template_lock' => false,
 		)
 	);
 

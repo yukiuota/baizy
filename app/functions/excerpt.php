@@ -25,14 +25,8 @@ add_filter(
 	999
 );
 
-// 抜粋を改行対応にする
-add_filter(
-	'get_the_excerpt',
-	function ( $excerpt ) {
-		return nl2br( $excerpt );
-	},
-	999
-);
+// 抜粋の改行変換は下記 wp_trim_excerpt フィルターで行う
+// （ここで nl2br を重ねると手動抜粋の <br> が二重になるため削除）
 
 // 抜粋でwpautopを無効化して改行を保持
 add_filter(

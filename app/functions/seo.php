@@ -69,31 +69,44 @@ function create_breadcrumb() {
 
 	// カスタム投稿 タクソノミー一覧ページ（taxonomy-○○.php）
 	if ( is_tax() ) {
-		$post_slug  = get_post_type();
-		$post_label = get_post_type_object( $post_slug )->label;
+		// 投稿が0件のタームでは get_post_type() が false を返すため、
+		// タクソノミーに紐づく投稿タイプから取得する
+		$post_slug = get_post_type();
+		if ( ! $post_slug ) {
+			$taxonomy_obj = get_taxonomy( $wp_obj->taxonomy );
+			$post_slug    = ( $taxonomy_obj && ! empty( $taxonomy_obj->object_type[0] ) ) ? $taxonomy_obj->object_type[0] : '';
+		}
+		$post_type_obj = $post_slug ? get_post_type_object( $post_slug ) : null;
+		$term_position = 2;
+
+		if ( $post_type_obj ) {
+			echo '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
+			'<a itemprop="item" href="' . esc_url( home_url( $post_slug ) ) . '">' .
+			'<span itemprop="name">' . esc_html( $post_type_obj->label ) . '</span>' .
+			'</a>' .
+			'<meta itemprop="position" content="2">' .
+			'</li>';
+			$term_position = 3;
+		}
+
 		echo '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
-		'<a itemprop="item" href="' . esc_url( home_url( $post_slug ) ) . '">' .
-		'<span itemprop="name">' . esc_html( $post_label ) . '</span>' .
-		'</a>' .
-		'<meta itemprop="position" content="2">' .
-		'</li>' .
-		'<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
 		'<a itemprop="item" href="' . esc_url( home_url( $post_slug . '/' . $wp_obj->slug ) ) . '">' .
 		'<span itemprop="name">「' . esc_html( $wp_obj->name ) . '」カテゴリー一覧</span>' .
 		'</a>' .
-		'<meta itemprop="position" content="3">' .
+		'<meta itemprop="position" content="' . esc_attr( (string) $term_position ) . '">' .
 		'</li>';
 	}
 
 	// カスタム投稿 詳細ページ（single-○○.php）
 	if ( is_singular() && ! is_page() ) {
-		$post_slug  = get_post_type();
-		$post_label = get_post_type_object( $post_slug )->label;
-		$post_id    = $wp_obj->ID;
-		$post_title = $wp_obj->post_title;
+		$post_slug     = get_post_type();
+		$post_type_obj = $post_slug ? get_post_type_object( $post_slug ) : null;
+		$post_label    = $post_type_obj ? $post_type_obj->label : '';
+		$post_id       = $wp_obj->ID;
+		$post_title    = $wp_obj->post_title;
 
 		// 通常の投稿（post）の場合はアーカイブページを表示しない
-		if ( 'post' !== $post_slug ) {
+		if ( 'post' !== $post_slug && $post_type_obj ) {
 			echo '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
 			'<a itemprop="item" href="' . esc_url( home_url( $post_slug ) ) . '">' .
 			'<span itemprop="name">' . esc_html( $post_label ) . '</span>' .
@@ -102,8 +115,8 @@ function create_breadcrumb() {
 			'</li>';
 		}
 
-		// 投稿詳細ページ
-		$position = ( 'post' === $post_slug ) ? '2' : '3';
+		// 投稿詳細ページ（アーカイブ項目を出力していない場合は position を詰める）
+		$position = ( 'post' === $post_slug || ! $post_type_obj ) ? '2' : '3';
 		echo '<li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="p-breadcrumb__item">' .
 		'<a itemprop="item" href="' . esc_url( get_permalink( $post_id ) ) . '">' .
 		'<span itemprop="name">' . esc_html( $post_title ) . '</span>' .
@@ -181,20 +194,3 @@ add_action(
 
 // メタディスクリプションを出力
 add_action( 'wp_head', 'output_custom_post_meta_description', 1 );
-
-
-
-
-
-// -----------------------------------------------------
-// HTMLをミニファイ化
-// -----------------------------------------------------
-function minify_html_output( $buffer ) {
-	$search  = array( '/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s' );
-	$replace = array( '>', '<', '\\1' );
-	return preg_replace( $search, $replace, $buffer );
-}
-function start_html_minify() {
-	ob_start( 'minify_html_output' );
-}
-// add_action('get_header', 'start_html_minify');

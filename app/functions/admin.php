@@ -123,8 +123,8 @@ add_action( 'restrict_manage_posts', 'add_custom_taxonomies_term_filter' );
 function filter_posts_by_custom_taxonomy( $query ) {
 	global $pagenow;
 
-	// 管理画面の投稿一覧ページでのみ実行
-	if ( ! is_admin() || 'edit.php' !== $pagenow ) {
+	// 管理画面の投稿一覧ページのメインクエリでのみ実行
+	if ( ! is_admin() || 'edit.php' !== $pagenow || ! $query->is_main_query() ) {
 		return;
 	}
 
@@ -304,11 +304,19 @@ function render_color_row( $index, $color ) {
 add_filter(
 	'wp_theme_json_data_theme',
 	function ( $theme_json ) {
+		$saved_colors = get_option( 'custom_color_palette', array() );
+		if ( empty( $saved_colors ) || ! is_array( $saved_colors ) ) {
+			return $theme_json;
+		}
+
 		$get_data          = $theme_json->get_data();
-		$saved_colors      = get_option( 'custom_color_palette', array() );
+		$theme_palette     = $get_data['settings']['color']['palette']['theme'] ?? array();
 		$add_color_palette = array();
 
 		foreach ( $saved_colors as $color ) {
+			if ( empty( $color['slug'] ) || empty( $color['color'] ) || empty( $color['name'] ) ) {
+				continue;
+			}
 			$add_color_palette[] = array(
 				'slug'  => $color['slug'],
 				'color' => $color['color'],
@@ -317,7 +325,7 @@ add_filter(
 		}
 
 		$new_color_palette = array_merge(
-			$get_data['settings']['color']['palette']['theme'],
+			$theme_palette,
 			$add_color_palette
 		);
 

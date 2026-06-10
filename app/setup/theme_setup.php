@@ -63,8 +63,10 @@ class ThemeSetup {
 
 	public function disable_author_archive(): void {
 		if ( is_author() ) {
-			wp_safe_redirect( home_url( '/404' ), 301 );
-			exit;
+			global $wp_query;
+			$wp_query->set_404();
+			status_header( 404 );
+			nocache_headers();
 		}
 	}
 }
