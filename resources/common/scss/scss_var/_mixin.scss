@@ -47,19 +47,23 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  translate: -50% -50%;
 }
 
-// hover時、CPデバイスのみにホバーを実装
+// hover時（画面幅ではなくデバイスのhover能力で判定）
 @mixin hover {
-  @media (hover: hover) and (pointer: fine) {
+  @media (any-hover: hover) {
     &:hover {
       @content;
     }
   }
 }
 
-// pxをremに変換
+// pxをremに変換（単位付き・単位なしどちらでも可）
 @function rm($px) {
+  @if not math.is-unitless($px) {
+    $px: math.div($px, 1px);
+  }
+
   @return math.div($px, 16) * 1rem;
 }

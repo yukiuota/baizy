@@ -20,6 +20,9 @@
   --main-color: #000;
   --sub-color: #000;
 
+  // hover用（--main-colorから自動生成）
+  --main-color-hover: color-mix(in oklch, var(--main-color) 85%, #000);
+
   // 共通レイアウト
   --main-inner-width: #{var.rm(1030)};
   --main-inner-padding: 0 #{var.rm(15)};
