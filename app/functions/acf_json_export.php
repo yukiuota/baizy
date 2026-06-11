@@ -165,7 +165,7 @@ function baizy_scf_export_field_group( $post_id ) {
 		$real_data_dir  = realpath( $data_dir );
 		$real_file_path = realpath( dirname( $file_path ) ) . '/' . basename( $file_path );
 
-		if ( strpos( $real_file_path, $real_data_dir ) !== 0 ) {
+		if ( ! str_starts_with( $real_file_path, $real_data_dir ) ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 				error_log( 'Security: Path traversal attempt detected - ' . $filename );
 			}
@@ -208,7 +208,7 @@ function baizy_scf_export_field_group( $post_id ) {
 
 			// パストラバーサル対策: ファイルが指定ディレクトリ内にあることを確認
 			$real_file = realpath( $file );
-			if ( ! $real_file || strpos( $real_file, $real_data_dir ) !== 0 ) {
+			if ( ! $real_file || ! str_starts_with( $real_file, $real_data_dir ) ) {
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 					error_log( 'Security: Invalid file path detected - ' . $basename );
 				}

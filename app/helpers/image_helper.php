@@ -41,12 +41,12 @@ class ImageHelper {
 		if ( 'svg' === $ext ) {
 			$dims = self::svgDimensions( $full );
 			if ( $dims ) {
-				$attr = 'width="' . intval( $dims['width'] ) . '" height="' . intval( $dims['height'] ) . '"';
+				$attr = 'width="' . (int) $dims['width'] . '" height="' . (int) $dims['height'] . '"';
 			}
 		} else {
 			$dims = getimagesize( $full );
 			if ( $dims && isset( $dims[0], $dims[1] ) ) {
-				$attr = 'width="' . intval( $dims[0] ) . '" height="' . intval( $dims[1] ) . '"';
+				$attr = 'width="' . (int) $dims[0] . '" height="' . (int) $dims[1] . '"';
 			}
 		}
 
@@ -64,7 +64,7 @@ class ImageHelper {
 	 * @return array{width: float, height: float}|false
 	 */
 	// phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
-	public static function svgDimensions( string $path ) {
+	public static function svgDimensions( string $path ): array|false {
 		if ( ! file_exists( $path ) ) {
 			return false;
 		}

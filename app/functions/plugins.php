@@ -18,7 +18,7 @@ add_filter( 'wpcf7_load_css', '__return_false' );
 // ショートコードがあるページだけ自動判定して Contact Form7 の JS と CSS を読み込む
 function my_enqueue_cf7_assets() {
 	global $post;
-	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
+	if ( $post instanceof WP_Post && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
 		if ( function_exists( 'wpcf7_enqueue_scripts' ) ) {
 			wpcf7_enqueue_scripts();
 		}
@@ -32,12 +32,21 @@ add_action( 'wp_enqueue_scripts', 'my_enqueue_cf7_assets' );
 // Contact Form7のカスタマイズするCSS・JSの読み込み
 function enqueue_custom_assets_for_specific_page() {
 	global $post;
-	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
+	if ( $post instanceof WP_Post && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
 		// CSSファイルの読み込み
 		wp_enqueue_style( 'custom-page-style', BAIZY_THEME_URI . '/app/plugins/p_cf7/style.css', array(), '1.0.0' );
 
-		// JavaScriptファイルの読み込み
-		wp_enqueue_script( 'custom-page-script', BAIZY_THEME_URI . '/app/plugins/p_cf7/form.js', array( 'jquery' ), '1.0.0', true );
+		// JavaScriptファイルの読み込み（jQuery非依存・defer付与）
+		wp_enqueue_script(
+			'custom-page-script',
+			BAIZY_THEME_URI . '/app/plugins/p_cf7/form.js',
+			array(),
+			'1.0.0',
+			array(
+				'in_footer' => true,
+				'strategy'  => 'defer',
+			)
+		);
 
 		// JavaScriptにサンクスページのURLを渡す
 		wp_localize_script(

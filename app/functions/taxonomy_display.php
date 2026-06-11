@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // -----------------------------------------------------
 // ターム別年月表示
 // -----------------------------------------------------
-function custom_taxonomy_monthly_list( $post_type, $taxonomy_slug, $post_id ) {
+function custom_taxonomy_monthly_list( string $post_type, string $taxonomy_slug, int $post_id ): void {
 	$terms = get_the_terms( $post_id, $taxonomy_slug );
 
 	if ( $terms && ! is_wp_error( $terms ) ) {
@@ -47,7 +47,7 @@ function custom_taxonomy_monthly_list( $post_type, $taxonomy_slug, $post_id ) {
 // -----------------------------------------------------
 // 記事が属するタームを取得（配列）
 // -----------------------------------------------------
-function display_terms_of_post( $taxonomy, $post_id = null ) {
+function display_terms_of_post( string $taxonomy, ?int $post_id = null ): array {
 	return \Baizy\Models\TaxonomyModel::getTermsOfPost( $taxonomy, $post_id ?? 0 );
 }
 
@@ -55,7 +55,7 @@ function display_terms_of_post( $taxonomy, $post_id = null ) {
 // -----------------------------------------------------
 // 記事が属するタームスラッグを表示
 // -----------------------------------------------------
-function display_terms_of_slug( $taxonomy ) {
+function display_terms_of_slug( string $taxonomy ): void {
 	$terms = get_the_terms( get_the_ID(), $taxonomy );
 	if ( $terms && ! is_wp_error( $terms ) ) :
 		foreach ( $terms as $term ) {

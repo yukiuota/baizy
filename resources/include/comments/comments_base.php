@@ -1,6 +1,6 @@
 <?php if ( !defined( 'ABSPATH' ) ) exit; ?>
 
-<?php if ( isset($_GET['comment_posted']) && $_GET['comment_posted'] == '1' ) : ?>
+<?php if ( isset( $_GET['comment_posted'] ) && '1' === $_GET['comment_posted'] ) : ?>
 <p class="comment-thanks">コメントありがとうございました。</p>
 <?php else: ?>
 <?php

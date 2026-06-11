@@ -113,10 +113,10 @@ add_term_background_color_field( 'sample-category' );
 // -----------------------------------------------------
 // タームの背景色を取得する関数
 // -----------------------------------------------------
-function get_term_background_color( $term_id ) {
-	return \Baizy\Models\TaxonomyModel::getTermBackgroundColor( (int) $term_id );
+function get_term_background_color( int $term_id ): string {
+	return \Baizy\Models\TaxonomyModel::getTermBackgroundColor( $term_id );
 }
 
-function get_term_background_style( $term_id ) {
-	return \Baizy\Models\TaxonomyModel::getTermBackgroundStyle( (int) $term_id );
+function get_term_background_style( int $term_id ): string {
+	return \Baizy\Models\TaxonomyModel::getTermBackgroundStyle( $term_id );
 }

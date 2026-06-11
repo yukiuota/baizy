@@ -7,25 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Scripts {
 
-	/** @var string[] defer 適用スクリプト */
-	private array $defer_scripts = array(
-		'baizy-main-script',  // メインテーマスクリプト（jQuery非依存）
-		'custom-page-script', // CF7フォーム（jQuery非依存、DOMContentLoaded使用）
-	);
-
-	/** @var string[] jQuery依存の defer 適用スクリプト */
-	private array $jquery_dependent_defer_scripts = array();
-
-	/** @var string[] async 適用スクリプト */
-	private array $async_scripts = array();
-
-	/** @var string[] jQuery 本体（属性を付与しない） */
-	private array $jquery_scripts = array( 'jquery', 'jquery-core', 'jquery-migrate' );
-
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_filter( 'script_loader_tag', array( $this, 'add_script_attributes' ), 10, 3 );
 	}
 
 	private function get_file_version( string $file_path ): ?int {
@@ -72,22 +56,17 @@ class Scripts {
 		$path    = get_template_directory() . '/resources/common/js/script.js';
 		$version = $this->get_file_version( $path );
 		if ( $version ) {
-			wp_enqueue_script( 'baizy-main-script', BAIZY_THEME_URI . '/resources/common/js/script.js', array( 'jquery' ), $version, true );
+			// script.js は jQuery 非依存。defer は WP 6.3+ の strategy 引数で付与
+			wp_enqueue_script(
+				'baizy-main-script',
+				BAIZY_THEME_URI . '/resources/common/js/script.js',
+				array(),
+				$version,
+				array(
+					'in_footer' => true,
+					'strategy'  => 'defer',
+				)
+			);
 		}
-	}
-
-	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
-	public function add_script_attributes( string $tag, string $handle, string $_src ): string {
-		if ( in_array( $handle, $this->jquery_scripts, true ) ) {
-			return $tag;
-		}
-		if ( in_array( $handle, $this->defer_scripts, true ) ||
-			in_array( $handle, $this->jquery_dependent_defer_scripts, true ) ) {
-			return str_replace( ' src', ' defer src', $tag );
-		}
-		if ( in_array( $handle, $this->async_scripts, true ) ) {
-			return str_replace( ' src', ' async src', $tag );
-		}
-		return $tag;
 	}
 }

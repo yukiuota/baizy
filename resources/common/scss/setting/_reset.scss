@@ -42,7 +42,8 @@
   line-height: var(--main-line-height);
   font-weight: var(--main-font-weight);
   letter-spacing: var(--main-letter-spacing);
-  -webkit-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; // Safari は標準プロパティ未対応のため残す
+  text-size-adjust: 100%;
   overflow-wrap: anywhere;
   word-break: normal;
   line-break: strict;

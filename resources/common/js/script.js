@@ -11,7 +11,7 @@ for (let i = 0; i < smoothScrollTrigger.length; i++) {
     let href = smoothScrollTrigger[i].getAttribute("href");
     let targetElement = document.getElementById(href.replace("#", ""));
     const rect = targetElement.getBoundingClientRect().top;
-    const offset = window.pageYOffset;
+    const offset = window.scrollY;
     const gap = headerHeightOption === 1 ? document.querySelector(".header").offsetHeight : 0;
     const target = rect + offset - gap;
     window.scrollTo({
@@ -24,7 +24,7 @@ for (let i = 0; i < smoothScrollTrigger.length; i++) {
 // 別ページへのリンクに対するスムーズスクロール
 const smoothScrollToTarget = (targetElement) => {
   const rect = targetElement.getBoundingClientRect().top;
-  const offset = window.pageYOffset;
+  const offset = window.scrollY;
   const gap = headerHeightOption === 1 ? document.querySelector(".header").offsetHeight : 0;
   const target = rect + offset - gap;
   window.scrollTo({

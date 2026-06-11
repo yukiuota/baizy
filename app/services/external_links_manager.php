@@ -19,7 +19,7 @@ class ExternalLinksManager {
 		$real_path    = realpath( $json_path );
 		$real_dir     = realpath( $template_dir );
 
-		if ( false === $real_path || 0 !== strpos( $real_path, $real_dir ) ) {
+		if ( false === $real_path || ! str_starts_with( $real_path, $real_dir ) ) {
 			self::log( 'Invalid file path detected.' );
 			self::$links = array();
 			return self::$links;

@@ -51,11 +51,12 @@ class CustomHtmlWidget extends \WP_Widget {
 		<p><small><?php esc_html_e( 'HTMLを編集すると、リアルタイムでプレビューが更新されます。', 'baizy' ); ?></small></p>
 	</div>
 </div>
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-	$('#<?php echo esc_js( $this->get_field_id( 'html_content' ) ); ?>').on('input', function() {
-		$(this).closest('.custom-html-widget-form').find('.html-preview').html( $(this).val() );
-	});
+<script>
+document.getElementById('<?php echo esc_js( $this->get_field_id( 'html_content' ) ); ?>')?.addEventListener('input', function () {
+	const preview = this.closest('.custom-html-widget-form')?.querySelector('.html-preview');
+	if (preview) {
+		preview.innerHTML = this.value;
+	}
 });
 </script>
 		<?php

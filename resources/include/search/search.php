@@ -6,7 +6,7 @@
  * @param array $args 検索フォームの設定オプション
  * @return void
  */
-function custom_search_form($args = []) {
+function custom_search_form(array $args = []): void {
     // デフォルト設定
     $defaults = [
         'placeholder' => 'キーワードを入力',
@@ -29,7 +29,7 @@ function custom_search_form($args = []) {
 /**
  * 検索クエリをカスタマイズして全文検索の精度を向上させる
  */
-function custom_search_query($query) {
+function custom_search_query(WP_Query $query) {
     // メインクエリで検索ページの場合のみ処理
     if ($query->is_search() && $query->is_main_query()) {
         // 投稿タイプの指定（必要に応じてカスタマイズ）

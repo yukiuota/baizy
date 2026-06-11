@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(pnpm sass:build)",
-      "Bash(node --check resources/common/js/script.js)"
+      "Bash(node --check resources/common/js/script.js)",
+      "Bash(node /Users/uota/.claude/skills/wp-project-triage/scripts/detect_wp_project.mjs)",
+      "Bash(composer phpcs *)",
+      "Bash(tee /tmp/phpcs_result.txt)",
+      "Bash(echo \"Exit code: $?\")",
+      "Bash(./vendor/bin/phpcs --report=full app/controllers/sample_controller.php app/functions/admin.php app/models/post_model.php)",
+      "Bash(./vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.0- --extensions=php app functions.php header.php footer.php index.php comments.php resources patterns)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(node --check app/plugins/p_cf7/form.js)"
     ]
   }
 }

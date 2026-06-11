@@ -27,7 +27,7 @@ function custom_pagination() {
 	if ( is_array( $pagination_links ) ) {
 		echo '<div id="js-pagination" class="pagination">';
 		foreach ( $pagination_links as $link ) {
-			if ( strpos( $link, 'current' ) !== false ) {
+			if ( str_contains( $link, 'current' ) ) {
 				echo '<span aria-current="page" class="current">' . wp_kses_post( $link ) . '</span>';
 			} else {
 				echo wp_kses_post( str_replace( '<a', '<a class="cp_pagenum"', $link ) );

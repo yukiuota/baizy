@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // ターム一覧設定
-$current_post_id = get_the_ID();
+$current_post_id = (int) get_the_ID();
 $terms           = display_terms_of_post( 'sample-category', $current_post_id );
 
 // 記事に属するターム一覧表示設定

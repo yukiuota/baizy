@@ -18,14 +18,16 @@ add_action( 'wp_body_open', 'include_body_top' );
 
 
 // -----------------------------------------------------
-// noindex設定
+// noindex設定（wp_robots API・WP 5.7+）
 // -----------------------------------------------------
-function single_noindex() {
+function single_noindex( array $robots ): array {
 	if ( is_404() || is_singular( 'xxx' ) || is_category() || is_tag() ) {
-		echo '<meta name="robots" content="noindex , nofollow" />';
+		$robots['noindex']  = true;
+		$robots['nofollow'] = true;
 	}
+	return $robots;
 }
-add_action( 'wp_head', 'single_noindex' );
+add_filter( 'wp_robots', 'single_noindex' );
 
 
 
@@ -179,7 +181,7 @@ function set_custom_post_type_meta_description( $post_type_name, $description ) 
  */
 function output_custom_post_meta_description() {
 	if ( is_post_type_archive( 'news' ) ) {
-		echo '<meta name="description" content="' . esc_attr( NEWS_ARCHIVE_META_DESCRIPTION ) . '" />' . "\n";
+		echo '<meta name="description" content="' . esc_attr( NEWS_ARCHIVE_META_DESCRIPTION ) . '">' . "\n";
 	}
 }
 

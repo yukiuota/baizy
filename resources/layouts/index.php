@@ -57,21 +57,16 @@ elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() ||
     $post_type = get_post_type();
 
     // カスタム投稿タイプが取得できない場合
-    if (!$post_type) {
+    if ( ! $post_type ) {
         $queried_object = get_queried_object();
-        
-        if (isset($queried_object->name) && $queried_object instanceof WP_Post_Type) {
+
+        if ( $queried_object instanceof WP_Post_Type ) {
             // カスタム投稿タイプのアーカイブの場合
             $post_type = $queried_object->name;
-        } elseif (isset($queried_object->taxonomy) && $queried_object instanceof WP_Term) {
-        // タクソノミーアーカイブの場合、関連する投稿タイプを取得
-        $taxonomy = get_taxonomy($queried_object->taxonomy);
-        if ($taxonomy && !empty($taxonomy->object_type)) {
-        // タクソノミーに関連付けられた投稿タイプを取得（最初のものを使用）
-        $post_type = $taxonomy->object_type[0];
-        } else {
-        $post_type = 'post';
-        }
+        } elseif ( $queried_object instanceof WP_Term ) {
+            // タクソノミーアーカイブの場合、関連する投稿タイプを取得（最初のものを使用）
+            $taxonomy  = get_taxonomy( $queried_object->taxonomy );
+            $post_type = ( $taxonomy && ! empty( $taxonomy->object_type ) ) ? $taxonomy->object_type[0] : 'post';
         } else {
             // デフォルト
             $post_type = 'post';
@@ -79,15 +74,13 @@ elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() ||
     }
 
     // テンプレートが存在するか確認
-    if (locate_template( 'resources/archives/' . $post_type . '.php' )) {
-        baizy_template_part( 'resources/archives/' . $post_type);
-    } else {
+    if ( locate_template( 'resources/archives/' . $post_type . '.php' ) ) {
+        baizy_template_part( 'resources/archives/' . $post_type );
+    } elseif ( locate_template( 'resources/archives/archive-base.php' ) ) {
         // デフォルトテンプレート
-        if (locate_template( 'resources/archives/archive-base.php' )) {
-            baizy_template_part( 'resources/archives/archive-base' );
-        } else {
-            echo '<div class="container"><p>テンプレートが見つかりませんでした。</p></div>';
-        }
+        baizy_template_part( 'resources/archives/archive-base' );
+    } else {
+        echo '<div class="container"><p>テンプレートが見つかりませんでした。</p></div>';
     }
 elseif ( is_404() ) :
     // 404ページ

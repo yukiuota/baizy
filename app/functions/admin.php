@@ -279,9 +279,9 @@ function render_custom_color_palette_page() {
 /**
  * カラー行を表示
  */
-function render_color_row( $index, $color ) {
-	$name       = isset( $color['name'] ) ? esc_attr( $color['name'] ) : '';
-	$color_code = isset( $color['color'] ) ? esc_attr( $color['color'] ) : '#000000';
+function render_color_row( int $index, array $color ) {
+	$name       = $color['name'] ?? '';
+	$color_code = $color['color'] ?? '#000000';
 	?>
 <div class="color-row">
 	<label>カラー名:</label>
