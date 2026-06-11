@@ -1,73 +1,50 @@
 @use "../scss_var" as var;
 
-/*　フェード
+/*　フィード（.view-on付与で一度だけ再生・トリガーはcommon.js）
 ----------------------------------------------- */
-//下から上
-.view01 {
-  transform: translateY(var.rm(30));
-  @include var.fadeBefore;
+@media (prefers-reduced-motion: no-preference) {
 
-  &.view-on {
-    transform: translateY(0);
-    @include var.fadeAfter;
-  }
+    .view01,
+    .view02,
+    .view03,
+    .view04,
+    .view05 {
+        opacity: 0;
+        transition: opacity var(--anime-speed) ease, translate var(--anime-speed) ease;
+        transition-delay: var(--anime-delay);
+
+        &.view-on {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
+    //下から上
+    .view01 {
+        translate: 0 var.rm(30);
+    }
+
+    //左から右
+    .view02 {
+        translate: var.rm(-30) 0;
+    }
+
+    //右から左
+    .view03 {
+        translate: var.rm(30) 0;
+    }
+
+    //上から下
+    .view04 {
+        translate: 0 var.rm(-30);
+    }
+
+    //その場から
+    .view05 {
+        translate: 0 0;
+    }
 }
 
-//左から右
-.view02 {
-  transform: translateX(var.rm(-30));
-  @include var.fadeBefore;
-
-  &.view-on {
-    transform: translateX(0);
-    @include var.fadeAfter;
-  }
-}
-
-//右から左
-.view03 {
-  transform: translateX(var.rm(30));
-  @include var.fadeBefore;
-
-  &.view-on {
-    transform: translateX(0);
-    @include var.fadeAfter;
-  }
-}
-
-//上から下
-.view04 {
-  transform: translateY(var.rm(-30));
-  @include var.fadeBefore;
-
-  &.view-on {
-    transform: translateY(0);
-    @include var.fadeAfter;
-  }
-}
-
-//その場から
-.view05 {
-  @include var.fadeBefore;
-
-  &.view-on {
-    @include var.fadeAfter;
-  }
-}
-
-// 「視差効果を減らす」設定のユーザーにはアニメーションせず即時表示
-@media (prefers-reduced-motion: reduce) {
-
-  .view01,
-  .view02,
-  .view03,
-  .view04,
-  .view05 {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
 
 /*　スライドアニメーション
 ----------------------------------------------- */

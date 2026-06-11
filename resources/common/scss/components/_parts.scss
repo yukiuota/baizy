@@ -3,10 +3,9 @@
 /*　共通
 ----------------------------------------------- */
 // 横はみ出し防止は setting/_reset.scss の :where(:root, body) で指定済み
-body {
-  &.js-on {
-    overflow: hidden;
-  }
+// メニュー展開中のスクロールロック（.is-open の付与はscript.js）
+body:has(#js-menu.is-open) {
+  overflow: hidden;
 }
 
 .sp {

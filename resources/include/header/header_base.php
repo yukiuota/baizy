@@ -7,7 +7,7 @@
 
         <!-- header-btn -->
         <div class="header-btn">
-            <button id="menu-trigger" class="menu" aria-label="メニュー">
+            <button id="js-menu-trigger" class="menu" aria-label="メニュー">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -15,7 +15,7 @@
         </div>
         <!-- /header-btn -->
 
-        <nav id="js-menu">
+        <nav id="js-menu" class="header-menu">
             <?php //ヘッダーメニューウィジェットエリアの表示
             if (is_active_sidebar('header-menu')) :
                 dynamic_sidebar('header-menu');

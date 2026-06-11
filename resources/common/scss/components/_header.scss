@@ -70,6 +70,22 @@
   }
 }
 
+//header-menu（.is-open の付与はscript.js・開閉アニメーションはCSS側で処理）
+.header-menu {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s, display 0.4s allow-discrete;
+
+  &.is-open {
+    display: block;
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
 @include var.sp {
   .header {}
 

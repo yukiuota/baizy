@@ -60,188 +60,164 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// ヘッダーメニュー
+
+/************************************
+ハンバーガーメニュー
+*************************************/
+// 開閉アニメーションとスクロールロックはCSS側（@starting-style / :has()）で処理
 function headerMenu() {
-  document.getElementById("menu-trigger").addEventListener("click", function () {
-    let menu = document.getElementById("js-menu");
-    menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
-    this.classList.toggle("active");
-    document.body.classList.toggle("js-on");
+  const menuTrigger = document.getElementById("js-menu-trigger");
+  const menu = document.getElementById("js-menu");
+
+  if (!menuTrigger || !menu) return;
+
+  menuTrigger.addEventListener("click", () => {
+    menu.classList.toggle("is-open");
+    menuTrigger.classList.toggle("active");
   });
 
-  let menuLinks = document.querySelectorAll(".menu a");
-  menuLinks.forEach(function (link) {
-    link.addEventListener("click", function () {
-      let menu = document.getElementById("js-menu");
-      menu.style.display = "none";
-      document.getElementById("menu-trigger").classList.toggle("active");
-      document.body.classList.toggle("js-on");
+  const menuLinks = document.querySelectorAll(".header-menu a");
+
+  menuLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      menu.classList.remove("is-open");
+      menuTrigger.classList.remove("active");
     });
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  headerMenu();
-});
 
+/************************************
+スクロールフェード（.view01〜.view05）
+表示領域に入ったら .view-on を一度だけ付与（アニメーション本体は_fade.scss）
+data-delay="ミリ秒" で遅延を指定可能
+*************************************/
 document.addEventListener("DOMContentLoaded", () => {
-  if (!("IntersectionObserver" in window)) {
-    return;
-  }
+  const targets = document.querySelectorAll(".view01, .view02, .view03, .view04, .view05");
+  if (targets.length === 0) return;
 
-  const observer = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const target = entry.target;
-          const delay = target.getAttribute("data-delay") || 0;
-          setTimeout(() => {
-            target.classList.add("view-on");
-            obs.unobserve(target);
-          }, delay);
-        }
-      });
-    },
-    { root: null, rootMargin: "0px", threshold: 0.1 }
-  );
-
-  document
-    .querySelectorAll(".view01, .view02, .view03, .view04, .view05")
-    .forEach((el) => observer.observe(el));
-});
-
-// スライドアニメーション
-document.addEventListener("DOMContentLoaded", () => {
-  const btns = document.querySelectorAll(".js-slide-h_btn");
-  const slideHs = document.querySelectorAll(".js-slide-h");
-
-  if (btns.length && slideHs.length) {
-    btns.forEach((btn, index) => {
-      btn.addEventListener("click", () => {
-        btns[index].classList.toggle("js-active");
-        slideHs[index].classList.toggle("js-active");
-      });
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const target = entry.target;
+      const delay = Number(target.dataset.delay) || 0;
+      setTimeout(() => target.classList.add("view-on"), delay);
+      observer.unobserve(target);
     });
-  }
+  });
+
+  targets.forEach((target) => observer.observe(target));
 });
 
-// アコーディオン
-document.addEventListener("DOMContentLoaded", () => {
-  setUpAccordion();
-});
 
-/**
- * ブラウザの標準機能(Web Animations API)を使ってアコーディオンのアニメーションを制御します
- */
-const setUpAccordion = () => {
+/************************************
+スライドアニメーション
+*************************************/
+// 開閉アニメーションはCSS側（grid-template-rows）で処理
+function slideToggle() {
+  const btns = document.querySelectorAll(".js-slide-h_btn");
+  const slides = document.querySelectorAll(".js-slide-h");
+
+  if (btns.length === 0 || slides.length === 0) return;
+
+  btns.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      btn.classList.toggle("js-active");
+      slides[index]?.classList.toggle("js-active");
+    });
+  });
+}
+
+
+/************************************
+アコーディオン
+Web Animations APIで開閉アニメーションを制御
+*************************************/
+// アニメーションの時間とイージング
+const animTiming = {
+  duration: 400,
+  easing: "ease-out",
+};
+
+// 閉じるときのキーフレーム（height: "auto"だとうまく計算されないため要素の高さを指定する）
+const closingAnimKeyframes = (content) => [
+  { height: content.offsetHeight + "px", opacity: 1 },
+  { height: 0, opacity: 0 },
+];
+
+// 開くときのキーフレーム
+const openingAnimKeyframes = (content) => [
+  { height: 0, opacity: 0 },
+  { height: content.offsetHeight + "px", opacity: 1 },
+];
+
+function setUpAccordion() {
   const details = document.querySelectorAll(".js-details");
-  const RUNNING_VALUE = "running"; // アニメーション実行中のときに付与する予定のカスタムデータ属性の値
+  const RUNNING_VALUE = "running"; // アニメーション実行中に付与するカスタムデータ属性の値
   const IS_OPENED_CLASS = "is-opened"; // アイコン操作用のクラス名
 
   details.forEach((element) => {
     const summary = element.querySelector(".js-summary");
     const content = element.querySelector(".js-content");
 
+    if (!summary || !content) return;
+
     summary.addEventListener("click", (event) => {
-      // デフォルトの挙動を無効化
       event.preventDefault();
 
-      // 連打防止用。アニメーション中だったらクリックイベントを受け付けないでリターンする
-      if (element.dataset.animStatus === RUNNING_VALUE) {
-        return;
-      }
+      // 連打防止。アニメーション中はクリックを受け付けない
+      if (element.dataset.animStatus === RUNNING_VALUE) return;
 
-      // detailsのopen属性を判定
       if (element.open) {
-        // アコーディオンを閉じるときの処理
-        // アイコン操作用クラスを切り替える(クラスを取り除く)
-        element.classList.toggle(IS_OPENED_CLASS);
-
-        // アニメーションを実行
+        // 閉じるときの処理
+        element.classList.remove(IS_OPENED_CLASS);
         const closingAnim = content.animate(closingAnimKeyframes(content), animTiming);
-        // アニメーション実行中用の値を付与
         element.dataset.animStatus = RUNNING_VALUE;
 
-        // アニメーションの完了後に
         closingAnim.onfinish = () => {
-          // open属性を取り除く
           element.removeAttribute("open");
-          // アニメーション実行中用の値を取り除く
           element.dataset.animStatus = "";
         };
       } else {
-        // アコーディオンを開くときの処理
-        // open属性を付与
+        // 開くときの処理
         element.setAttribute("open", "true");
-
-        // アイコン操作用クラスを切り替える(クラスを付与)
-        element.classList.toggle(IS_OPENED_CLASS);
-
-        // アニメーションを実行
+        element.classList.add(IS_OPENED_CLASS);
         const openingAnim = content.animate(openingAnimKeyframes(content), animTiming);
-        // アニメーション実行中用の値を入れる
         element.dataset.animStatus = RUNNING_VALUE;
 
-        // アニメーション完了後にアニメーション実行中用の値を取り除く
         openingAnim.onfinish = () => {
           element.dataset.animStatus = "";
         };
       }
     });
   });
-};
+}
 
-/**
- * アニメーションの時間とイージング
- */
-const animTiming = {
-  duration: 400,
-  easing: "ease-out",
-};
 
-/**
- * アコーディオンを閉じるときのキーフレーム
- */
-const closingAnimKeyframes = (content) => [
-  {
-    height: content.offsetHeight + "px", // height: "auto"だとうまく計算されないため要素の高さを指定する
-    opacity: 1,
-  },
-  {
-    height: 0,
-    opacity: 0,
-  },
-];
-
-/**
- * アコーディオンを開くときのキーフレーム
- */
-const openingAnimKeyframes = (content) => [
-  {
-    height: 0,
-    opacity: 0,
-  },
-  {
-    height: content.offsetHeight + "px",
-    opacity: 1,
-  },
-];
-
-// タブ切り替え
+/************************************
+タブ切り替え
+*************************************/
 function tabSelect() {
-  let tabs = document.querySelectorAll(".tab");
-  tabs.forEach(function (tab) {
-    tab.addEventListener("click", function () {
-      document.querySelector(".active").classList.remove("active");
-      this.classList.add("active");
-      const index = Array.from(tabs).indexOf(this);
-      document.querySelectorAll(".tab-content").forEach(function (content, contentIndex) {
-        content.classList.toggle("show", contentIndex === index);
-      });
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
+
+  if (tabs.length === 0) return;
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t, i) => t.classList.toggle("active", i === index));
+      contents.forEach((content, i) => content.classList.toggle("show", i === index));
     });
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+
+/************************************
+実行
+*************************************/
+document.addEventListener("DOMContentLoaded", () => {
+  headerMenu();
+  slideToggle();
+  setUpAccordion();
   tabSelect();
 });

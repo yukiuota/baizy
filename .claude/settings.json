@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm sass:build)",
+      "Bash(node --check resources/common/js/script.js)"
+    ]
+  }
+}
