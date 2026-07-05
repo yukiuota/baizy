@@ -24,11 +24,12 @@ add_action(
  */
 function baizy_register_block_pattern_categories() {
 	$categories = array(
-		'sample'        => 'サンプル',
-		'baizy-hero'    => 'ヒーローセクション',
-		'baizy-content' => 'コンテンツ',
-		'baizy-footer'  => 'フッター',
-		'baizy-header'  => 'ヘッダー',
+		'sample'         => 'サンプル',
+		'baizy-hero'     => 'ヒーローセクション',
+		'baizy-content'  => 'コンテンツ',
+		'baizy-footer'   => 'フッター',
+		'baizy-header'   => 'ヘッダー',
+		'baizy-original' => 'オリジナルパターン',
 	);
 
 	foreach ( $categories as $slug => $label ) {
