@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "vite build",
+    "dist": "pnpm run build && pnpm run sass:build && bash scripts/create_dist.sh",
     "start": "vite build --watch",
     "sass:build": "sass resources/common/scss/common.scss:resources/common/css/common.css resources/common/scss/editor-style.scss:resources/common/css/editor-style.css resources/common/scss/pages/home.scss:resources/common/css/home.css --style=compressed --no-source-map",
     "sass:watch": "sass --watch resources/common/scss/common.scss:resources/common/css/common.css resources/common/scss/editor-style.scss:resources/common/css/editor-style.css resources/common/scss/pages/home.scss:resources/common/css/home.css --style=compressed --no-source-map",

@@ -10,7 +10,7 @@
 ## 必要環境
 
 - WordPress 6.5 以上（`theme.json` のスキーマが 6.5 なので目安）
-- PHP 7.4 以上（`composer.json` に準拠）
+- PHP 8.0 以上（`composer.json` に準拠）
 - Node.js 18 以上（`package.json` の `engines` に準拠）
 - pnpm 10.0 以上（パッケージマネージャー）
 
@@ -125,6 +125,9 @@ pnpm sass:build
 
 # SCSS の監視（変更を検知して自動コンパイル）
 pnpm sass:watch
+
+# 本番アップ用の dist/baizy/ を生成（ビルド → SCSS → dist 作成を一括実行）
+pnpm dist
 
 # Puppeteer によるパフォーマンス計測（URL省略時は localhost を計測）
 pnpm perf:check
@@ -343,63 +346,31 @@ pnpm mcp:dev
 - ブラウザ内容が MCP クライアントに公開されるため、機密情報や個人情報を含むページでは使用しないでください
 - サンドボックス環境等で制限が出る場合は `--isolated=true` などのオプションを使用してください
 
-## FTP デプロイ時のアップ不要ファイル
+## 本番デプロイ（FTP アップ用の dist 生成）
 
-本番サーバーへ FTP でアップロードする際、以下のファイル・ディレクトリは**アップ不要**です。
+アップするファイルを目視で選別する必要はありません。以下のコマンドで、本番に必要なファイルだけを含む `dist/baizy/` が生成されます。
 
-### 開発ツール・ローカル専用
+```bash
+pnpm dist
+```
 
-| パス | 理由 |
-|---|---|
-| `node_modules/` | npm/pnpm の依存パッケージ。本番不要 |
-| `vendor/` | Composer の依存パッケージ（phpcs 等、開発ツールのみ）。本番不要 |
-| `.git/` | Git リポジトリ本体。セキュリティリスク |
-| `.claude/` | Claude Code 設定。開発専用 |
-| `mcp/` | MCP 設定。開発専用 |
-| `phpcs/` | PHPCS ツール本体 |
+FTP では **`dist/baizy/` の中身をそのまま本番の `wp-content/themes/baizy/` にアップ**してください。
 
-### 設定・メタファイル
+### `pnpm dist` がやること
 
-| パス | 理由 |
-|---|---|
-| `.gitignore` | Git 管理用 |
-| `.npmrc` | npm 設定 |
-| `.prettierrc` | コードフォーマッター設定 |
-| `tsconfig.json` | TypeScript コンパイラ設定 |
-| `vite.config.ts` | Vite ビルド設定（ビルド済みなら不要） |
-| `package.json` / `pnpm-lock.yaml` | npm 管理ファイル |
-| `composer.json` / `composer.lock` | Composer 管理ファイル |
-| `phpcs.xml` | PHPCS ルール設定 |
+1. `pnpm build` — カスタムブロックのビルド（`app/blocks/build/custom-blocks.js`）
+2. `pnpm sass:build` — SCSS のコンパイル（`resources/common/css/`）
+3. [`scripts/create_dist.sh`](scripts/create_dist.sh) — 開発用ファイルを除外して `dist/baizy/` へコピーし、`composer install --no-dev --optimize-autoloader` で本番用の最小 `vendor/`（オートローダーのみ）を生成
 
-### ドキュメント・レポート
+### 除外されるもの（抜粋）
 
-| パス | 理由 |
-|---|---|
-| `README.md` | 開発ドキュメント |
-| `PERFORMANCE_REPORT.md` | パフォーマンスレポート |
-| `performance-report.json` | 自動生成レポート |
-| `performance-trace.json` | 自動生成トレース |
-| `performance-check.js` | パフォーマンス計測スクリプト |
-| `LICENSE` | ライセンスファイル（任意） |
+`node_modules/`・`.git/`・`.claude/`・`mcp/`・`sample/`・`scripts/`・SCSS / TypeScript ソース（`resources/common/scss/`, `app/blocks/src/`）・各種設定ファイル（`vite.config.mts`, `tsconfig.json`, `phpcs.xml`, `package.json`, `pnpm-lock.yaml` など）・ドキュメント / レポート類・`.DS_Store` / `*.log` / `*.map`
 
-### OS・一時ファイル
+除外リストの正式な定義は [`scripts/create_dist.sh`](scripts/create_dist.sh) を参照してください。除外を変更したい場合もこのスクリプトを編集します。
 
-| パス | 理由 |
-|---|---|
-| `.DS_Store` | macOS メタデータ |
-| `*.log` | ログファイル |
+> **注意**: `vendor/` は開発ツールだけでなく、`app/` 以下のクラス・関数を読み込む Composer オートローダーを含むため**本番でも必須**です。`pnpm dist` は開発用パッケージ（phpcs 等）を除いた本番用 `vendor/` を自動生成するので、`dist/baizy/` に含まれる `vendor/` をそのままアップすれば問題ありません。
 
-### ソースファイル（ビルド済みなら不要）
-
-| パス | 理由 |
-|---|---|
-| `resources/common/scss/` | SCSS ソース（`resources/common/css/` にコンパイル済み） |
-| `app/blocks/src/` | TypeScript ソース（`app/blocks/build/` にビルド済み） |
-| `sample/` | サンプルテンプレート（参照用） |
-
-### 必ずアップするもの
-
-`style.css`, `theme.json`, `functions.php`, `index.php`, `header.php`, `footer.php`, `comments.php`, `screenshot.png`, `app/`（ビルド済みアセット含む）, `patterns/`, `data/`, `resources/`（CSS のみ）
+`dist/` は Git 管理外（`.gitignore` 済み）です。
 
 ---
 

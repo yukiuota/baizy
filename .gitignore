@@ -5,6 +5,7 @@ node_modules
 
 # Build outputs
 app/blocks/build/
+dist/
 resources/common/css/*.css.map
 resources/common/js/*.map
 
