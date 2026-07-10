@@ -38,45 +38,29 @@ add_action( 'admin_menu', 'remove_menus', 999 );
 
 
 // -----------------------------------------------------
-// 管理画面のカスタム投稿にターム絞り込み機能追加（改良版）
+// 管理画面のカスタム投稿にターム絞り込み機能追加
 // -----------------------------------------------------
 
 /**
- * 投稿タイプとタクソノミーの対応表を取得
+ * 投稿一覧で絞り込み対象にするタクソノミーを返す
+ *
+ * register_taxonomy 済みの情報から導出するため、投稿タイプを追加しても設定不要。
+ * 標準の category / post_tag は WP が標準で絞り込み UI を持つため除外する。
+ *
+ * @param string $post_type 投稿タイプ
+ * @return \WP_Taxonomy[]  taxonomy_slug => WP_Taxonomy
  */
-function get_post_type_taxonomies_config() {
-	return array(
-		'news' => array(
-			'news-category' => 'カテゴリー一覧',
-		),
-	// 他のカスタム投稿タイプがある場合はここに追加
-	// 'products' => array(
-	// 'product_category' => '商品カテゴリー一覧',
-	// 'product_tag' => '商品タグ一覧'
-	// )
-	);
+function baizy_get_admin_filter_taxonomies( string $post_type ): array {
+	$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+	unset( $taxonomies['category'], $taxonomies['post_tag'] );
+	return array_filter( $taxonomies, fn( $taxonomy ) => $taxonomy->show_ui );
 }
 
 function add_custom_taxonomies_term_filter() {
 	global $post_type;
 
-	// デバッグ: 現在の投稿タイプを確認（開発時のみ使用）
-	// error_log('Current post type: ' . $post_type);
-
-	// 投稿タイプとタクソノミーの対応表
-	$post_type_taxonomies = get_post_type_taxonomies_config();
-
-	// 現在の投稿タイプに対応するタクソノミーがあるかチェック
-	if ( ! isset( $post_type_taxonomies[ $post_type ] ) ) {
-		return;
-	}
-
-	foreach ( $post_type_taxonomies[ $post_type ] as $taxonomy => $label ) {
-		// タクソノミーが存在するかチェック
-		if ( ! taxonomy_exists( $taxonomy ) ) {
-			// error_log('Taxonomy does not exist: ' . $taxonomy);
-			continue;
-		}
+	foreach ( baizy_get_admin_filter_taxonomies( (string) $post_type ) as $taxonomy => $taxonomy_obj ) {
+		$label = $taxonomy_obj->label . '一覧';
 
 		// タクソノミーの全タームを取得
 		$terms = get_terms(
@@ -90,7 +74,6 @@ function add_custom_taxonomies_term_filter() {
 
 		// タームが存在しない場合はスキップ
 		if ( empty( $terms ) || is_wp_error( $terms ) ) {
-			// error_log('No terms found for taxonomy: ' . $taxonomy);
 			continue;
 		}
 
@@ -128,21 +111,13 @@ function filter_posts_by_custom_taxonomy( $query ) {
 		return;
 	}
 
-	// 投稿タイプとタクソノミーの対応表（共通設定を使用）
-	$post_type_taxonomies = get_post_type_taxonomies_config();
-
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$current_post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
-
-	// 現在の投稿タイプに対応するタクソノミーがあるかチェック
-	if ( ! isset( $post_type_taxonomies[ $current_post_type ] ) ) {
-		return;
-	}
 
 	$tax_queries = array();
 
 	// 各タクソノミーについて絞り込み条件をチェック
-	foreach ( $post_type_taxonomies[ $current_post_type ] as $taxonomy => $label ) {
+	foreach ( baizy_get_admin_filter_taxonomies( $current_post_type ) as $taxonomy => $taxonomy_obj ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET[ $taxonomy ] ) && ! empty( $_GET[ $taxonomy ] ) ) {
 			$tax_queries[] = array(
@@ -287,7 +262,8 @@ function render_color_row( int $index, array $color ) {
 	<label>カラー名:</label>
 	<input type="text" name="color_name[<?php echo absint( $index ); ?>]" value="<?php echo esc_attr( $name ); ?>" placeholder="例: プライマリー" required>
 	<label>カラーコード:</label>
-	<input type="color" name="color_code[<?php echo absint( $index ); ?>]" value="<?php echo esc_attr( $color_code ); ?>" required>
+	<?php // 送信値はテキスト側の color_code のみ。カラーピッカーは JS でテキストと同期する（color_palette_admin.js） ?>
+	<input type="color" value="<?php echo esc_attr( $color_code ); ?>" required>
 	<input type="text" name="color_code[<?php echo absint( $index ); ?>]" value="<?php echo esc_attr( $color_code ); ?>" class="color-code-text" pattern="^#[0-9A-Fa-f]{6}$" required>
 	<span class="dashicons dashicons-trash remove-color-btn"></span>
 </div>

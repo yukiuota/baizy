@@ -39,7 +39,7 @@ class ImageHelper {
 		$attr = '';
 
 		if ( 'svg' === $ext ) {
-			$dims = self::svgDimensions( $full );
+			$dims = self::svg_dimensions( $full );
 			if ( $dims ) {
 				$attr = 'width="' . (int) $dims['width'] . '" height="' . (int) $dims['height'] . '"';
 			}
@@ -63,8 +63,7 @@ class ImageHelper {
 	 * @param string $path  SVG ファイルの絶対パス
 	 * @return array{width: float, height: float}|false
 	 */
-	// phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
-	public static function svgDimensions( string $path ): array|false {
+	public static function svg_dimensions( string $path ): array|false {
 		if ( ! file_exists( $path ) ) {
 			return false;
 		}

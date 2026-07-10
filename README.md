@@ -143,9 +143,8 @@ baizy/
 │   ├── blocks/
 │   │   ├── src/        カスタムブロックのソース（React / TypeScript）
 │   │   └── build/      ビルド出力（custom-blocks.js）
-│   ├── controllers/    ページ別コントローラー
 │   ├── functions/      フック登録・グローバル関数（functions.php から require）
-│   ├── helpers/        ユーティリティクラス（ImageHelper, TemplateHelper, EscapeHelper）
+│   ├── helpers/        ユーティリティクラス（ImageHelper, TemplateHelper）
 │   ├── models/         データ取得クラス（PostModel, TaxonomyModel）
 │   ├── plugins/        プラグイン連携用 CSS / JS
 │   ├── services/       サービスクラス（ExternalLinksManager）
@@ -153,7 +152,6 @@ baizy/
 │   └── widgets/        カスタムウィジェット
 ├── data/
 │   └── field-groups/   ACF / SCF フィールドグループの JSON 同期ファイル
-├── include/            分割テンプレート
 ├── patterns/           ブロックパターン（PHP）
 ├── resources/
 │   ├── archives/       アーカイブテンプレート
@@ -177,7 +175,7 @@ baizy/
 
 ### PHP 名前空間構成
 
-`Baizy\` 名前空間配下のクラスを Composer PSR-4 オートロードで管理します。
+`Baizy\` 名前空間配下のクラスを Composer の classmap オートロードで管理します（ファイル名は WordPress 規約の snake_case のため PSR-4 は使用しません）。クラスを追加したら `composer dump-autoload` を実行してください。
 
 | 名前空間 | 役割 |
 |---------|------|
@@ -186,7 +184,6 @@ baizy/
 | `Baizy\Setup\Customizer` | カスタマイザーセクション（head / body タグ追加）登録 |
 | `Baizy\Helpers\ImageHelper` | 画像 URL 生成・width/height 属性出力・SVG サイズ取得 |
 | `Baizy\Helpers\TemplateHelper` | テンプレートパーツ読み込み |
-| `Baizy\Helpers\EscapeHelper` | `esc_html` / `esc_attr` / `esc_url` / `esc_js` のラッパー |
 | `Baizy\Models\PostModel` | 投稿データ取得 |
 | `Baizy\Models\TaxonomyModel` | タクソノミー・ターム取得（背景色メタ含む） |
 | `Baizy\Services\ExternalLinksManager` | JSON ファイルベースの外部リンク管理 |
@@ -203,13 +200,9 @@ baizy_get_svg_dimensions( $svg_path )   // SVG の幅・高さを配列で返す
 
 // テンプレートパーツ
 baizy_template_part( 'slug' )
-
-// エスケープ出力
-e( $str )       // esc_html して echo
-e_attr( $str )  // esc_attr して echo
-e_url( $str )   // esc_url して echo
-e_js( $str )    // esc_js して echo
 ```
+
+エスケープ出力は WordPress 標準の `esc_html()` / `esc_attr()` / `esc_url()` / `esc_js()` をそのまま使用します。
 
 ### 画像表示ヘルパー
 
@@ -265,7 +258,7 @@ $style = get_term_background_style( $term_id ); // 'background-color: #ffffff;'
 
 #### 管理画面タクソノミーフィルター
 
-カスタム投稿タイプの一覧画面にタクソノミー絞り込みセレクトボックスを追加します。`admin.php` 内の `get_post_type_taxonomies_config()` に投稿タイプ → タクソノミーの対応を追記して設定します。
+カスタム投稿タイプの一覧画面にタクソノミー絞り込みセレクトボックスを追加します。`register_taxonomy` 済みの情報から自動で導出されるため、投稿タイプを追加しても設定は不要です（標準の category / post_tag は WP 標準 UI があるため除外）。
 
 実装: [app/functions/admin.php](app/functions/admin.php)
 

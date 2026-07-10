@@ -1,6 +1,15 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * ページ種別ごとに resources/ 以下のテンプレートへ振り分けるルーター
+ *
+ * 候補テンプレートの解決は TemplateHelper::first_part()
+ * （存在する最初の候補を読み込み、なければフォールバック）に統一している。
+ */
+
+use Baizy\Helpers\TemplateHelper;
+
 echo '<div id="container">';
 baizy_template_part( 'resources/include/header/header_base' ); // header読み込み
 
@@ -11,77 +20,52 @@ elseif ( is_home() || is_front_page() ) :
     // ホームページ・フロントページ
     baizy_template_part( 'resources/pages/top' );
 elseif ( is_single() ) :
-    // 単一投稿ページ
-    $page = get_post( get_the_ID() );
-    $template = locate_template( 'resources/single/' . $page->post_type . '.php' );
-    
-    if ( $template ) {
-        baizy_template_part( 'resources/single/' . $page->post_type );
-    } else {
-        baizy_template_part( 'resources/single/single-base' );
-    }
+    // 単一投稿ページ（resources/single/{post_type}.php → single-base.php）
+    TemplateHelper::first_part(
+        array( 'resources/single/' . get_post_type() ),
+        'resources/single/single-base'
+    );
 elseif ( is_page() ) :
     // 固定ページ
-    global $post, $wp;
-    
-    // 現在のリクエストパスを取得
-    $current_path = $wp->request;
-    
-    if ( !empty( $current_path ) ) {
-        // スラッシュをハイフンに変換してテンプレートを検索
-        $template_name = str_replace( '/', '-', $current_path );
-        $template_part = 'resources/pages/' . $template_name;
-        
-        if ( locate_template( $template_part . '.php' ) ) {
-            baizy_template_part( $template_part );
-        } else {
-            // フォールバック：通常のスラッグベースの検索
-            $slug = basename( get_permalink( $post->ID ) );
-            $template_part = 'resources/pages/' . $slug;
-            if ( ! locate_template( $template_part . '.php' ) ) {
-                $template_part = 'resources/pages/page-base';
-            }
-            baizy_template_part( $template_part );
-        }
-    } else {
-        // パスが空の場合の通常の処理
-        $slug = basename( get_permalink( $post->ID ) );
-        $template_part = 'resources/pages/' . $slug;
-        if ( ! locate_template( $template_part . '.php' ) ) {
-            $template_part = 'resources/pages/page-base';
-        }
-        baizy_template_part( $template_part );
+    // 1. 階層付きパス（parent/child → resources/pages/parent-child.php）
+    // 2. スラッグ（resources/pages/{slug}.php）
+    // 3. page-base.php
+    global $wp;
+    $candidates = array();
+    if ( ! empty( $wp->request ) ) {
+        $candidates[] = 'resources/pages/' . str_replace( '/', '-', $wp->request );
     }
-elseif ( is_archive() || is_category() || is_tag() || is_tax() || is_author() || is_date() ) :
-    // アーカイブページ（カテゴリ、タグ、カスタムタクソノミー、投稿者、日付アーカイブを含む）
+    $candidates[] = 'resources/pages/' . get_post_field( 'post_name' );
+    TemplateHelper::first_part( $candidates, 'resources/pages/page-base' );
+elseif ( is_search() ) :
+    // 検索結果ページ
+    TemplateHelper::first_part(
+        array( 'resources/pages/search' ),
+        'resources/archives/archive-base'
+    );
+elseif ( is_archive() ) :
+    // アーカイブページ（カテゴリ、タグ、カスタムタクソノミー、日付アーカイブを含む）
     $post_type = get_post_type();
 
-    // カスタム投稿タイプが取得できない場合
+    // 投稿が0件の場合など、投稿タイプが取得できない場合はクエリ対象から導出する
     if ( ! $post_type ) {
         $queried_object = get_queried_object();
 
         if ( $queried_object instanceof WP_Post_Type ) {
-            // カスタム投稿タイプのアーカイブの場合
             $post_type = $queried_object->name;
         } elseif ( $queried_object instanceof WP_Term ) {
             // タクソノミーアーカイブの場合、関連する投稿タイプを取得（最初のものを使用）
             $taxonomy  = get_taxonomy( $queried_object->taxonomy );
             $post_type = ( $taxonomy && ! empty( $taxonomy->object_type ) ) ? $taxonomy->object_type[0] : 'post';
         } else {
-            // デフォルト
             $post_type = 'post';
         }
     }
 
-    // テンプレートが存在するか確認
-    if ( locate_template( 'resources/archives/' . $post_type . '.php' ) ) {
-        baizy_template_part( 'resources/archives/' . $post_type );
-    } elseif ( locate_template( 'resources/archives/archive-base.php' ) ) {
-        // デフォルトテンプレート
-        baizy_template_part( 'resources/archives/archive-base' );
-    } else {
-        echo '<div class="container"><p>テンプレートが見つかりませんでした。</p></div>';
-    }
+    TemplateHelper::first_part(
+        array( 'resources/archives/' . $post_type ),
+        'resources/archives/archive-base'
+    );
 elseif ( is_404() ) :
     // 404ページ
     baizy_template_part( 'resources/pages/not-page' );
@@ -92,4 +76,3 @@ endif;
 
 baizy_template_part( 'resources/include/footer/footer_base' ); // footer読み込み
 echo '</div>'; // /#container
-?>

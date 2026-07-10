@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
         <label>カラー名:</label>
         <input type="text" name="color_name[${colorIndex}]" placeholder="例: プライマリー" required>
         <label>カラーコード:</label>
-        <input type="color" name="color_code[${colorIndex}]" value="#000000" required>
+        <input type="color" value="#000000" required>
         <input type="text" name="color_code[${colorIndex}]" value="#000000" class="color-code-text" pattern="^#[0-9A-Fa-f]{6}$" required>
         <span class="dashicons dashicons-trash remove-color-btn"></span>
       </div>

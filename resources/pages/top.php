@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-$news = ( new Baizy\Controllers\TopController() )->getNews();
+$news = \Baizy\Models\PostModel::get_latest_news();
 ?>
 
 <!-- トップページのHTMLをここに記述 -->

@@ -27,16 +27,7 @@ add_filter(
 
 // 抜粋の改行変換は下記 wp_trim_excerpt フィルターで行う
 // （ここで nl2br を重ねると手動抜粋の <br> が二重になるため削除）
-
-// 抜粋でwpautopを無効化して改行を保持
-add_filter(
-	'get_the_excerpt',
-	function ( $excerpt ) {
-		remove_filter( 'the_excerpt', 'wpautop' );
-		return $excerpt;
-	},
-	1
-);
+// wpautop の無効化は ThemeSetup::disable_auto_paragraph() に一本化している
 
 // 自動生成される抜粋でも改行を保持
 add_filter(
@@ -63,6 +54,3 @@ add_filter(
 	10,
 	2
 );
-
-// 抜粋表示時にwpautopを無効化
-remove_filter( 'the_excerpt', 'wpautop' );

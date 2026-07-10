@@ -36,4 +36,20 @@ class TemplateHelper {
 			do_action( "baizy_part_after__{$slug}" );
 		}
 	}
+
+	/**
+	 * 候補テンプレートのうち最初に存在するものを読み込む
+	 *
+	 * @param string[] $candidates 優先順のテンプレートパス（拡張子なし）
+	 * @param string   $fallback   どの候補も存在しない場合に読み込むパス
+	 */
+	public static function first_part( array $candidates, string $fallback ): void {
+		foreach ( $candidates as $candidate ) {
+			if ( locate_template( $candidate . '.php' ) ) {
+				self::part( $candidate );
+				return;
+			}
+		}
+		self::part( $fallback );
+	}
 }

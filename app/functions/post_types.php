@@ -15,6 +15,8 @@ function baizy_register_post_types() {
 		'news',
 		array(
 			'label'         => 'ニュース',
+			// アーカイブページの meta description として出力される（seo.php 参照）
+			'description'   => 'これはカスタム投稿タイプ「news」のアーカイブページです。',
 			'public'        => true,
 			'has_archive'   => true,
 			'show_in_rest'  => true,

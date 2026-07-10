@@ -25,6 +25,13 @@ class Scripts {
 		$this->enqueue_body_class_styles();
 	}
 
+	/**
+	 * body class と同名の CSS ファイルを自動で読み込む
+	 *
+	 * 例: body class に「home」があれば resources/common/css/home.css を enqueue する。
+	 * ThemeSetup::add_slug_to_body_class() が投稿スラッグを body class に追加するため、
+	 * 「ページスラッグと同名の CSS を置くだけでそのページ専用 CSS になる」仕組み。
+	 */
 	private function enqueue_body_class_styles(): void {
 		$body_classes = get_body_class();
 		if ( empty( $body_classes ) ) {

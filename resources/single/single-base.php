@@ -1,7 +1,4 @@
-<?php if ( !defined( 'ABSPATH' ) ) exit;
-
-require_once get_template_directory() . '/app/controllers/sample_controller.php';
-?>
+<?php if ( !defined( 'ABSPATH' ) ) exit; ?>
 
 <?php while ( have_posts() ) : the_post(); ?>
 <main id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

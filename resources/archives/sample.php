@@ -1,8 +1,8 @@
-<?php if ( !defined( 'ABSPATH' ) ) exit; ?>
+<?php if ( !defined( 'ABSPATH' ) ) exit;
 
-<?php
-
-require get_template_directory() . '/app/controllers/sample_controller.php';
+// ターム一覧
+$terms     = display_terms_of_post( 'sample-category', (int) get_the_ID() );
+$now_terms = display_terms_of_post( 'sample-category' );
 ?>
 
 

@@ -14,8 +14,7 @@ class TaxonomyModel {
 	 * @param int    $post_id  投稿ID（0 = 現在の投稿）
 	 * @return array  [ 'name', 'name_escaped', 'slug', 'slug_escaped', 'term_id', 'taxonomy', 'link', 'link_escaped' ][]
 	 */
-	// phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
-	public static function getTermsOfPost( string $taxonomy, int $post_id = 0 ): array {
+	public static function get_terms_of_post( string $taxonomy, int $post_id = 0 ): array {
 		if ( 0 === $post_id ) {
 			$post_id = get_the_ID();
 		}
@@ -46,8 +45,7 @@ class TaxonomyModel {
 	 * @param int $term_id
 	 * @return string  未設定の場合は空文字
 	 */
-	// phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
-	public static function getTermBackgroundColor( int $term_id ): string {
+	public static function get_term_background_color( int $term_id ): string {
 		$color = get_term_meta( $term_id, 'term_bg_color', true );
 		return ! empty( $color ) ? (string) $color : '';
 	}
@@ -58,9 +56,8 @@ class TaxonomyModel {
 	 * @param int $term_id
 	 * @return string  例: 'style="background-color: #ff0000;"'（未設定の場合は空文字）
 	 */
-	// phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
-	public static function getTermBackgroundStyle( int $term_id ): string {
-		$color = self::getTermBackgroundColor( $term_id );
+	public static function get_term_background_style( int $term_id ): string {
+		$color = self::get_term_background_color( $term_id );
 		if ( empty( $color ) ) {
 			return '';
 		}

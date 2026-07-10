@@ -2,7 +2,6 @@
   "name": "baizy",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
   "scripts": {
     "build": "vite build",
     "dist": "pnpm run build && pnpm run sass:build && bash scripts/create_dist.sh",
@@ -24,7 +23,7 @@
     "wordpress",
     "theme",
     "block-editor",
-    "webpack"
+    "vite"
   ],
   "author": "Yuki Uota",
   "license": "GPL-2.0-or-later",
@@ -32,7 +31,7 @@
     "url": "https://github.com/yukiuota/baizy/issues"
   },
   "homepage": "https://github.com/yukiuota/baizy#readme",
-  "description": "WordPress オリジナルテーマ制作テンプレート。Webpack でブロック等をビルド。",
+  "description": "WordPress オリジナルテーマ制作テンプレート。Vite でブロック等をビルド。",
   "engines": {
     "node": ">=18.0.0"
   },

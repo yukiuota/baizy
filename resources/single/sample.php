@@ -1,6 +1,7 @@
 <?php if ( !defined( 'ABSPATH' ) ) exit;
 
-require_once get_template_directory() . '/app/controllers/sample_controller.php';
+// 記事に属するターム一覧
+$now_terms = display_terms_of_post( 'sample-category' );
 ?>
 
 <?php while ( have_posts() ) : the_post(); ?>

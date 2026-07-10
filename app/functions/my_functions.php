@@ -30,31 +30,6 @@ if ( ! function_exists( 'baizy_img_wh' ) ) {
 
 if ( ! function_exists( 'baizy_get_svg_dimensions' ) ) {
 	function baizy_get_svg_dimensions( $svg_file_path ) {
-		return \Baizy\Helpers\ImageHelper::svgDimensions( $svg_file_path );
-	}
-}
-
-// EscapeHelper
-if ( ! function_exists( 'e' ) ) {
-	function e( $str ) {
-		\Baizy\Helpers\EscapeHelper::html( $str );
-	}
-}
-
-if ( ! function_exists( 'e_attr' ) ) {
-	function e_attr( $str ) {
-		\Baizy\Helpers\EscapeHelper::attr( $str );
-	}
-}
-
-if ( ! function_exists( 'e_url' ) ) {
-	function e_url( $str ) {
-		\Baizy\Helpers\EscapeHelper::url( $str );
-	}
-}
-
-if ( ! function_exists( 'e_js' ) ) {
-	function e_js( $str ) {
-		\Baizy\Helpers\EscapeHelper::js( $str );
+		return \Baizy\Helpers\ImageHelper::svg_dimensions( $svg_file_path );
 	}
 }

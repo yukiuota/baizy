@@ -18,13 +18,9 @@
         "phpcompatibility/php-compatibility": "^9.3"
     },
     "autoload": {
-        "psr-4": {
-            "Baizy\\": "app/"
-        },
         "classmap": [
             "app/setup/",
             "app/models/",
-            "app/controllers/",
             "app/helpers/",
             "app/services/",
             "app/widgets/"

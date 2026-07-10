@@ -26,6 +26,26 @@ function baizy_enqueue_term_color_picker_assets( $hook_suffix ) {
 
 
 /**
+ * ターム作成・編集時に背景色メタを保存する
+ *
+ * 新規追加フォームは nonce をフィールド名「_wpnonce_add-tag」で送信し、
+ * 編集フォームは「_wpnonce」で送信するため、フィールド名も引数で受け取る。
+ *
+ * @param int    $term_id      タームID
+ * @param string $nonce_field  nonce の POST フィールド名
+ * @param string $nonce_action 検証する nonce アクション名
+ */
+function baizy_save_term_bg_color( int $term_id, string $nonce_field, string $nonce_action ): void {
+	if ( ! isset( $_POST[ $nonce_field ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_field ] ) ), $nonce_action ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['term_bg_color'] ) && ! empty( $_POST['term_bg_color'] ) ) {
+		update_term_meta( $term_id, 'term_bg_color', sanitize_hex_color( wp_unslash( $_POST['term_bg_color'] ) ) );
+	}
+}
+
+/**
  * 指定したタクソノミーに背景色設定機能を追加する
  *
  * @param string|array $taxonomies タクソノミー名（文字列）または複数のタクソノミー名（配列）
@@ -72,33 +92,9 @@ function add_term_background_color_field( $taxonomies ) {
 			}
 		);
 
-		// ターム作成時に保存
-		add_action(
-			"created_{$taxonomy}",
-			function ( $term_id ) {
-				if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'add-tag' ) ) {
-					return;
-				}
-
-				if ( isset( $_POST['term_bg_color'] ) && ! empty( $_POST['term_bg_color'] ) ) {
-					update_term_meta( $term_id, 'term_bg_color', sanitize_hex_color( wp_unslash( $_POST['term_bg_color'] ) ) );
-				}
-			}
-		);
-
-		// ターム編集時に保存
-		add_action(
-			"edited_{$taxonomy}",
-			function ( $term_id ) {
-				if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-tag_' . $term_id ) ) {
-					return;
-				}
-
-				if ( isset( $_POST['term_bg_color'] ) && ! empty( $_POST['term_bg_color'] ) ) {
-					update_term_meta( $term_id, 'term_bg_color', sanitize_hex_color( wp_unslash( $_POST['term_bg_color'] ) ) );
-				}
-			}
-		);
+		// ターム作成・編集時に保存
+		add_action( "created_{$taxonomy}", fn( $term_id ) => baizy_save_term_bg_color( (int) $term_id, '_wpnonce_add-tag', 'add-tag' ) );
+		add_action( "edited_{$taxonomy}", fn( $term_id ) => baizy_save_term_bg_color( (int) $term_id, '_wpnonce', 'update-tag_' . $term_id ) );
 	}
 }
 
@@ -114,9 +110,9 @@ add_term_background_color_field( 'sample-category' );
 // タームの背景色を取得する関数
 // -----------------------------------------------------
 function get_term_background_color( int $term_id ): string {
-	return \Baizy\Models\TaxonomyModel::getTermBackgroundColor( $term_id );
+	return \Baizy\Models\TaxonomyModel::get_term_background_color( $term_id );
 }
 
 function get_term_background_style( int $term_id ): string {
-	return \Baizy\Models\TaxonomyModel::getTermBackgroundStyle( $term_id );
+	return \Baizy\Models\TaxonomyModel::get_term_background_style( $term_id );
 }
