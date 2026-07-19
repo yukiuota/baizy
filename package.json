@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "vite build",
-    "dist": "pnpm run build && pnpm run sass:build && bash scripts/create_dist.sh",
-    "start": "vite build --watch",
+    "dist": "pnpm run sass:build && bash scripts/create_dist.sh",
     "sass:build": "sass resources/common/scss/common.scss:resources/common/css/common.css resources/common/scss/editor-style.scss:resources/common/css/editor-style.css resources/common/scss/pages/home.scss:resources/common/css/home.css --style=compressed --no-source-map",
     "sass:watch": "sass --watch resources/common/scss/common.scss:resources/common/css/common.css resources/common/scss/editor-style.scss:resources/common/css/editor-style.css resources/common/scss/pages/home.scss:resources/common/css/home.css --style=compressed --no-source-map",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,8 +20,7 @@
   "keywords": [
     "wordpress",
     "theme",
-    "block-editor",
-    "vite"
+    "block-editor"
   ],
   "author": "Yuki Uota",
   "license": "GPL-2.0-or-later",
@@ -31,25 +28,12 @@
     "url": "https://github.com/yukiuota/baizy/issues"
   },
   "homepage": "https://github.com/yukiuota/baizy#readme",
-  "description": "WordPress オリジナルテーマ制作テンプレート。Vite でブロック等をビルド。",
+  "description": "WordPress オリジナルテーマ制作テンプレート。カスタムブロックは baizy-custom-blocks プラグインへ分離。",
   "engines": {
     "node": ">=18.0.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@types/wordpress__block-editor": "^15.0.6",
-    "@vitejs/plugin-react": "^6.0.3",
-    "@wordpress/block-editor": "^15.23.0",
-    "@wordpress/blocks": "^15.23.0",
-    "@wordpress/components": "^33.1.0",
-    "@wordpress/element": "^6.46.0",
-    "@wordpress/scripts": "^32.6.0",
     "chrome-devtools-mcp": "~1.0.1",
-    "puppeteer": "^24.43.1",
-    "ts-loader": "^9.6.2",
-    "typescript": "^6.0.3",
-    "vite": "^8.1.4",
-    "vite-plugin-css-injected-by-js": "^5.0.1"
+    "puppeteer": "^24.43.1"
   }
 }

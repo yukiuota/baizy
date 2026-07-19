@@ -38,30 +38,4 @@ class TaxonomyModel {
 		}
 		return $result;
 	}
-
-	/**
-	 * タームの背景色（16進数カラーコード）を返す
-	 *
-	 * @param int $term_id
-	 * @return string  未設定の場合は空文字
-	 */
-	public static function get_term_background_color( int $term_id ): string {
-		$color = get_term_meta( $term_id, 'term_bg_color', true );
-		return ! empty( $color ) ? (string) $color : '';
-	}
-
-	/**
-	 * タームの背景色を style 属性文字列で返す
-	 *
-	 * @param int $term_id
-	 * @return string  例: 'style="background-color: #ff0000;"'（未設定の場合は空文字）
-	 */
-	public static function get_term_background_style( int $term_id ): string {
-		$color = self::get_term_background_color( $term_id );
-		if ( empty( $color ) ) {
-			return '';
-		}
-		$safe = sanitize_hex_color( $color );
-		return $safe ? 'style="background-color: ' . esc_attr( $safe ) . ';"' : '';
-	}
 }

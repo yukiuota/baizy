@@ -39,39 +39,9 @@ function baizy_register_block_pattern_categories() {
 add_action( 'init', 'baizy_register_block_pattern_categories' );
 
 // ----------------------------------------------------- //
-// テーマ専用のカスタムブロック
+// TypeScript製カスタムブロックは baizy-custom-blocks プラグインへ移行済み
+// （エンキュー・ブロックカテゴリー登録はプラグイン側で行う）
 // ----------------------------------------------------- //
-
-function add_custom_block() {
-	// ビルドされたブロックファイルを読み込む
-	wp_enqueue_script(
-		'custom_block_script',
-		get_stylesheet_directory_uri() . '/app/blocks/build/custom-blocks.js',
-		array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-block-editor' ),
-		filemtime( get_stylesheet_directory() . '/app/blocks/build/custom-blocks.js' ),
-		true
-	);
-}
-
-add_action( 'enqueue_block_editor_assets', 'add_custom_block' );
-
-// カスタムブロックカテゴリーを登録
-function register_custom_block_category( $categories, $_post ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
-	return array_merge(
-		$categories,
-		array(
-			array(
-				'slug'  => 'theme-custom',
-				'title' => 'テーマカスタム',
-				'icon'  => 'admin-appearance', // WordPressのダッシュアイコンを使用
-			),
-		)
-	);
-}
-
-add_filter( 'block_categories_all', 'register_custom_block_category', 10, 2 );
-
-
 
 
 // -----------------------------------------------------

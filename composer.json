@@ -22,8 +22,7 @@
             "app/setup/",
             "app/models/",
             "app/helpers/",
-            "app/services/",
-            "app/widgets/"
+            "app/services/"
         ],
         "files": [
             "app/functions/settings.php",
@@ -34,7 +33,6 @@
             "app/functions/pagination.php",
             "app/functions/taxonomy_display.php",
             "app/functions/excerpt.php",
-            "app/functions/term_color.php",
             "app/functions/global_links.php",
             "app/functions/widget.php",
             "app/functions/custom_block.php",

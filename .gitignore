@@ -4,7 +4,6 @@ node_modules
 .idea/
 
 # Build outputs
-app/blocks/build/
 dist/
 resources/common/css/*.css.map
 resources/common/js/*.map
@@ -19,5 +18,10 @@ wp-content/cache/
 
 # Composer
 vendor/
+
+# プラグイン化した機能（wp-content/plugins/ へ移動するまでの一時置き場）
+baizy-custom-blocks/
+baizy-term-color/
+baizy-color-palette/
 performance-report.json
 performance-trace.json

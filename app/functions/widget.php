@@ -3,8 +3,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-// クラス実装は app/widgets/custom_html_widget.php を参照
-
 // ウィジェットエリアの登録
 function register_theme_widget_areas(): void {
 	register_sidebar(
@@ -67,19 +65,3 @@ function register_theme_menus(): void {
 	);
 }
 add_action( 'init', 'register_theme_menus' );
-
-// カスタムHTMLウィジェットの登録
-add_action( 'widgets_init', fn() => register_widget( \Baizy\Widgets\CustomHtmlWidget::class ) );
-
-// 管理画面スタイル
-add_action(
-	'admin_head-widgets.php',
-	function (): void {
-		echo '<style>
-.custom-html-widget-form .html-content-textarea { font-family: "Courier New", Courier, monospace; font-size: 12px; }
-.html-preview-container { margin-top: 15px; }
-.html-preview { border-radius: 3px; overflow: auto; }
-.html-preview * { max-width: 100%; }
-</style>';
-	}
-);

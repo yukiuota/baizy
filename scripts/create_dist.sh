@@ -6,8 +6,10 @@
 #   bash scripts/create_dist.sh
 #
 # 事前にアセットをビルドしておくこと:
-#   pnpm run build       (ブロック → app/blocks/build/)
 #   pnpm run sass:build  (SCSS → resources/common/css/)
+#
+# カスタムブロックは baizy-custom-blocks プラグインに分離済みのため、
+# テーマの dist にブロックのビルドは不要。
 #
 # 生成後は FTP クライアントで dist/baizy/ の中身だけを
 # 本番の wp-content/themes/baizy/ にアップすればOK。
@@ -16,12 +18,6 @@ set -euo pipefail
 
 THEME_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 DIST_DIR="$THEME_DIR/dist/baizy"
-
-# ブロックのビルド成果物がなければ中断
-if [ ! -f "$THEME_DIR/app/blocks/build/custom-blocks.js" ]; then
-	echo "エラー: app/blocks/build/custom-blocks.js がありません。先に pnpm run build を実行してください。" >&2
-	exit 1
-fi
 
 echo "==> dist を再生成: $DIST_DIR"
 rm -rf "$THEME_DIR/dist"
@@ -40,7 +36,9 @@ rsync -a \
 	--exclude 'mcp/' \
 	--exclude 'sample/' \
 	--exclude 'scripts/' \
-	--exclude 'app/blocks/src/' \
+	--exclude 'baizy-custom-blocks/' \
+	--exclude 'baizy-term-color/' \
+	--exclude 'baizy-color-palette/' \
 	--exclude 'resources/common/scss/' \
 	--exclude '.npmrc' \
 	--exclude '.prettierrc' \
@@ -51,8 +49,6 @@ rsync -a \
 	--exclude 'package.json' \
 	--exclude 'pnpm-lock.yaml' \
 	--exclude 'pnpm-workspace.yaml' \
-	--exclude 'tsconfig.json' \
-	--exclude 'vite.config.mts' \
 	--exclude 'performance-check.js' \
 	--exclude 'performance-report.json' \
 	--exclude 'performance-trace.json' \
