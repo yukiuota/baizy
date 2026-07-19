@@ -17,8 +17,8 @@ if ( is_front_page() && is_page() ) :
     // 固定ページがトップページに設定されている場合
     baizy_template_part( 'resources/pages/page-base' );
 elseif ( is_home() || is_front_page() ) :
-    // ホームページ・フロントページ
-    baizy_template_part( 'resources/pages/top' );
+    // ホームページ・フロントページ（データは TopController が組み立てる）
+    baizy_template_part( 'resources/pages/top', \Baizy\Controllers\TopController::data() );
 elseif ( is_single() ) :
     // 単一投稿ページ（resources/single/{post_type}.php → single-base.php）
     TemplateHelper::first_part(

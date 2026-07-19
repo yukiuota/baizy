@@ -10,8 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // TemplateHelper
 if ( ! function_exists( 'baizy_template_part' ) ) {
-	function baizy_template_part( $slug ) {
-		\Baizy\Helpers\TemplateHelper::part( $slug );
+	/**
+	 * @param string $slug テンプレートパス（拡張子なし）
+	 * @param array  $args テンプレートへ渡すデータ（テンプレート側では $args で参照）
+	 */
+	function baizy_template_part( $slug, $args = array() ) {
+		\Baizy\Helpers\TemplateHelper::part( $slug, (array) $args );
 	}
 }
 

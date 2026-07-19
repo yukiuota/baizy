@@ -21,6 +21,7 @@
         "classmap": [
             "app/setup/",
             "app/models/",
+            "app/controllers/",
             "app/helpers/",
             "app/services/"
         ],
