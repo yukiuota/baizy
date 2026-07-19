@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "chrome-devtools-mcp": "~1.0.1",
-    "puppeteer": "^24.43.1"
+    "puppeteer": "^24.43.1",
+    "sass": "^1.101.0"
   }
 }
