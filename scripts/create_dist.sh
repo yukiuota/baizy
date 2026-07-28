@@ -39,7 +39,6 @@ rsync -a \
 	--exclude 'baizy-custom-blocks/' \
 	--exclude 'baizy-term-color/' \
 	--exclude 'baizy-color-palette/' \
-	--exclude 'resources/common/scss/' \
 	--exclude '.npmrc' \
 	--exclude '.prettierrc' \
 	--exclude '.env' \
