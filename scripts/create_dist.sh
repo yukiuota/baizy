@@ -53,6 +53,7 @@ rsync -a \
 	--exclude 'performance-trace.json' \
 	--exclude 'PERFORMANCE_REPORT.md' \
 	--exclude 'README.md' \
+	--exclude 'LICENSE' \
 	--exclude 'phpcs' \
 	--exclude 'phpcs.xml' \
 	"$THEME_DIR/" "$DIST_DIR/"
