@@ -1,10 +1,6 @@
 <?php
 /**
- * ACF & SCF JSON Sync
- *
- * ACF: 標準JSON同期機能を使用して自動保存・読み込み
- * SCF: カスタムフィールド設定をJSON形式でエクスポート
- * 保存先: /data/field-groups/
+ * ACF / SCF のフィールド定義を /data/field-groups/ へJSON同期する
  *
  * @package baizy
  * @since 1.0.0
@@ -14,10 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-/**
- * ACF JSON保存先を指定
- * ACFの標準JSON同期機能を使用
- */
+// ACF JSON の保存先を指定（ACF標準の同期機能）
 function baizy_acf_json_save_point( $_path ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 	$custom_path = BAIZY_THEME_PATH . '/data/field-groups';
 
@@ -30,10 +23,7 @@ function baizy_acf_json_save_point( $_path ) { // phpcs:ignore Generic.CodeAnaly
 }
 add_filter( 'acf/settings/save_json', 'baizy_acf_json_save_point' );
 
-/**
- * ACF JSON読み込み先を指定
- * ACFの標準JSON同期機能を使用
- */
+// ACF JSON の読み込み先を指定（ACF標準の同期機能）
 function baizy_acf_json_load_point( $paths ) {
 	// デフォルトパスを削除
 	unset( $paths[0] );
@@ -46,7 +36,7 @@ function baizy_acf_json_load_point( $paths ) {
 add_filter( 'acf/settings/load_json', 'baizy_acf_json_load_point' );
 
 /**
- * WP_DEBUG 時のみログを出力
+ * WP_DEBUG 時のみログを出力する
  *
  * @param string $message ログメッセージ
  */
@@ -99,7 +89,7 @@ function baizy_scf_setting_to_array( $setting ): array {
 }
 
 /**
- * ファイルに内容を書き込む（WP_Filesystem 優先、file_put_contents フォールバック）
+ * ファイルへ書き込む（WP_Filesystem 優先・file_put_contents フォールバック）
  *
  * @param string $file_path 書き込み先の絶対パス
  * @param string $contents  書き込む内容
@@ -121,10 +111,7 @@ function baizy_scf_write_file( string $file_path, string $contents ): bool {
 }
 
 /**
- * SCFフィールドグループ（カスタムフィールド定義）をJSONにエクスポート
- *
- * ファイル名は「scf-{数値ID}.json」のみ生成する（数値以外のIDはスキップ）ため、
- * パス操作の余地はない。
+ * SCFフィールドグループをJSONへエクスポートする（ファイル名は scf-{数値ID}.json のみ）
  *
  * @param int $post_id 投稿ID
  */

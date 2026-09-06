@@ -53,12 +53,7 @@ class ThemeSetup {
 		remove_filter( 'the_excerpt', 'wpautop' );
 	}
 
-	/**
-	 * 投稿スラッグを body class に追加する
-	 *
-	 * Scripts::enqueue_body_class_styles() がこのクラス名と同名の CSS を
-	 * 自動 enqueue するため、ページ別 CSS の紐付けにも使われる。
-	 */
+	// 投稿スラッグを body class に追加する（ページ別 CSS の自動 enqueue にも使われる）
 	public function add_slug_to_body_class( array $classes ): array {
 		global $post;
 		if ( isset( $post ) ) {

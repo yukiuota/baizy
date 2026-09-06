@@ -3,9 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-// ----------------------------------------------------- //
 // コメントフォームのカスタマイズ
-// ----------------------------------------------------- //
 // コメント投稿後のリダイレクト先にフラグを追加
 function my_comment_redirect( $location ) {
 	if ( ! str_contains( $location, 'comment_posted=1' ) ) {

@@ -1,12 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-/**
- * トップページ ビュー
- *
- * データは app/controllers/top_controller.php の TopController::data() から
- * $args で受け取る。このファイルでは取得処理（get_posts / get_field 等）を行わない。
- */
+// トップページ ビュー（データは TopController::data() から $args で受け取る。取得処理は書かない）
 
 $news = $args['news'] ?? array();
 $hero = $args['hero'] ?? array();

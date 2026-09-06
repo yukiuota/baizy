@@ -8,13 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-/**
- * トップページ用コントローラー
- *
- * Model からデータを集めて、ビュー（resources/pages/top.php）へ渡す配列を組み立てる。
- * 呼び出しは resources/layouts/index.php のルーターから:
- *   baizy_template_part( 'resources/pages/top', TopController::data() );
- */
+// トップページ用コントローラー（Model から集めたデータを resources/pages/top.php へ渡す）
 class TopController {
 
 	/**

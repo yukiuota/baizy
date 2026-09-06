@@ -3,9 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-// =============================================================================
 // ブロックパターン設定（patternsディレクトリ自動読み込み）
-// =============================================================================
 
 add_action(
 	'after_setup_theme',
@@ -15,13 +13,7 @@ add_action(
 	}
 );
 
-/**
- * カスタムパターンカテゴリーを登録
- *
- * パターンファイル自体は WordPress 6.0+ の組み込み機能により
- * patterns/ ディレクトリから自動登録されるため、手動登録は不要。
- * ここではカテゴリーのラベルのみ登録する。
- */
+// パターンカテゴリーを登録（パターン本体は patterns/ から WP が自動登録するため不要）
 function baizy_register_block_pattern_categories() {
 	$categories = array(
 		'sample'         => 'サンプル',
@@ -38,15 +30,10 @@ function baizy_register_block_pattern_categories() {
 }
 add_action( 'init', 'baizy_register_block_pattern_categories' );
 
-// ----------------------------------------------------- //
 // TypeScript製カスタムブロックは baizy-custom-blocks プラグインへ移行済み
-// （エンキュー・ブロックカテゴリー登録はプラグイン側で行う）
-// ----------------------------------------------------- //
 
 
-// -----------------------------------------------------
 // 各投稿のブロックの表示・非表示指定
-// -----------------------------------------------------
 function restrict_blocks_for_cases( $allowed_blocks, $block_editor_context ) {
 	// 投稿タイプ
 	if ( ! empty( $block_editor_context->post ) && 'news' === $block_editor_context->post->post_type ) {

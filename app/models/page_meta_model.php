@@ -5,18 +5,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-/**
- * ACFカスタムフィールド取得用モデル
- *
- * フィールドの取得・整形はすべてこのクラスに集約する。
- * ビュー（resources/）内で get_field() を直接呼ばないこと。
- */
+// ACFフィールドの取得・整形を集約するモデル（ビューでの get_field() 直呼びは禁止）
 class PageMetaModel {
 
 	/**
-	 * ACFフィールドを安全に取得する
-	 *
-	 * ACFプラグインが無効でも致命的エラーにならないようガードする。
+	 * ACFフィールドを安全に取得する（ACF無効時も致命的エラーにしない）
 	 *
 	 * @param string $name    フィールド名
 	 * @param int    $post_id 投稿ID
@@ -33,8 +26,6 @@ class PageMetaModel {
 
 	/**
 	 * ヒーローセクションのフィールド一式を整形して返す
-	 *
-	 * ビューが使いやすい形（キーが揃った配列）に整えるのがモデルの役割。
 	 *
 	 * @param int $post_id 投稿ID
 	 * @return array{title:string, image:array|null}

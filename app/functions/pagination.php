@@ -3,9 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-// -----------------------------------------------------
 // アーカイブ：ページネーション
-// -----------------------------------------------------
 function custom_pagination() {
 	global $wp_query;
 	$big = 999999999;
@@ -38,9 +36,7 @@ function custom_pagination() {
 }
 
 
-// -----------------------------------------------------
 // single：ページャー
-// -----------------------------------------------------
 function display_prev_next_post_links() {
 	$prev_post = get_previous_post();
 	$next_post = get_next_post();

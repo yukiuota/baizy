@@ -7,3 +7,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 new Baizy\Setup\ThemeSetup();
 new Baizy\Setup\Scripts();
 new Baizy\Setup\Customizer();
+new Baizy\Setup\Security();

@@ -1,12 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-/**
- * ページ種別ごとに resources/ 以下のテンプレートへ振り分けるルーター
- *
- * 候補テンプレートの解決は TemplateHelper::first_part()
- * （存在する最初の候補を読み込み、なければフォールバック）に統一している。
- */
+// ページ種別ごとに resources/ 以下へ振り分けるルーター（候補解決は TemplateHelper::first_part()）
 
 use Baizy\Helpers\TemplateHelper;
 

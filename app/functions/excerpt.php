@@ -3,9 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-// -----------------------------------------------------
 // 抜粋（the_excerpt）のカスタマイズ
-// -----------------------------------------------------
 
 // 省略記号を空に
 add_filter(
@@ -25,9 +23,7 @@ add_filter(
 	999
 );
 
-// 抜粋の改行変換は下記 wp_trim_excerpt フィルターで行う
-// （ここで nl2br を重ねると手動抜粋の <br> が二重になるため削除）
-// wpautop の無効化は ThemeSetup::disable_auto_paragraph() に一本化している
+// 改行変換は下記 wp_trim_excerpt に集約（nl2br 重複回避・wpautop 無効化は ThemeSetup 側）
 
 // 自動生成される抜粋でも改行を保持
 add_filter(

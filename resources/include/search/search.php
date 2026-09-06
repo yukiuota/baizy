@@ -1,7 +1,7 @@
 <?php if ( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * カスタム検索フォームを表示する関数
+ * カスタム検索フォームを表示する
  *
  * @param array $args 検索フォームの設定オプション
  * @return void
@@ -26,9 +26,7 @@ function custom_search_form(array $args = []): void {
 <?php
 }
 
-/**
- * 検索クエリをカスタマイズして全文検索の精度を向上させる
- */
+// 検索クエリをカスタマイズして全文検索の精度を上げる
 function custom_search_query(WP_Query $query) {
     // メインクエリで検索ページの場合のみ処理
     if ($query->is_search() && $query->is_main_query()) {
@@ -59,9 +57,7 @@ function custom_search_query(WP_Query $query) {
 }
 add_filter('pre_get_posts', 'custom_search_query');
 
-/**
- * 検索フォームをショートコードで使えるようにする
- */
+// 検索フォームをショートコードで使えるようにする
 function custom_search_shortcode($atts) {
     $atts = shortcode_atts([
         'placeholder' => 'サイト内を検索',

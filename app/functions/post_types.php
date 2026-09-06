@@ -3,9 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-// -----------------------------------------------------
 // カスタム投稿タイプ・タクソノミー登録
-// -----------------------------------------------------
 
 add_action( 'init', 'baizy_register_post_types' );
 
@@ -109,9 +107,7 @@ function baizy_register_post_types() {
 }
 
 
-// -----------------------------------------------------
 // 投稿タイプのサポート機能を変更
-// -----------------------------------------------------
 add_action( 'init', 'baizy_remove_post_support' );
 
 function baizy_remove_post_support() {
@@ -119,9 +115,7 @@ function baizy_remove_post_support() {
 }
 
 
-// -----------------------------------------------------
 // アーカイブページの表示件数を変更
-// -----------------------------------------------------
 add_action( 'pre_get_posts', 'baizy_custom_posts_per_page' );
 
 function baizy_custom_posts_per_page( $query ) {
@@ -133,9 +127,7 @@ function baizy_custom_posts_per_page( $query ) {
 }
 
 
-// -----------------------------------------------------
 // デフォルトタームを設定
-// -----------------------------------------------------
 add_action( 'wp_insert_post', 'baizy_set_default_news_category', 10, 3 );
 
 function baizy_set_default_news_category( $post_id, $post, $_update ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
