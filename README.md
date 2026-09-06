@@ -137,7 +137,7 @@ baizy/
 | `Baizy\Setup\ThemeSetup` | テーマサポート追加・wp_head クリーンアップ・著者アーカイブ無効化 |
 | `Baizy\Setup\Scripts` | CSS / JS のエンキュー管理 |
 | `Baizy\Setup\Customizer` | カスタマイザーセクション（head / body タグ追加）登録 |
-| `Baizy\Setup\Security` | ユーザー情報の外部公開制限（REST users / サイトマップ無効化） |
+| `Baizy\Setup\Security` | ユーザー情報の外部公開制限（REST users / users サイトマップ / 著者アーカイブ / oEmbed 著者情報の無効化） |
 | `Baizy\Helpers\ImageHelper` | 画像 URL 生成・width/height 属性出力・SVG サイズ取得 |
 | `Baizy\Helpers\TemplateHelper` | テンプレートパーツ読み込み |
 | `Baizy\Models\PostModel` | 投稿データ取得 |

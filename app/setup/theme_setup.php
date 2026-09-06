@@ -13,7 +13,6 @@ class ThemeSetup {
 	public function __construct() {
 		add_action( 'after_setup_theme', array( $this, 'setup_theme' ) );
 		add_filter( 'body_class', array( $this, 'add_slug_to_body_class' ) );
-		add_action( 'template_redirect', array( $this, 'disable_author_archive' ) );
 	}
 
 	public function setup_theme(): void {
@@ -60,14 +59,5 @@ class ThemeSetup {
 			$classes[] = $post->post_name;
 		}
 		return $classes;
-	}
-
-	public function disable_author_archive(): void {
-		if ( is_author() ) {
-			global $wp_query;
-			$wp_query->set_404();
-			status_header( 404 );
-			nocache_headers();
-		}
 	}
 }
