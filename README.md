@@ -10,7 +10,7 @@
 
 - WordPress 6.5 以上（`theme.json` のスキーマが 6.5 なので目安）
 - PHP 8.0 以上（`composer.json` に準拠）
-- Node.js 18 以上（`package.json` の `engines` に準拠）
+- Node.js 22.12.0 以上（`package.json` の `engines` に準拠）
 - pnpm 10.0 以上（パッケージマネージャー）
 
 ## セットアップ
@@ -180,7 +180,8 @@ baizy_template_part( 'slug' )
 外観 > カスタマイズ > タグ追加 にて、`<head>` 直後・`<body>` 直後に任意のコードを追加できます。
 
 - Google Analytics / Google Tag Manager などのトラッキングコードの挿入を想定
-- 管理者専用。入力値は `wp_kses` で `<script>` / `<meta>` / `<link>` などの許可タグのみ保持
+- 管理者（`edit_theme_options` 権限）専用。GTM の `<script>` をそのまま出力する必要があるため、入力値は **サニタイズせず `wp_unslash()` のみ**を適用します（`wp_kses` はタグ内のコンテンツを破壊するため使用していません）
+- そのため、信頼できないユーザーに `edit_theme_options` 権限を与えないでください
 
 実装: [app/setup/customizer.php](app/setup/customizer.php)
 
@@ -302,7 +303,9 @@ FTP では **`dist/baizy/` の中身をそのまま本番の `wp-content/themes/
 
 ### 除外されるもの（抜粋）
 
-`node_modules/`・`.git/`・`.claude/`・`mcp/`・`sample/`・`scripts/`・`baizy-custom-blocks/`（プラグインは別途デプロイ）・SCSS ソース（`resources/common/scss/`）・各種設定ファイル（`phpcs.xml`, `package.json`, `pnpm-lock.yaml` など）・ドキュメント / レポート類・`.DS_Store` / `*.log` / `*.map`
+`node_modules/`・`.git/`・`.claude/`・`.agents/`・`mcp/`・`sample/`・`scripts/`・`baizy-custom-blocks/`（プラグインは別途デプロイ）・各種設定ファイル（`phpcs.xml`, `package.json`, `pnpm-lock.yaml`, `.prettierrc`, `.npmrc` など）・ドキュメント / レポート類・`.DS_Store` / `*.log` / `*.map`
+
+> SCSS ソース（`resources/common/scss/`）は除外していないため `dist/baizy/` に含まれます。本番で不要な場合は `scripts/create_dist.sh` の rsync に `--exclude 'resources/common/scss/'` を追加してください。
 
 除外リストの正式な定義は [`scripts/create_dist.sh`](scripts/create_dist.sh) を参照してください。除外を変更したい場合もこのスクリプトを編集します。
 
