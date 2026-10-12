@@ -1,124 +1,133 @@
-<div class="c-form">
+<div class="c-form js-cf7-input">
     <div class="c-form__item">
         氏名<br>
-        [text* your-name id:your-name autocomplete:name]
+        [text* your-name autocomplete:name]
     </div>
     <br><br>
 
     <div class="c-form__item">
         メールアドレス<br>
-        [email* your-email id:your-email autocomplete:email]
+        [email* your-email autocomplete:email]
     </div>
     <br><br>
 
     <div class="c-form__item">
         URL<br>
-        [url* url id:url]
+        [url* url]
     </div>
     <br><br>
 
     <div class="c-form__item">
         電話番号<br>
-        [tel* tel id:tel]
+        [tel* tel]
     </div>
     <br><br>
 
     <div class="c-form__item">
         数値<br>
-        [number* number id:number]
+        [number* number]
     </div>
     <br><br>
 
     <div class="c-form__item">
         日付<br>
-        [date* date id:date]
+        [date* date]
     </div>
     <br><br>
 
     <div class="c-form__item">
         テキストエリア<br>
-        [textarea* your-message id:your-message]
+        [textarea* your-message]
     </div>
     <br><br>
 
     <div class="c-form__item">
         ドロップダウンメニュー<br>
-        [select* select id:select "選択肢 1" "選択肢 2" "選択肢 3"]
+        [select* select "選択肢 1" "選択肢 2" "選択肢 3"]
     </div>
     <br><br>
 
     <div class="c-form__item">
         チェックボックス<br>
-        [checkbox checkbox id:checkbox "選択肢 1" "選択肢 2" "選択肢 3"]
+        [checkbox checkbox "選択肢 1" "選択肢 2" "選択肢 3"]
     </div>
     <br><br>
 
     <div class="c-form__item">
         ラジオボタン<br>
-        [radio radio id:radio use_label_element "選択肢 1" "選択肢 2" "選択肢 3"]
+        [radio radio use_label_element "選択肢 1" "選択肢 2" "選択肢 3"]
     </div>
     <br><br>
-    <input type="button" class="confirm_button c-form-confirm_button" value="内容を確認する">
+    <input type="button" class="c-form-confirm_button js-cf7-confirm-button" value="内容を確認する">
 </div>
 
 
 <br><br><br>
 
-<!-- 確認画面 -->
-<div class="form c-form-confirm">
+<!-- 確認画面（入力値は CF7 の反映機能 [reflection] で自動表示される） -->
+<div class="form c-form-confirm js-cf7-confirm">
 
-    <div class="c-form__item">1
-        <div class="c-form-confirm_your-name"></div>
+    <div class="c-form__item">
+        氏名<br>
+        [reflection your-name]
     </div>
     <br><br>
 
-    <div class="c-form__item">2
-        <div class="c-form-confirm_your-email"></div>
+    <div class="c-form__item">
+        メールアドレス<br>
+        [reflection your-email]
     </div>
     <br><br>
 
-    <div class="c-form__item">3
-        <div class="c-form-confirm_url"></div>
+    <div class="c-form__item">
+        URL<br>
+        [reflection url]
     </div>
     <br><br>
 
-    <div class="c-form__item">4
-        <div class="c-form-confirm_tel"></div>
+    <div class="c-form__item">
+        電話番号<br>
+        [reflection tel]
     </div>
     <br><br>
 
-    <div class="c-form__item">5
-        <div class="c-form-confirm_number"></div>
+    <div class="c-form__item">
+        数値<br>
+        [reflection number]
     </div>
     <br><br>
 
-    <div class="c-form__item">6
-        <div class="c-form-confirm_date"></div>
+    <div class="c-form__item">
+        日付<br>
+        [reflection date]
     </div>
     <br><br>
 
-    <div class="c-form__item">7
-        <div class="c-form-confirm_your-message"></div>
+    <div class="c-form__item">
+        テキストエリア<br>
+        [reflection your-message]
     </div>
     <br><br>
 
-    <div class="c-form__item">8
-        <div class="c-form-confirm_select"></div>
+    <div class="c-form__item">
+        ドロップダウンメニュー<br>
+        [reflection select]
     </div>
     <br><br>
 
-    <div class="c-form__item">9
-        <div class="c-form-confirm_checkbox"></div>
+    <div class="c-form__item">
+        チェックボックス<br>
+        [reflection checkbox "選択なし"]
     </div>
     <br><br>
 
-    <div class="c-form__item">10
-        <div class="c-form-confirm_radio"></div>
+    <div class="c-form__item">
+        ラジオボタン<br>
+        [reflection radio]
     </div>
     <br><br>
 
-
-    <input type="button" class="back_button" value="修正する">
+    <input type="button" class="back_button js-cf7-back-button" value="修正する">
     <br>
     [submit "送信"]
 </div>

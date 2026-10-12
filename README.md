@@ -268,6 +268,7 @@ baizy_custom_search_form(
 | `baizy_filter_posts_by_custom_taxonomy( $query )` | `pre_get_posts` | 上のセレクトボックスで選んだタームで投稿一覧を絞り込む | `admin.php` |
 | `baizy_enqueue_cf7_assets()` | `wp_enqueue_scripts` | Contact Form 7 の CSS / JS を、フォームのショートコードがあるページでだけ読み込む | `plugins.php` |
 | `baizy_enqueue_custom_assets_for_specific_page()` | `wp_enqueue_scripts` | フォームのあるページで `app/plugins/p_cf7/` の CSS / JS を読み込み、サンクスページの URL（`/thanks/`）を JS に渡す | `plugins.php` |
+| `baizy_cf7_add_required_rules( $schema, $contact_form )` | `wpcf7_swv_create_schema` | Contact Form 7 の必須エラーを「氏名を入力してください。」のような項目ごとの文言にする。項目名は `baizy_cf7_field_labels()` に登録したものを使い、未登録の項目はフォームの「メッセージ」設定の共通文言になる | `plugins.php` |
 | `baizy_wpcf7_autop_return_false()` | `wpcf7_autop_or_not` | Contact Form 7 が自動で挿入する `<p>` / `<br>` を無効にする | `plugins.php` |
 | `baizy_acf_json_save_point( $_path )` | `acf/settings/save_json` | ACF の JSON 保存先を `data/field-groups/` にする | `acf_json_export.php` |
 | `baizy_acf_json_load_point( $paths )` | `acf/settings/load_json` | ACF の JSON 読み込み先を `data/field-groups/` にする | `acf_json_export.php` |
@@ -280,6 +281,7 @@ baizy_custom_search_form(
 
 | 関数 | 戻り値 | 内容 | 定義場所 |
 |------|--------|------|---------|
+| `baizy_cf7_field_labels()` | `array` | 必須エラーに表示する項目名を `フォームタグの name => 項目名` で返す。フォームの項目を変えたらここも更新する | `plugins.php` |
 | `baizy_get_admin_filter_taxonomies( $post_type )` | `WP_Taxonomy[]` | 投稿一覧の絞り込み対象にするタクソノミーを返す（`category` / `post_tag` と、管理画面に表示しないものは除外） | `admin.php` |
 | `baizy_scf_setting_to_array( $setting )` | `array` | SCF の設定オブジェクトを、JSON に書き出す配列に変換する | `acf_json_export.php` |
 | `baizy_scf_write_file( $file_path, $contents )` | `bool` | ファイルに書き込む（`WP_Filesystem` を優先し、使えなければ `file_put_contents`） | `acf_json_export.php` |

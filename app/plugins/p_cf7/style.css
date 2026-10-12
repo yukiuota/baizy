@@ -4,7 +4,23 @@
   display: none;
 }
 
+/* 確認画面の表示中（form.js が .wpcf7-form に is-confirm を付ける） */
+.wpcf7-form.is-confirm .c-form {
+  display: none;
+}
+
+.wpcf7-form.is-confirm .c-form-confirm {
+  display: block;
+}
+
 /*デフォルトのサンクスメッセージを非表示*/
 .wpcf7-response-output {
   display: none;
+}
+
+/* 確認画面の反映欄（fieldset）のブラウザ既定の枠線・余白を消す */
+.c-form-confirm .wpcf7-reflection {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
