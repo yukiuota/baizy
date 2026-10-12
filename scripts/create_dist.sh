@@ -29,11 +29,11 @@ rsync -a \
 	--exclude '.DS_Store' \
 	--exclude '.agents/' \
 	--exclude '.claude/' \
+	--exclude '.mcp.json' \
 	--exclude '.idea/' \
 	--exclude 'node_modules/' \
 	--exclude 'vendor/' \
 	--exclude 'dist/' \
-	--exclude 'mcp/' \
 	--exclude 'sample/' \
 	--exclude 'scripts/' \
 	--exclude 'baizy-custom-blocks/' \

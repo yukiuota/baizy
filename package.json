@@ -7,11 +7,12 @@
     "sass:build": "sass resources/common/scss/common.scss:resources/common/css/common.css resources/common/scss/editor-style.scss:resources/common/css/editor-style.css resources/common/scss/pages/home.scss:resources/common/css/home.css --style=compressed --no-source-map",
     "sass:watch": "sass --watch resources/common/scss/common.scss:resources/common/css/common.css resources/common/scss/editor-style.scss:resources/common/css/editor-style.css resources/common/scss/pages/home.scss:resources/common/css/home.css --style=compressed --no-source-map",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "smoke": "bash scripts/smoke.sh",
     "mcp:start": "chrome-devtools-mcp",
     "mcp:headless": "chrome-devtools-mcp --headless=true --isolated=true",
     "mcp:dev": "chrome-devtools-mcp --isolated=true --channel=dev",
     "perf:check": "node performance-check.js",
-    "perf:localhost": "node performance-check.js http://localhost:10013/"
+    "perf:localhost": "node performance-check.js http://localhost:8080/"
   },
   "repository": {
     "type": "git",

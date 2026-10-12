@@ -31,6 +31,11 @@
 - ページ別 CSS を追加したら `package.json` の `sass:build` / `sass:watch` の両方に入出力を追記する
 - 本番に不要なファイル・ディレクトリを追加したら `scripts/create_dist.sh` の除外リストに追加する
 
+## 動作確認
+
+- PHP の構文・phpcs・SCSS のビルドは hooks（`.claude/hooks/`）が編集のたびに自動で実行する。hooks からエラーが返ったらその場で直す
+- テンプレート・PHP の変更を終えたら `pnpm smoke` を実行し、NG がゼロであることを確認する（ローカル WordPress が `http://localhost:8080` で起動している前提）
+
 ## プラグインとの境界
 
 以下はテーマから分離済み。テーマ側に実装を戻さない。

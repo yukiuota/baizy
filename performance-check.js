@@ -174,5 +174,5 @@ function generateRecommendations(metrics, resources) {
 }
 
 // コマンドライン引数からURLを取得
-const targetUrl = process.argv[2] || 'http://localhost:10013/';
+const targetUrl = process.argv[2] || 'http://localhost:8080/';
 performanceCheck(targetUrl).catch(console.error);

@@ -62,6 +62,19 @@ PHP のバージョンアップ前に Warning / Deprecation を洗い出す `/wp
 | `scss.md` | `resources/common/scss/` |
 | `javascript.md` | `resources/common/js/` ・ `app/plugins/` の JS |
 
+#### Claude Code の hooks
+
+[`.claude/settings.json`](.claude/settings.json) に hooks を設定しており、Claude Code がファイルを編集すると次の処理が自動で実行されます（スクリプトは [`.claude/hooks/`](.claude/hooks/)）。
+
+| タイミング | 対象 | 処理 |
+|-----------|------|------|
+| 編集前 | `resources/common/css/*.css` ・ `data/field-groups/*.json` ・ `vendor/` ・ `node_modules/` ・ `dist/` | 編集をブロックし、代わりに編集すべき場所を Claude に伝える |
+| 編集後 | すべての PHP | `php -l` で構文チェック |
+| 編集後 | `app/` ・ `functions.php` | `phpcbf` で自動修正し、残った `phpcs` の指摘を Claude に返して修正させる |
+| 編集後 | `resources/common/scss/*.scss` | `pnpm sass:build` を実行し、失敗したらエラーを Claude に返す |
+
+hooks の実行には `jq` が必要です。
+
 ### カスタムブロック（Gutenberg）
 
 カスタムブロックは **baizy-custom-blocks プラグイン**として分離しました。
@@ -103,18 +116,35 @@ pnpm sass:watch
 # 本番アップ用の dist/baizy/ を生成（SCSS → dist 作成を一括実行）
 pnpm dist
 
-# Puppeteer によるパフォーマンス計測（URL省略時は http://localhost:10013/ を計測）
+# ローカル WordPress の主要画面を巡回して HTTP ステータスと PHP エラーを確認（URL省略時は http://localhost:8080）
+pnpm smoke
+pnpm smoke http://localhost:10013
+
+# Puppeteer によるパフォーマンス計測（URL省略時は http://localhost:8080/ を計測）
 pnpm perf:check http://localhost:8080/
 pnpm perf:localhost
 ```
+
+### スモークテスト（`pnpm smoke`）
+
+[`scripts/smoke.sh`](scripts/smoke.sh) は、トップ・検索・404 と、REST API から拾った投稿タイプごとの詳細 / アーカイブ、タクソノミーごとのタームアーカイブを巡回し、次を確認します。投稿タイプやタクソノミーを追加してもスクリプトの修正は不要です。
+
+- HTTP ステータス（404 ページは 404、それ以外は 200）
+- HTML に PHP の Warning / Notice / Deprecated / Fatal error が出ていないか（`WP_DEBUG` 有効が前提）
+- `../../docker-compose.yml` があれば、巡回中に `wordpress` コンテナのログへ出た PHP エラー（場所が違う場合は `BAIZY_COMPOSE_FILE` で指定）
+
+テンプレートや PHP を変更したあとの動作確認に使います。NG があれば終了コード 1 で終わります。
 
 ## ディレクトリ構成（抜粋）
 
 ```
 baizy/
 ├── .claude/
+│   ├── hooks/          編集時に自動実行するチェック（Claude Code hooks）
 │   ├── rules/          コーディングルール（Claude Code 用）
-│   └── skills/         Claude Code スキル（wp-phpcs, wp-warning-audit）
+│   ├── skills/         Claude Code スキル（wp-phpcs, wp-warning-audit）
+│   └── settings.json   hooks と許可するコマンドの設定
+├── .mcp.json           Chrome DevTools MCP の設定（Claude Code が自動で読み込む）
 ├── app/
 │   ├── controllers/    ビューへ渡すデータの組み立て（TopController, SampleController）
 │   ├── functions/      フック登録・グローバル関数（Composer の files オートロードで読み込み）
@@ -429,10 +459,9 @@ ACF（Advanced Custom Fields）と SCF（Smart Custom Fields）のフィール�
 
 このリポジトリには、Chrome DevTools MCP（Model Context Protocol）を使うための設定ファイルが含まれています。
 
-- パッケージ: `chrome-devtools-mcp`（バージョンは `package.json` を参照）
-- 設定ファイル:
-  - `mcp/servers.json`
-  - `mcp/config.json`
+- パッケージ: `chrome-devtools-mcp`（バージョンは `package.json` を参照。`.mcp.json` は `node_modules/` 内の同じバージョンを起動します）
+- 設定ファイル: [`.mcp.json`](.mcp.json)（Claude Code がプロジェクトを開くと自動で読み込みます。初回はサーバーの利用を承認してください）
+- 事前に `pnpm install` が必要です
 
 ### 利用可能なスクリプト
 
@@ -464,7 +493,7 @@ FTP では **`dist/baizy/` の中身をそのまま本番の `wp-content/themes/
 
 ### 除外されるもの（抜粋）
 
-`node_modules/`・`.git/`・`.claude/`・`.agents/`・`mcp/`・`sample/`・`scripts/`・`baizy-custom-blocks/`（プラグインは別途デプロイ）・各種設定ファイル（`phpcs.xml`, `package.json`, `pnpm-lock.yaml`, `.prettierrc`, `.npmrc` など）・ドキュメント / レポート類・`.DS_Store` / `*.log` / `*.map`
+`node_modules/`・`.git/`・`.claude/`・`.agents/`・`.mcp.json`・`sample/`・`scripts/`・`baizy-custom-blocks/`（プラグインは別途デプロイ）・各種設定ファイル（`phpcs.xml`, `package.json`, `pnpm-lock.yaml`, `.prettierrc`, `.npmrc` など）・ドキュメント / レポート類・`.DS_Store` / `*.log` / `*.map`
 
 > SCSS ソース（`resources/common/scss/`）は除外していないため `dist/baizy/` に含まれます。本番で不要な場合は `scripts/create_dist.sh` の rsync に `--exclude 'resources/common/scss/'` を追加してください。
 
