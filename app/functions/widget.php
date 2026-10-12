@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // ウィジェットエリアの登録
-function register_theme_widget_areas(): void {
+function baizy_register_theme_widget_areas(): void {
 	register_sidebar(
 		array(
 			'name'          => __( 'ヘッダーメニュー', 'baizy' ),
@@ -53,10 +53,10 @@ function register_theme_widget_areas(): void {
 		)
 	);
 }
-add_action( 'widgets_init', 'register_theme_widget_areas' );
+add_action( 'widgets_init', 'baizy_register_theme_widget_areas' );
 
 // ナビゲーションメニューの登録
-function register_theme_menus(): void {
+function baizy_register_theme_menus(): void {
 	register_nav_menus(
 		array(
 			'header-menu' => __( 'ヘッダーメニュー', 'baizy' ),
@@ -64,4 +64,4 @@ function register_theme_menus(): void {
 		)
 	);
 }
-add_action( 'init', 'register_theme_menus' );
+add_action( 'init', 'baizy_register_theme_menus' );

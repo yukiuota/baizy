@@ -6,22 +6,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 // SEO設定
 
 // body上部タグ埋め込み
-function include_body_top() {
+function baizy_include_body_top() {
 	include get_template_directory() . '/resources/include/tags/body_top.php';
 }
-add_action( 'wp_body_open', 'include_body_top' );
+add_action( 'wp_body_open', 'baizy_include_body_top' );
 
 
 
 // noindex設定（対象を増やす場合は is_singular( 'post_type' ) を条件に追加）
-function single_noindex( array $robots ): array {
+function baizy_single_noindex( array $robots ): array {
 	if ( is_404() || is_category() || is_tag() ) {
 		$robots['noindex']  = true;
 		$robots['nofollow'] = true;
 	}
 	return $robots;
 }
-add_filter( 'wp_robots', 'single_noindex' );
+add_filter( 'wp_robots', 'baizy_single_noindex' );
 
 
 
@@ -93,7 +93,7 @@ function baizy_breadcrumb_items(): array {
 	return $items;
 }
 
-function create_breadcrumb() {
+function baizy_create_breadcrumb() {
 	echo '<div class="p-breadcrumb">' .
 	'<ul class="p-breadcrumb__lists" itemscope itemtype="https://schema.org/BreadcrumbList">';
 
@@ -113,7 +113,7 @@ function create_breadcrumb() {
 
 
 // feed設定
-function mysite_feed_request( $vars ) {
+function baizy_feed_request( $vars ) {
 	if ( isset( $vars['feed'] ) && ! isset( $vars['post_type'] ) ) {
 		$vars['post_type'] = array(
 			'news',
@@ -121,7 +121,7 @@ function mysite_feed_request( $vars ) {
 	}
 	return $vars;
 }
-add_filter( 'request', 'mysite_feed_request' );
+add_filter( 'request', 'baizy_feed_request' );
 
 
 
@@ -129,7 +129,7 @@ add_filter( 'request', 'mysite_feed_request' );
 // カスタム投稿SEO設定
 
 // カスタム投稿アーカイブのメタディスクリプション出力（register_post_type の description を使用）
-function output_custom_post_meta_description() {
+function baizy_output_custom_post_meta_description() {
 	if ( ! is_post_type_archive() ) {
 		return;
 	}
@@ -138,4 +138,4 @@ function output_custom_post_meta_description() {
 		echo '<meta name="description" content="' . esc_attr( $post_type_obj->description ) . '">' . "\n";
 	}
 }
-add_action( 'wp_head', 'output_custom_post_meta_description', 1 );
+add_action( 'wp_head', 'baizy_output_custom_post_meta_description', 1 );

@@ -4,6 +4,6 @@
 <main id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
     <?php the_title(); ?>
     <?php the_content(); ?>
-    <?php display_prev_next_post_links(); ?>
+    <?php baizy_display_prev_next_post_links(); ?>
     <?php endwhile; ?>
 </main>

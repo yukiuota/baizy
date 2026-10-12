@@ -1,8 +1,8 @@
 <?php if ( !defined( 'ABSPATH' ) ) exit;
 
 // ターム一覧
-$terms     = display_terms_of_post( 'sample-category', (int) get_the_ID() );
-$now_terms = display_terms_of_post( 'sample-category' );
+$terms     = baizy_display_terms_of_post( 'sample-category', (int) get_the_ID() );
+$now_terms = baizy_display_terms_of_post( 'sample-category' );
 ?>
 
 
@@ -52,4 +52,4 @@ endif;
 <p>記事がありません。</p>
 <?php endif; ?>
 
-<?php custom_pagination(); ?>
+<?php baizy_custom_pagination(); ?>

@@ -6,13 +6,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 // 管理画面のカスタマイズ
 
 // 管理画面アイコン読み込み
-function enqueue_dashicons() {
+function baizy_enqueue_dashicons() {
 	wp_enqueue_style( 'dashicons' );
 }
-add_action( 'admin_enqueue_scripts', 'enqueue_dashicons' );
+add_action( 'admin_enqueue_scripts', 'baizy_enqueue_dashicons' );
 
 // 管理画面の必要ない項目を非表示
-function remove_menus() {
+function baizy_remove_menus() {
 	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );
 	remove_meta_box( 'dashboard_primary', 'dashboard', 'side' ); // WordPressニュース
 	remove_meta_box( 'dashboard_activity', 'dashboard', 'normal' );
@@ -27,7 +27,7 @@ function remove_menus() {
 	// remove_menu_page( 'tools.php' ); // ツール.
 	// remove_menu_page( 'options-general.php' ); // 設定.
 }
-add_action( 'admin_menu', 'remove_menus', 999 );
+add_action( 'admin_menu', 'baizy_remove_menus', 999 );
 
 
 
@@ -45,7 +45,7 @@ function baizy_get_admin_filter_taxonomies( string $post_type ): array {
 	return array_filter( $taxonomies, fn( $taxonomy ) => $taxonomy->show_ui );
 }
 
-function add_custom_taxonomies_term_filter() {
+function baizy_add_custom_taxonomies_term_filter() {
 	global $post_type;
 
 	foreach ( baizy_get_admin_filter_taxonomies( (string) $post_type ) as $taxonomy => $taxonomy_obj ) {
@@ -87,10 +87,10 @@ function add_custom_taxonomies_term_filter() {
 		echo '</select>';
 	}
 }
-add_action( 'restrict_manage_posts', 'add_custom_taxonomies_term_filter' );
+add_action( 'restrict_manage_posts', 'baizy_add_custom_taxonomies_term_filter' );
 
 // カスタムタクソノミーでの絞り込みクエリを処理
-function filter_posts_by_custom_taxonomy( $query ) {
+function baizy_filter_posts_by_custom_taxonomy( $query ) {
 	global $pagenow;
 
 	// 管理画面の投稿一覧ページのメインクエリでのみ実行
@@ -124,7 +124,7 @@ function filter_posts_by_custom_taxonomy( $query ) {
 		$query->query_vars['tax_query'] = $tax_queries;
 	}
 }
-add_action( 'pre_get_posts', 'filter_posts_by_custom_taxonomy' );
+add_action( 'pre_get_posts', 'baizy_filter_posts_by_custom_taxonomy' );
 
 
 

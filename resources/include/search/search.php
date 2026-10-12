@@ -6,7 +6,7 @@
  * @param array $args 検索フォームの設定オプション
  * @return void
  */
-function custom_search_form(array $args = []): void {
+function baizy_custom_search_form(array $args = []): void {
     // デフォルト設定
     $defaults = [
         'placeholder' => 'キーワードを入力',
@@ -27,7 +27,7 @@ function custom_search_form(array $args = []): void {
 }
 
 // 検索クエリをカスタマイズして全文検索の精度を上げる
-function custom_search_query(WP_Query $query) {
+function baizy_custom_search_query(WP_Query $query) {
     // メインクエリで検索ページの場合のみ処理
     if ($query->is_search() && $query->is_main_query()) {
         // 投稿タイプの指定（必要に応じてカスタマイズ）
@@ -55,10 +55,10 @@ function custom_search_query(WP_Query $query) {
     
     return $query;
 }
-add_filter('pre_get_posts', 'custom_search_query');
+add_filter('pre_get_posts', 'baizy_custom_search_query');
 
 // 検索フォームをショートコードで使えるようにする
-function custom_search_shortcode($atts) {
+function baizy_custom_search_shortcode($atts) {
     $atts = shortcode_atts([
         'placeholder' => 'サイト内を検索',
         'button_text' => '検索',
@@ -66,7 +66,7 @@ function custom_search_shortcode($atts) {
     ], $atts, 'custom_search');
     
     ob_start();
-    custom_search_form($atts);
+    baizy_custom_search_form($atts);
     return ob_get_clean();
 }
-add_shortcode('custom_search', 'custom_search_shortcode');
+add_shortcode('custom_search', 'baizy_custom_search_shortcode');

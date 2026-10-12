@@ -1,7 +1,7 @@
 <?php if ( !defined( 'ABSPATH' ) ) exit;
 
 // 記事に属するターム一覧
-$now_terms = display_terms_of_post( 'sample-category' );
+$now_terms = baizy_display_terms_of_post( 'sample-category' );
 ?>
 
 <?php while ( have_posts() ) : the_post(); ?>
@@ -19,6 +19,6 @@ $now_terms = display_terms_of_post( 'sample-category' );
 
     <?php the_title(); ?>
     <?php the_content(); ?>
-    <?php display_prev_next_post_links(); ?>
+    <?php baizy_display_prev_next_post_links(); ?>
     <?php endwhile; ?>
 </main>

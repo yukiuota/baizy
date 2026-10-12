@@ -17,11 +17,11 @@
 baizy_template_part('resources/include/search/search');
 
 // 引数でカスタマイズすることも可能
-custom_search_form([
+baizy_custom_search_form([
     'placeholder' => 'ブログ内検索',
     'button_text' => '検索する',
     'form_class' => 'header-search-form',
 ]);
 ?>
 
-<?php custom_pagination(); ?>
+<?php baizy_custom_pagination(); ?>

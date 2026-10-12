@@ -34,7 +34,7 @@ add_action( 'init', 'baizy_register_block_pattern_categories' );
 
 
 // 各投稿のブロックの表示・非表示指定
-function restrict_blocks_for_cases( $allowed_blocks, $block_editor_context ) {
+function baizy_restrict_blocks_for_cases( $allowed_blocks, $block_editor_context ) {
 	// 投稿タイプ
 	if ( ! empty( $block_editor_context->post ) && 'news' === $block_editor_context->post->post_type ) {
 		// 許可するブロックを指定（カスタムブロック + WordPress標準ブロック）
@@ -65,14 +65,14 @@ function restrict_blocks_for_cases( $allowed_blocks, $block_editor_context ) {
 	// 他の投稿タイプではすべてのブロックを許可
 	return $allowed_blocks;
 }
-add_filter( 'allowed_block_types_all', 'restrict_blocks_for_cases', 10, 2 );
+add_filter( 'allowed_block_types_all', 'baizy_restrict_blocks_for_cases', 10, 2 );
 
 
 
 
 
 // Gutenbergエディター内でのブロック属性を変更
-function modify_heading_block_attributes() {
+function baizy_modify_heading_block_attributes() {
 	?>
 <script>
 wp.domReady(function() {
@@ -94,10 +94,10 @@ wp.domReady(function() {
 }
 
 // 投稿タイプがnewsの編集画面でのみスクリプトを追加
-function enqueue_heading_script() {
+function baizy_enqueue_heading_script() {
 	$screen = get_current_screen();
 	if ( $screen && 'news' === $screen->post_type && 'post' === $screen->base ) {
-		add_action( 'admin_footer', 'modify_heading_block_attributes' );
+		add_action( 'admin_footer', 'baizy_modify_heading_block_attributes' );
 	}
 }
-add_action( 'current_screen', 'enqueue_heading_script' );
+add_action( 'current_screen', 'baizy_enqueue_heading_script' );
