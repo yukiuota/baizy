@@ -17,7 +17,11 @@ class Security {
 		add_filter( 'oembed_response_data', array( $this, 'remove_author_from_oembed' ) );
 		// XML-RPC を無効化する（パスワード総当たりの踏み台対策。Jetpack 等で必要な場合は削除する）
 		add_filter( 'xmlrpc_enabled', '__return_false' );
+		// xmlrpc_enabled は認証付きメソッドしか止めないため、pingback.ping 等も含め全メソッドを登録解除する
+		add_filter( 'xmlrpc_methods', '__return_empty_array' );
 		add_filter( 'wp_headers', array( $this, 'remove_pingback_header' ) );
+		// <head> の RSD リンク（xmlrpc.php?rsd）を出力しない
+		remove_action( 'wp_head', 'rsd_link' );
 	}
 
 	// X-Pingback ヘッダー（xmlrpc.php の URL）を出力しない
