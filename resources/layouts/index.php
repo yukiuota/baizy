@@ -25,10 +25,11 @@ elseif ( is_page() ) :
     // 1. 階層付きパス（parent/child → resources/pages/parent-child.php）
     // 2. スラッグ（resources/pages/{slug}.php）
     // 3. page-base.php
-    global $wp;
+    // リクエストURLではなく DB 上のページ階層から導出する（クエリ文字列との組み合わせで別テンプレートを読ませない）
     $candidates = array();
-    if ( ! empty( $wp->request ) ) {
-        $candidates[] = 'resources/pages/' . str_replace( '/', '-', $wp->request );
+    $page_uri   = get_page_uri( get_queried_object_id() );
+    if ( $page_uri ) {
+        $candidates[] = 'resources/pages/' . str_replace( '/', '-', $page_uri );
     }
     $candidates[] = 'resources/pages/' . get_post_field( 'post_name' );
     TemplateHelper::first_part( $candidates, 'resources/pages/page-base' );

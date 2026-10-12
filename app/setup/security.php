@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-// ユーザー情報の外部公開を制限する（ログイン ID / ユーザー名の列挙対策）
+// ユーザー情報の外部公開を制限する（ログイン ID / ユーザー名の列挙対策）・XML-RPC の無効化
 class Security {
 
 	public function __construct() {
@@ -15,6 +15,15 @@ class Security {
 		add_action( 'template_redirect', array( $this, 'block_user_exposure_request' ), 0 );
 		add_filter( 'redirect_canonical', array( $this, 'disable_author_canonical_redirect' ) );
 		add_filter( 'oembed_response_data', array( $this, 'remove_author_from_oembed' ) );
+		// XML-RPC を無効化する（パスワード総当たりの踏み台対策。Jetpack 等で必要な場合は削除する）
+		add_filter( 'xmlrpc_enabled', '__return_false' );
+		add_filter( 'wp_headers', array( $this, 'remove_pingback_header' ) );
+	}
+
+	// X-Pingback ヘッダー（xmlrpc.php の URL）を出力しない
+	public function remove_pingback_header( array $headers ): array {
+		unset( $headers['X-Pingback'] );
+		return $headers;
 	}
 
 	// 未ログインからの users エンドポイントを登録解除する

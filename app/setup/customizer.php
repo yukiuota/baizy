@@ -26,7 +26,8 @@ class Customizer {
 			'baizy_head_top_code',
 			array(
 				'default'           => '',
-				'sanitize_callback' => array( $this, 'unslash_code' ),
+				'capability'        => 'unfiltered_html',
+				'sanitize_callback' => array( $this, 'raw_code' ),
 				'transport'         => 'refresh',
 			)
 		);
@@ -49,7 +50,8 @@ class Customizer {
 			'baizy_body_top_code',
 			array(
 				'default'           => '',
-				'sanitize_callback' => array( $this, 'unslash_code' ),
+				'capability'        => 'unfiltered_html',
+				'sanitize_callback' => array( $this, 'raw_code' ),
 				'transport'         => 'refresh',
 			)
 		);
@@ -68,9 +70,10 @@ class Customizer {
 		);
 	}
 
-	public function unslash_code( string $input ): string {
-		// 管理者（edit_theme_options 権限）専用設定のため意図的にサニタイズしない。
+	public function raw_code( string $input ): string {
+		// unfiltered_html 権限を持つユーザー専用設定のため意図的にサニタイズしない。
 		// GTM 等の script タグをそのまま出力する必要があり、wp_kses はタグ内コンテンツを破壊する。
-		return wp_unslash( $input );
+		// カスタマイザーの値は WP 側で unslash 済みのため、ここで再度 unslash すると \ が失われる。
+		return $input;
 	}
 }
