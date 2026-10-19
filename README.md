@@ -50,6 +50,20 @@ Claude Code を使っている場合、`/wp-phpcs` スキルで phpcs チェッ�
 
 PHP のバージョンアップ前に Warning / Deprecation を洗い出す `/wp-warning-audit` スキルもあります（[`.claude/skills/wp-warning-audit/SKILL.md`](.claude/skills/wp-warning-audit/SKILL.md)）。
 
+#### Claude Code スキル `/wp-editable-html`
+
+PHP テンプレートで作ったページを、WordPress 7.1 以降の「カスタム HTML ブロックの中に編集可能なブロックを埋め込む」形式に変換します。デザインの HTML は固定したまま、見出し・段落・リスト・画像だけを管理画面で編集できるようになります。
+
+```
+/wp-editable-html resources/pages/about.php
+```
+
+- 出力は `block-markup/{slug}.html`（管理画面のコードエディターに貼り付ける）。比較用に元の HTML を `block-markup/{slug}.original.html` に保存します
+- ローカルの WordPress（`http://localhost:8080`）のエディターで、ブロックの検証・保存し直したときの書き換わり・元の HTML との DOM 差分を確認します（puppeteer を使用。ログインは docker compose の wpcli で一時 Cookie を発行するか、`WP_USER` / `WP_PASS` を指定）
+- 検証だけを単独で実行することもできます: `node .claude/skills/wp-editable-html/scripts/validate-blocks.cjs block-markup/about.html --compare block-markup/about.original.html`
+
+手順と変換ルールは [`.claude/skills/wp-editable-html/SKILL.md`](.claude/skills/wp-editable-html/SKILL.md) を参照してください。
+
 #### コーディングルール
 
 テーマのコーディングルールは [`.claude/rules/`](.claude/rules/) にまとめています。Claude Code は、編集するファイルに応じて該当するルールを自動で読み込みます。
@@ -142,7 +156,7 @@ baizy/
 ├── .claude/
 │   ├── hooks/          編集時に自動実行するチェック（Claude Code hooks）
 │   ├── rules/          コーディングルール（Claude Code 用）
-│   ├── skills/         Claude Code スキル（wp-phpcs, wp-warning-audit）
+│   ├── skills/         Claude Code スキル（wp-phpcs, wp-warning-audit, wp-editable-html）
 │   └── settings.json   hooks と許可するコマンドの設定
 ├── .mcp.json           Chrome DevTools MCP の設定（Claude Code が自動で読み込む）
 ├── app/
@@ -495,7 +509,7 @@ FTP では **`dist/baizy/` の中身をそのまま本番の `wp-content/themes/
 
 ### 除外されるもの（抜粋）
 
-`node_modules/`・`.git/`・`.claude/`・`.agents/`・`.mcp.json`・`sample/`・`scripts/`・`baizy-custom-blocks/`（プラグインは別途デプロイ）・各種設定ファイル（`phpcs.xml`, `package.json`, `pnpm-lock.yaml`, `.prettierrc`, `.npmrc` など）・ドキュメント / レポート類・`.DS_Store` / `*.log` / `*.map`
+`node_modules/`・`.git/`・`.claude/`・`.agents/`・`.mcp.json`・`sample/`・`block-markup/`・`scripts/`・`baizy-custom-blocks/`（プラグインは別途デプロイ）・各種設定ファイル（`phpcs.xml`, `package.json`, `pnpm-lock.yaml`, `.prettierrc`, `.npmrc` など）・ドキュメント / レポート類・`.DS_Store` / `*.log` / `*.map`
 
 > SCSS ソース（`resources/common/scss/`）は除外していないため `dist/baizy/` に含まれます。本番で不要な場合は `scripts/create_dist.sh` の rsync に `--exclude 'resources/common/scss/'` を追加してください。
 

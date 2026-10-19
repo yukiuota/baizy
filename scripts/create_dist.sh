@@ -35,6 +35,7 @@ rsync -a \
 	--exclude 'vendor/' \
 	--exclude 'dist/' \
 	--exclude 'sample/' \
+	--exclude 'block-markup/' \
 	--exclude 'scripts/' \
 	--exclude 'baizy-custom-blocks/' \
 	--exclude 'baizy-term-color/' \

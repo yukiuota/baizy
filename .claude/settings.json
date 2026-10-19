@@ -21,6 +21,8 @@
       "Bash(node --check *)",
       "Bash(bash scripts/smoke.sh)",
       "Bash(bash scripts/smoke.sh *)",
+      "Bash(bash .claude/skills/wp-editable-html/scripts/fetch-template-html.sh *)",
+      "Bash(node .claude/skills/wp-editable-html/scripts/validate-blocks.cjs *)",
       "Bash(curl -s http://localhost:8080/*)"
     ]
   },
