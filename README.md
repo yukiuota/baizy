@@ -118,6 +118,15 @@ pnpm sass:watch
 | `resources/common/scss/editor-style.scss` | `resources/common/css/editor-style.css` |
 | `resources/common/scss/pages/home.scss` | `resources/common/css/home.css` |
 
+#### ライト表示の固定（ダークモード非対応）
+
+ダークモードには対応せず、ライト表示に固定しています。Safari の [Adaptive Dark Mode](https://webkit.org/blog/18541/introducing-adaptive-dark-mode/) のように、ブラウザが明るいページを自動で暗くする機能を止めるためです。
+
+- [header.php](header.php) の `<meta name="color-scheme" content="light only">`（CSS が読み込まれる前、最初の描画から効く）
+- [resources/common/scss/setting/_reset.scss](resources/common/scss/setting/_reset.scss) の `:root { color-scheme: light only; }`
+
+ダークモードに対応する場合は、両方を `light dark` に変更し、`prefers-color-scheme: dark` 用の配色を用意してください。
+
 ## 主な pnpm スクリプト
 
 ```bash
