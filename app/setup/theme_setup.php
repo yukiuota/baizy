@@ -36,7 +36,7 @@ class ThemeSetup {
 	}
 
 	private function add_theme_supports(): void {
-		add_theme_support( 'automatic-feed-links' );
+		// automatic-feed-links は追加しない（cleanup_wp_head() で feed_links を外しており、<head> にフィードのリンクを出さない方針のため）
 		add_theme_support( 'title-tag' );
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
@@ -54,9 +54,20 @@ class ThemeSetup {
 
 	// 投稿スラッグを body class に追加する（ページ別 CSS の自動 enqueue にも使われる）
 	public function add_slug_to_body_class( array $classes ): array {
-		global $post;
-		if ( isset( $post ) ) {
-			$classes[] = $post->post_name;
+		// 一覧系のページ（ホーム・アーカイブ・検索）では global $post が「1件目の記事」を指すため、詳細ページに限定する
+		if ( ! is_singular() ) {
+			return $classes;
+		}
+
+		$post = get_queried_object();
+		if ( ! $post instanceof \WP_Post ) {
+			return $classes;
+		}
+
+		// 日本語スラッグは %e3%81... の形で保存されていて class としては使えないため、そのまま使えるスラッグだけ追加する
+		$slug = $post->post_name;
+		if ( '' !== $slug && sanitize_html_class( $slug ) === $slug ) {
+			$classes[] = $slug;
 		}
 		return $classes;
 	}

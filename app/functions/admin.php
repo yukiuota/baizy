@@ -121,6 +121,7 @@ function baizy_filter_posts_by_custom_taxonomy( $query ) {
 		if ( count( $tax_queries ) > 1 ) {
 			$tax_queries['relation'] = 'AND'; // 複数条件の場合はANDで結合
 		}
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- 管理画面の一覧をタームで絞り込むための条件で、tax_query 以外では実現できない
 		$query->query_vars['tax_query'] = $tax_queries;
 	}
 }

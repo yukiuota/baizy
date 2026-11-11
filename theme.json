@@ -1,22 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/wp/6.8/theme.json",
   "version": 3,
-  "customTemplates": [{
-      "name": "blank",
-      "postTypes": ["page", "post"],
-      "title": "Blank"
-    },
-    {
-      "name": "blog-alternative",
-      "postTypes": ["page"],
-      "title": "Blog (Alternative)"
-    },
-    {
-      "name": "404",
-      "postTypes": ["page"],
-      "title": "404"
-    }
-  ],
   "settings": {
     "appearanceTools": true,
     "color": {
@@ -27,7 +11,7 @@
         },
         {
           "color": "#000",
-          "name": "Base",
+          "name": "Base Black",
           "slug": "base-black"
         }
       ]
@@ -47,11 +31,6 @@
         "bottom": "var(--wp--preset--spacing--40)",
         "left": "var(--wp--preset--spacing--30)"
       }
-    },
-    "typography": {
-      "fontFamily": "var(--wp--preset--font-family--system-font)",
-      "fontSize": "var(--wp--preset--font-size--medium)",
-      "lineHeight": "1.6"
     }
   }
 }

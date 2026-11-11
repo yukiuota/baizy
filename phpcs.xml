@@ -36,5 +36,5 @@
         </properties>
     </rule>
 
-    <config name="minimum_supported_wp_version" value="6.0"/>
+    <config name="minimum_supported_wp_version" value="6.6"/>
 </ruleset>

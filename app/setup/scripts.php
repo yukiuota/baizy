@@ -40,6 +40,8 @@ class Scripts {
 		foreach ( $css_files as $file ) {
 			$css_map[ basename( $file, '.css' ) ] = $file;
 		}
+		// 全ページ共通の CSS とエディター用 CSS はページ別 CSS ではないため、同名のスラッグがあっても読み込まない
+		unset( $css_map['common'], $css_map['editor-style'] );
 		foreach ( $body_classes as $class_name ) {
 			$filename = sanitize_file_name( $class_name );
 			if ( isset( $css_map[ $filename ] ) ) {

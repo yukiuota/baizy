@@ -207,7 +207,7 @@ baizy/
 
 | 名前空間 | 役割 |
 |---------|------|
-| `Baizy\Setup\ThemeSetup` | テーマサポート追加・wp_head クリーンアップ・wpautop 無効化・投稿スラッグの body class 追加 |
+| `Baizy\Setup\ThemeSetup` | テーマサポート追加・wp_head クリーンアップ・wpautop 無効化・投稿スラッグの body class 追加（詳細ページのみ・半角英数字のスラッグのみ） |
 | `Baizy\Setup\Scripts` | CSS / JS のエンキュー管理（body class と同名のページ別 CSS を自動読み込み） |
 | `Baizy\Setup\Customizer` | カスタマイザーセクション（head / body タグ追加）登録 |
 | `Baizy\Setup\Security` | ユーザー情報の外部公開制限（REST users / users サイトマップ / 著者アーカイブ / oEmbed 著者情報の無効化）・XML-RPC の無効化 |
@@ -222,7 +222,7 @@ baizy/
 
 ### テーマ関数リファレンス
 
-テーマで定義しているグローバル関数の一覧です。すべて `baizy_` プレフィックスを付けています。定義は `app/functions/` 以下（検索フォーム関連のみ `resources/include/search/search.php`）にあります。
+テーマで定義しているグローバル関数の一覧です。すべて `baizy_` プレフィックスを付けています。定義は `app/functions/` 以下にあります。
 
 #### テンプレートで呼び出す関数
 
@@ -237,7 +237,7 @@ baizy/
 | `baizy_create_breadcrumb()` | なし（出力） | Schema.org（BreadcrumbList）に対応したパンくずリストを出力する | `seo.php` |
 | `baizy_breadcrumb_items()` | `array` | パンくずの項目を `[ 'name' => 名前, 'url' => URL ]` の配列で返す。`url` が空の項目はリンクなしで表示する。独自のマークアップでパンくずを組みたいときに使う | `seo.php` |
 | `baizy_display_terms_of_post( $taxonomy, $post_id = null )` | `array` | 投稿に紐づくタームを配列で返す。`$post_id` を省略すると現在の投稿。`TaxonomyModel::get_terms_of_post()` のラッパー | `taxonomy_display.php` |
-| `baizy_custom_search_form( $args = array() )` | なし（出力） | 検索フォームを出力する。`$args` で `placeholder` / `button_text` / `form_class` を変更できる | `search/search.php` |
+| `baizy_custom_search_form( $args = array() )` | なし（出力） | 検索フォームを出力する。`$args` で `placeholder` / `button_text` / `form_class` を変更できる | `search.php` |
 
 ```php
 // タームの取得（各要素のキー: name, name_escaped, slug, slug_escaped, term_id, taxonomy, link, link_escaped）
@@ -255,14 +255,12 @@ baizy_custom_search_form(
 );
 ```
 
-> `baizy_custom_search_form()` などの検索関連の関数は、テンプレート（`resources/include/search/search.php`）の中で定義しています。そのため、このファイルを `baizy_template_part()` で読み込んだ後でしか使えません。
-
 #### ショートコード
 
 | ショートコード | 処理する関数 | 内容 | 定義場所 |
 |--------------|------------|------|---------|
 | `[external_url key="instagram"]` | `baizy_external_url_shortcode()` | `resources/settings/links.json` に登録した URL を返す。キーが未指定・未登録のときは空文字（`WP_DEBUG` 有効時は HTML コメントでエラーを出す） | `global_links.php` |
-| `[custom_search placeholder="" button_text="" form_class=""]` | `baizy_custom_search_shortcode()` | 検索フォームを出力する（`search.php` 読み込み後のみ有効） | `search/search.php` |
+| `[custom_search placeholder="" button_text="" form_class=""]` | `baizy_custom_search_shortcode()` | 検索フォームを出力する | `search.php` |
 
 #### フックで自動実行される関数
 
@@ -278,8 +276,7 @@ baizy_custom_search_form(
 | `baizy_register_theme_menus()` | `init` | メニューの位置（`header-menu` / `footer-menu`）を登録する | `widget.php` |
 | `baizy_register_block_pattern_categories()` | `init` | ブロックパターンのカテゴリー（`sample` / `baizy-hero` など）を登録する | `custom_block.php` |
 | `baizy_restrict_blocks_for_cases( $allowed_blocks, $block_editor_context )` | `allowed_block_types_all` | `news` の編集画面で使えるブロックを、テキスト系・メディア系の標準ブロックに制限する | `custom_block.php` |
-| `baizy_enqueue_heading_script()` | `current_screen` | `news` の編集画面のときだけ、下の `baizy_modify_heading_block_attributes()` を `admin_footer` に登録する | `custom_block.php` |
-| `baizy_modify_heading_block_attributes()` | `admin_footer` | エディター内の見出しブロックに `post-heading01`〜`06` のクラスを付けるスクリプトを出力する | `custom_block.php` |
+| `baizy_enqueue_heading_script()` | `enqueue_block_editor_assets` | `news` の編集画面のときだけ、エディター内の見出しブロックに `post-heading01`〜`06` のクラスを付けるスクリプトを読み込む（エディター内の表示用。保存される HTML には入らない） | `custom_block.php` |
 | `baizy_include_body_top()` | `wp_body_open` | `<body>` 直後にカスタマイザーで設定したコード（`resources/include/tags/body_top.php`）を出力する | `seo.php` |
 | `baizy_single_noindex( $robots )` | `wp_robots` | 404 / カテゴリー / タグページに `noindex, nofollow` を付ける | `seo.php` |
 | `baizy_feed_request( $vars )` | `request` | 投稿タイプ指定のない RSS フィードの対象を `news` にする | `seo.php` |
@@ -295,8 +292,10 @@ baizy_custom_search_form(
 | `baizy_wpcf7_autop_return_false()` | `wpcf7_autop_or_not` | Contact Form 7 が自動で挿入する `<p>` / `<br>` を無効にする | `plugins.php` |
 | `baizy_acf_json_save_point( $_path )` | `acf/settings/save_json` | ACF の JSON 保存先を `data/field-groups/` にする | `acf_json_export.php` |
 | `baizy_acf_json_load_point( $paths )` | `acf/settings/load_json` | ACF の JSON 読み込み先を `data/field-groups/` にする | `acf_json_export.php` |
-| `baizy_scf_export_field_group( $post_id )` | `save_post_smart-cf` | SCF の設定を保存したときに、全設定を `data/field-groups/scf-{ID}.json` に書き出す。削除された設定の JSON は消す | `acf_json_export.php` |
-| `baizy_custom_search_query( $query )` | `pre_get_posts` | 検索の対象を投稿・固定ページにし、カスタムフィールド `_custom_field1` も検索対象に含める（`search.php` 読み込み後のみ有効） | `search/search.php` |
+| `baizy_scf_export_field_group( $post_id, $post )` | `wp_after_insert_post` | SCF の設定（投稿タイプ `smart-custom-fields`）を保存したときに、公開済みの全設定を `data/field-groups/scf-{ID}.json` に書き出す。削除・ゴミ箱・下書きにした設定の JSON は消す | `acf_json_export.php` |
+| `baizy_custom_search_query( $query )` | `pre_get_posts` | フロントの検索の対象を投稿・固定ページにする | `search.php` |
+| `baizy_search_include_meta( $search, $query )` | `posts_search` | フロントの検索で、`baizy_search_meta_keys()` に登録したカスタムフィールドも検索対象に含める（タイトル・本文に一致、またはカスタムフィールドに一致） | `search.php` |
+| `baizy_trim_excerpt( $text, $post )` | `get_the_excerpt` | 抜粋を生成する（コアの `wp_trim_excerpt()` の差し替え）。自動生成の抜粋は本文の `<br>` を残して 120 文字に、手入力の抜粋は改行を `<br>` にする | `excerpt.php` |
 
 #### 内部で使う補助関数
 
@@ -306,7 +305,10 @@ baizy_custom_search_form(
 |------|--------|------|---------|
 | `baizy_cf7_field_labels()` | `array` | 必須エラーに表示する項目名を `フォームタグの name => 項目名` で返す。フォームの項目を変えたらここも更新する | `plugins.php` |
 | `baizy_get_admin_filter_taxonomies( $post_type )` | `WP_Taxonomy[]` | 投稿一覧の絞り込み対象にするタクソノミーを返す（`category` / `post_tag` と、管理画面に表示しないものは除外） | `admin.php` |
-| `baizy_scf_setting_to_array( $setting )` | `array` | SCF の設定オブジェクトを、JSON に書き出す配列に変換する | `acf_json_export.php` |
+| `baizy_scf_setting_to_array( $settings_post )` | `array` | SCF の設定（`smart-custom-fields` の投稿）を、JSON に書き出す配列に変換する | `acf_json_export.php` |
+| `baizy_modify_heading_block_attributes()` | `string` | 見出しブロックに `post-heading01`〜`06` のクラスを付ける JavaScript を返す（`baizy_enqueue_heading_script()` がインラインで出力する） | `custom_block.php` |
+| `baizy_search_meta_keys()` | `string[]` | 検索対象に含めるカスタムフィールドのキーを返す（初期値は見本の `_custom_field1`。使うキーに書き換える。空配列ならカスタムフィールドは検索しない） | `search.php` |
+| `baizy_is_front_search_query( $query )` | `bool` | フロントの検索結果のメインクエリかどうかを返す | `search.php` |
 | `baizy_scf_write_file( $file_path, $contents )` | `bool` | ファイルに書き込む（`WP_Filesystem` を優先し、使えなければ `file_put_contents`） | `acf_json_export.php` |
 | `baizy_scf_log( $message )` | なし | `WP_DEBUG` が有効なときだけ `error_log` にログを出す | `acf_json_export.php` |
 
@@ -333,8 +335,8 @@ add_filter( 'baizy_part__resources/include/header/header_base', function ( $html
 | メソッド | 戻り値 | 内容 |
 |---------|--------|------|
 | `\Baizy\Models\PostModel::get_latest_news( $limit = 5 )` | `WP_Post[]` | 公開済みの `news` を新しい順に取得する |
-| `\Baizy\Models\PageMetaModel::field( $name, $post_id, $default = null )` | `mixed` | ACF のフィールド値を取得する。ACF が無効のときや値が空のときは `$default` を返す |
-| `\Baizy\Models\PageMetaModel::get_hero( $post_id )` | `array` | ヒーローセクション用の `title` / `image` を返す（`hero_title` が空なら投稿タイトル） |
+| `\Baizy\Models\PageMetaModel::field( $name, $post_id, $fallback = null )` | `mixed` | ACF のフィールド値を取得する。ACF が無効のときや値が空のときは `$fallback` を返す |
+| `\Baizy\Models\PageMetaModel::get_hero( $post_id )` | `array` | ヒーローセクション用の `title` / `image` を返す（`hero_title` が空なら投稿タイトル。`$post_id` が 0 なら空文字） |
 | `\Baizy\Models\TaxonomyModel::get_terms_of_post( $taxonomy, $post_id = 0 )` | `array` | 投稿に紐づくタームを配列で返す（`baizy_display_terms_of_post()` の実体） |
 | `\Baizy\Services\ExternalLinksManager::get_url( $key )` | `string` | `links.json` のキーに対応する URL（エスケープ済み）を返す。なければ空文字 |
 | `\Baizy\Services\ExternalLinksManager::get_link( $key )` | `array\|null` | `links.json` のキーに対応する項目を配列で返す |
@@ -453,6 +455,7 @@ $url = \Baizy\Services\ExternalLinksManager::get_url( 'instagram' );
 - **noindex**: 404 / カテゴリー / タグページに `noindex, nofollow` を自動付与します（対象を増やす場合は `baizy_single_noindex()` に条件を追加）
 - **カスタム投稿メタディスクリプション**: カスタム投稿のアーカイブページに、`register_post_type` の `description` をメタディスクリプションとして出力します
 - **フィード**: RSS フィードの対象をカスタム投稿 `news` にしています（`baizy_feed_request()`）
+- **投機的読み込み（Speculation Rules）**: 未ログイン時に、リンク先の事前レンダリングを [resources/include/tags/head_top.php](resources/include/tags/head_top.php) で出力します。WordPress 6.8 以降のコアが出力する同種のルールは、二重にならないよう止めています。管理画面・ログイン画面・クエリ文字列付きの URL と、`rel="nofollow"` / `rel="external"` / `data-no-prerender` 属性の付いたリンクは対象外です
 
 ### ブロックエディター関連（テーマ側）
 
@@ -474,7 +477,7 @@ ACF（Advanced Custom Fields）と SCF（Smart Custom Fields）のフィール�
 #### SCF JSON エクスポート
 
 - SCF のカスタムフィールド設定を `scf-{設定ID}.json` 形式でエクスポート
-- `smart-cf` 投稿タイプの保存時に自動的にエクスポートされます
+- SCF の設定（`smart-custom-fields` 投稿タイプ）の保存時に、公開済みの全設定が自動的にエクスポートされます（設定を削除・ゴミ箱へ移動・下書きに戻すと、対応する JSON も削除されます）
 
 `/data/field-groups/` には `.htaccess` を置き、JSON ファイルへのブラウザからの直接アクセスを禁止しています（Apache の場合。Nginx では別途設定が必要です）。
 

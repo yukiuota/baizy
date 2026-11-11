@@ -13,9 +13,17 @@
   display: block;
 }
 
-/*デフォルトのサンクスメッセージを非表示*/
+/* デフォルトの応答メッセージを非表示（送信成功時はサンクスページへ遷移するため） */
 .wpcf7-response-output {
   display: none;
+}
+
+/* 送信に失敗したとき（メール送信失敗・スパム判定・中断）は、原因が利用者に伝わるよう応答メッセージを表示する */
+/* CF7 が .wpcf7-form に付けるステータスのクラスで判定する */
+.wpcf7-form.failed .wpcf7-response-output,
+.wpcf7-form.spam .wpcf7-response-output,
+.wpcf7-form.aborted .wpcf7-response-output {
+  display: block;
 }
 
 /* 確認画面の反映欄（fieldset）のブラウザ既定の枠線・余白を消す */

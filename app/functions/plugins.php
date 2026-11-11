@@ -29,15 +29,19 @@ add_action( 'wp_enqueue_scripts', 'baizy_enqueue_cf7_assets' );
 function baizy_enqueue_custom_assets_for_specific_page() {
 	global $post;
 	if ( $post instanceof WP_Post && has_shortcode( $post->post_content, 'contact-form-7' ) ) {
+		// 更新時にブラウザのキャッシュが残らないよう、バージョンにはファイルの更新時刻を使う
+		$css_path = BAIZY_THEME_PATH . '/app/plugins/p_cf7/style.css';
+		$js_path  = BAIZY_THEME_PATH . '/app/plugins/p_cf7/form.js';
+
 		// CSSファイルの読み込み
-		wp_enqueue_style( 'custom-page-style', BAIZY_THEME_URI . '/app/plugins/p_cf7/style.css', array(), '1.0.0' );
+		wp_enqueue_style( 'custom-page-style', BAIZY_THEME_URI . '/app/plugins/p_cf7/style.css', array(), file_exists( $css_path ) ? filemtime( $css_path ) : false );
 
 		// JavaScriptファイルの読み込み（jQuery非依存・defer付与）
 		wp_enqueue_script(
 			'custom-page-script',
 			BAIZY_THEME_URI . '/app/plugins/p_cf7/form.js',
 			array(),
-			'1.0.0',
+			file_exists( $js_path ) ? filemtime( $js_path ) : false,
 			array(
 				'in_footer' => true,
 				'strategy'  => 'defer',

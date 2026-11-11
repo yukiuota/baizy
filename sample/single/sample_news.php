@@ -1,7 +1,10 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) exit;
-// newsデータ読み込み
-require_once get_template_directory() . '/app/controller/news.php';
+
+// 【サンプル】コメント欄つきの投稿詳細
+// 表示するデータは Controller で組み立て、ルーター（resources/layouts/index.php）から $args で受け取る
+// 書き方の見本: app/controllers/sample_controller.php / resources/pages/sample_mvc.php
+$custom_text = $args['custom_text'] ?? '';
 ?>
 
 <?php while ( have_posts() ) : the_post(); ?>
@@ -9,7 +12,7 @@ require_once get_template_directory() . '/app/controller/news.php';
 
     <?php if ( $custom_text ) : ?>
     <div class="custom-text">
-        <?php echo '<p>' . esc_html( $custom_text ) . '</p>'; ?>
+        <p><?php echo esc_html( $custom_text ); ?></p>
     </div>
     <?php endif; ?>
 
@@ -19,5 +22,5 @@ require_once get_template_directory() . '/app/controller/news.php';
     }
     ?>
 
-    <?php endwhile; ?>
 </main>
+<?php endwhile; ?>

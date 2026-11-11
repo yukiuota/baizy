@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 | フック名・オプション名・theme_mod | `baizy_` プレフィックス | `baizy_head_top_code` |
 | 定数 | `BAIZY_` プレフィックス + 大文字 | `BAIZY_THEME_URI` |
 
-`resources/` 内で定義する関数（例: `baizy_custom_search_form()`）も同じくプレフィックスを付ける。ショートコードのタグ名（`external_url` / `custom_search`）は投稿本文に書かれているため変更しない。
+関数の定義・フックやショートコードの登録は `resources/` のテンプレートには書かず、`app/functions/` に置く（テンプレートは描画時に読み込まれるため `pre_get_posts` などのフックが間に合わず、同じパーツを2回読み込むと関数の再定義で致命的エラーになる）。ショートコードのタグ名（`external_url` / `custom_search`）は投稿本文に書かれているため変更しない。
 
 ## クラスの書き方
 

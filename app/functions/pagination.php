@@ -25,7 +25,8 @@ function baizy_custom_pagination() {
 	if ( is_array( $pagination_links ) ) {
 		echo '<div id="js-pagination" class="pagination">';
 		foreach ( $pagination_links as $link ) {
-			if ( str_contains( $link, 'current' ) ) {
+			// 現在のページは paginate_links() が付ける aria-current で判定する（URL に current を含むリンクを誤判定しないため）
+			if ( str_contains( $link, 'aria-current="page"' ) ) {
 				echo '<span aria-current="page" class="current">' . wp_kses_post( $link ) . '</span>';
 			} else {
 				echo wp_kses_post( str_replace( '<a', '<a class="cp_pagenum"', $link ) );

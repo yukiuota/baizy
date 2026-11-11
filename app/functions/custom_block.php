@@ -46,6 +46,7 @@ function baizy_restrict_blocks_for_cases( $allowed_blocks, $block_editor_context
 			'core/paragraph',
 			'core/heading',
 			'core/list',
+			'core/list-item', // リストの各項目。許可しないとリストに項目を追加できない
 			'core/quote',
 			'core/code',
 			'core/preformatted',
@@ -59,6 +60,10 @@ function baizy_restrict_blocks_for_cases( $allowed_blocks, $block_editor_context
 			'core/audio',
 			'core/video',
 			'core/file',
+
+			// WordPress標準ブロック - レイアウト（news の初期テンプレートで使用。post_types.php 参照）
+			'core/columns',
+			'core/column',
 		);
 	}
 
@@ -72,32 +77,45 @@ add_filter( 'allowed_block_types_all', 'baizy_restrict_blocks_for_cases', 10, 2 
 
 
 // Gutenbergエディター内でのブロック属性を変更
-function baizy_modify_heading_block_attributes() {
-	?>
-<script>
-wp.domReady(function() {
-	// 見出しブロックのレンダリング後にクラスを追加
-	wp.data.subscribe(function() {
-		var headings = document.querySelectorAll('.wp-block-heading:not(.class-added)');
-		headings.forEach(function(heading) {
-			var tagName = heading.tagName.toLowerCase();
-			var level = tagName.charAt(1); // h1のh後の数字を取得
-			if (level >= 1 && level <= 6) {
-				heading.classList.add('post-heading0' + level);
-				heading.classList.add('class-added'); // 重複処理を防ぐフラグ
+
+/**
+ * エディター内の見出しブロックに post-heading0{レベル} クラスを付けるスクリプトを返す
+ *
+ * エディターの編集領域は iframe の中にあり、管理画面側の document からは見出しの要素を取得できない。
+ * そのため DOM を直接書き換えず、ブロックのラッパーに渡すクラスをフィルターで追加する
+ * （保存される HTML には影響せず、エディター内の表示だけが変わる）。
+ *
+ * @return string JavaScript
+ */
+function baizy_modify_heading_block_attributes(): string {
+	return <<<'JS'
+( function () {
+	var el = wp.element.createElement;
+	var withHeadingClass = wp.compose.createHigherOrderComponent( function ( BlockListBlock ) {
+		return function ( props ) {
+			if ( 'core/heading' !== props.name ) {
+				return el( BlockListBlock, props );
 			}
-		});
-	});
-});
-</script>
-	<?php
+			var level = parseInt( props.attributes.level, 10 ) || 2;
+			var className = ( props.className ? props.className + ' ' : '' ) + 'post-heading0' + level;
+			return el( BlockListBlock, Object.assign( {}, props, { className: className } ) );
+		};
+	}, 'withBaizyHeadingClass' );
+	wp.hooks.addFilter( 'editor.BlockListBlock', 'baizy/heading-class', withHeadingClass );
+} )();
+JS;
 }
 
 // 投稿タイプがnewsの編集画面でのみスクリプトを追加
-function baizy_enqueue_heading_script() {
+function baizy_enqueue_heading_script(): void {
 	$screen = get_current_screen();
-	if ( $screen && 'news' === $screen->post_type && 'post' === $screen->base ) {
-		add_action( 'admin_footer', 'baizy_modify_heading_block_attributes' );
+	if ( ! $screen || 'news' !== $screen->post_type ) {
+		return;
 	}
+
+	// 依存する wp.hooks などの読み込み後に実行させるため、ファイルを持たないハンドルを登録してインラインで出力する
+	wp_register_script( 'baizy-editor-heading', false, array( 'wp-hooks', 'wp-compose', 'wp-element' ), wp_get_theme()->get( 'Version' ), true );
+	wp_enqueue_script( 'baizy-editor-heading' );
+	wp_add_inline_script( 'baizy-editor-heading', baizy_modify_heading_block_attributes() );
 }
-add_action( 'current_screen', 'baizy_enqueue_heading_script' );
+add_action( 'enqueue_block_editor_assets', 'baizy_enqueue_heading_script' );

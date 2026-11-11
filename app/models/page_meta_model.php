@@ -13,15 +13,15 @@ class PageMetaModel {
 	 *
 	 * @param string $name    フィールド名
 	 * @param int    $post_id 投稿ID
-	 * @param mixed  $default フィールドが空・未定義のときに返す値
+	 * @param mixed  $fallback フィールドが空・未定義のときに返す値
 	 * @return mixed
 	 */
-	public static function field( string $name, int $post_id, $default = null ) {
+	public static function field( string $name, int $post_id, $fallback = null ) {
 		if ( ! function_exists( 'get_field' ) || ! $post_id ) {
-			return $default;
+			return $fallback;
 		}
 		$value = get_field( $name, $post_id );
-		return ( null === $value || '' === $value || false === $value ) ? $default : $value;
+		return ( null === $value || '' === $value || false === $value ) ? $fallback : $value;
 	}
 
 	/**
@@ -31,8 +31,12 @@ class PageMetaModel {
 	 * @return array{title:string, image:array|null}
 	 */
 	public static function get_hero( int $post_id ): array {
+		// 投稿IDが 0 のとき get_the_title( 0 ) は「現在の投稿」のタイトルを返してしまうため、空文字にする
+		// （フロントページが「最新の投稿」のときは page_on_front が 0 になる）
+		$default_title = $post_id ? get_the_title( $post_id ) : '';
+
 		return array(
-			'title' => (string) self::field( 'hero_title', $post_id, get_the_title( $post_id ) ),
+			'title' => (string) self::field( 'hero_title', $post_id, $default_title ),
 			'image' => self::field( 'hero_image', $post_id ), // ACF返り値形式「画像配列」を想定
 		);
 	}

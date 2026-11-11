@@ -1,5 +1,9 @@
 <?php 
 if ( !defined( 'ABSPATH' ) ) exit;
+
+// 投機的読み込み（リンク先の事前レンダリング）。WP コア側の出力は app/functions/seo.php で止めている
+// 管理画面・ログイン画面・クエリ文字列付きの URL（ログアウトや nonce 付きのリンクなど）は、
+// 事前に読み込むだけで処理が実行されるおそれがあるため対象外にする
 ?>
 <?php if ( ! is_user_logged_in() ) : ?>
 <script type="speculationrules">
@@ -9,6 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
       "where": {
         "and": [
           { "href_matches": "/*" },
+          { "not": { "href_matches": ["/wp-*.php", "/wp-admin/*", "/*\\?(.+)"] } },
           { "not": { "selector_matches": "[rel~=nofollow]" } },
           { "not": { "selector_matches": "[rel~=external]" } },
           { "not": { "selector_matches": "[data-no-prerender]" } }

@@ -1,64 +1,56 @@
 /************************************
 スムーススクロール
 *************************************/
-// ページ内リンクに対するスムーズスクロール
-const smoothScrollTrigger = document.querySelectorAll('a[href^="#"]');
-const headerHeightOption = 0; // ここに「0」または「1」を指定します（0: 配慮しない, 1: 配慮する）
+const headerHeightOption = 0; // ここに「0」または「1」を指定します（0: ヘッダーの高さを配慮しない, 1: 配慮する）
 
-for (let i = 0; i < smoothScrollTrigger.length; i++) {
-  smoothScrollTrigger[i].addEventListener("click", (e) => {
-    e.preventDefault();
-    let href = smoothScrollTrigger[i].getAttribute("href");
-    let targetElement = document.getElementById(href.replace("#", ""));
-    const rect = targetElement.getBoundingClientRect().top;
-    const offset = window.scrollY;
-    const gap = headerHeightOption === 1 ? document.querySelector(".header").offsetHeight : 0;
-    const target = rect + offset - gap;
-    window.scrollTo({
-      top: target,
-      behavior: "smooth",
-    });
-  });
-}
-
-// 別ページへのリンクに対するスムーズスクロール
+// 対象の要素までスムーズスクロールする
 const smoothScrollToTarget = (targetElement) => {
-  const rect = targetElement.getBoundingClientRect().top;
-  const offset = window.scrollY;
-  const gap = headerHeightOption === 1 ? document.querySelector(".header").offsetHeight : 0;
-  const target = rect + offset - gap;
+  const header = document.querySelector(".header");
+  const gap = headerHeightOption === 1 && header ? header.offsetHeight : 0;
+  const target = targetElement.getBoundingClientRect().top + window.scrollY - gap;
   window.scrollTo({
     top: target,
     behavior: "smooth",
   });
 };
 
-// ページ読み込み時にURLのハッシュ部分の要素へスムーズスクロール
-window.addEventListener("load", () => {
-  const hash = window.location.hash;
-  if (hash) {
-    const targetElement = document.getElementById(hash.replace("#", ""));
+// ハッシュ（#foo）に対応する要素を返す。対象がなければ null
+const getHashTarget = (hash) => {
+  const id = hash.replace(/^#/, "");
+  if (!id) return null;
+  // location.hash は日本語の id を URL エンコードして返すため、復号してから探す
+  try {
+    return document.getElementById(decodeURIComponent(id));
+  } catch {
+    return document.getElementById(id);
+  }
+};
+
+function smoothScroll() {
+  // ページ内リンク（リンク内の子要素をクリックした場合も拾えるよう、document で受けて closest でたどる）
+  document.addEventListener("click", (e) => {
+    const link = e.target instanceof Element ? e.target.closest('a[href^="#"]') : null;
+    if (!link) return;
+
+    const href = link.getAttribute("href");
+    const targetElement = getHashTarget(href);
+    // href="#" など対象の要素がないリンクは、ブラウザ標準の挙動に任せる
+    if (!targetElement) return;
+
+    e.preventDefault();
+    smoothScrollToTarget(targetElement);
+    // 履歴に追加して、ブラウザの「戻る」でスクロール前の位置に戻れるようにする
+    history.pushState(null, "", href);
+  });
+
+  // 別ページから #付きの URL で遷移してきたとき
+  window.addEventListener("load", () => {
+    const targetElement = getHashTarget(window.location.hash);
     if (targetElement) {
       smoothScrollToTarget(targetElement);
     }
-  }
-});
-
-// 別ページへのリンクをクリックしたときのスムーズスクロール
-document.addEventListener("click", (e) => {
-  const targetElement = e.target;
-  if (targetElement.tagName === "A" && targetElement.getAttribute("href").startsWith("#")) {
-    e.preventDefault();
-    const href = targetElement.getAttribute("href");
-    const hash = href.replace("#", "");
-    const targetElementOnDifferentPage = document.getElementById(hash);
-    if (targetElementOnDifferentPage) {
-      smoothScrollToTarget(targetElementOnDifferentPage);
-      // URLのハッシュ部分を更新（ブラウザの履歴に追加）することで、スムーズスクロールした位置に戻るときに対応する要素に移動します。
-      history.pushState(null, null, href);
-    }
-  }
-});
+  });
+}
 
 
 /************************************
@@ -216,6 +208,7 @@ function tabSelect() {
 実行
 *************************************/
 document.addEventListener("DOMContentLoaded", () => {
+  smoothScroll();
   headerMenu();
   slideToggle();
   setUpAccordion();

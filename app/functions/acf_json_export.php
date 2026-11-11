@@ -47,21 +47,32 @@ function baizy_scf_log( string $message ): void {
 }
 
 /**
- * SCF設定オブジェクトをエクスポート用配列に変換
+ * SCF の設定（smart-custom-fields 投稿）をエクスポート用配列に変換
  *
- * @param \Smart_Custom_Fields_Setting $setting SCF設定
+ * 表示条件は SCF の設定クラスにゲッターがないため、SCF が保存している投稿メタから直接読む。
+ *
+ * @param \WP_Post $settings_post SCF の設定を持つ投稿
  * @return array
  */
-function baizy_scf_setting_to_array( $setting ): array {
+function baizy_scf_setting_to_array( \WP_Post $settings_post ): array {
+	// 表示条件のメタは未設定だと空文字で返るため、配列にそろえる
+	$condition = static function ( string $key ) use ( $settings_post ): array {
+		$value = get_post_meta( $settings_post->ID, 'smart-cf-' . $key, true );
+		return is_array( $value ) ? array_values( $value ) : array();
+	};
+
 	$export_data = array(
-		'id'            => $setting->get_id(),
-		'title'         => $setting->get_title(),
-		'menu_order'    => $setting->get_menu_order(),
-		'post_types'    => $setting->get_post_types(),
-		'roles'         => $setting->get_roles(),
-		'options_pages' => $setting->get_options_pages(),
+		'id'            => $settings_post->ID,
+		'title'         => $settings_post->post_title,
+		'menu_order'    => $settings_post->menu_order,
+		'post_types'    => $condition( 'condition' ),
+		'roles'         => $condition( 'roles' ),
+		'taxonomies'    => $condition( 'taxonomies' ),
+		'options_pages' => $condition( 'options-pages' ),
 		'groups'        => array(),
 	);
+
+	$setting = new \Smart_Custom_Fields_Setting( $settings_post->ID, $settings_post->post_title );
 
 	foreach ( $setting->get_groups() as $group ) {
 		$group_data = array(
@@ -74,7 +85,7 @@ function baizy_scf_setting_to_array( $setting ): array {
 			$group_data['fields'][] = array(
 				'name'        => $field->get( 'name' ),
 				'label'       => $field->get( 'label' ),
-				'type'        => $field->get( 'type' ),
+				'type'        => $field->get_attribute( 'type' ),
 				'choices'     => $field->get( 'choices' ),
 				'default'     => $field->get( 'default' ),
 				'instruction' => $field->get( 'instruction' ),
@@ -111,28 +122,30 @@ function baizy_scf_write_file( string $file_path, string $contents ): bool {
 }
 
 /**
- * SCFフィールドグループをJSONへエクスポートする（ファイル名は scf-{数値ID}.json のみ）
+ * SCF の全設定を JSON へエクスポートする（ファイル名は scf-{数値ID}.json のみ）
  *
- * @param int $post_id 投稿ID
+ * @param int           $post_id 保存された投稿の ID
+ * @param \WP_Post|null $post    保存された投稿
  */
-function baizy_scf_export_field_group( $post_id ) {
-	// SCFが有効化されているか確認
-	if ( ! class_exists( 'SCF' ) ) {
+function baizy_scf_export_field_group( $post_id, $post = null ): void {
+	// SCF が有効化されているか確認
+	if ( ! class_exists( 'Smart_Custom_Fields_Setting' ) ) {
 		return;
 	}
 
-	// smart-cf投稿タイプ以外はスキップ
-	if ( get_post_type( $post_id ) !== 'smart-cf' ) {
+	// SCF の設定（投稿タイプ smart-custom-fields）以外はスキップ
+	$post = $post instanceof \WP_Post ? $post : get_post( $post_id );
+	if ( ! $post instanceof \WP_Post || 'smart-custom-fields' !== $post->post_type ) {
 		return;
 	}
 
-	// 権限チェック: 管理者またはエディター以上の権限が必要
+	// 権限チェック: テーマ設定を編集できるユーザー（通常は管理者）のみ
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 
-	// 自動保存、リビジョン、ゴミ箱をスキップ
-	if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) || get_post_status( $post_id ) === 'trash' ) {
+	// 自動保存・リビジョン・新規作成画面を開いただけの自動下書きはスキップ
+	if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) || 'auto-draft' === $post->post_status ) {
 		return;
 	}
 
@@ -144,25 +157,25 @@ function baizy_scf_export_field_group( $post_id ) {
 		return;
 	}
 
-	$settings = SCF::get_settings();
-	if ( empty( $settings ) ) {
-		return;
-	}
+	// SCF が実際に使うのは公開済みの設定だけなので、エクスポートも公開済みに限る
+	// （ゴミ箱へ移動・下書きに戻した設定は、下の削除処理で JSON も消える）
+	$settings_posts = get_posts(
+		array(
+			'post_type'      => 'smart-custom-fields',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'menu_order',
+			'order'          => 'ASC',
+		)
+	);
 
 	// 各設定を個別のファイルとして保存
 	$current_files = array();
-	foreach ( $settings as $setting ) {
-		$setting_id = $setting->get_id();
-
-		// ファイル名は数値IDのみ許可
-		if ( ! ctype_digit( (string) $setting_id ) ) {
-			continue;
-		}
-
-		$filename        = 'scf-' . $setting_id . '.json';
+	foreach ( $settings_posts as $settings_post ) {
+		$filename        = 'scf-' . (int) $settings_post->ID . '.json';
 		$current_files[] = $filename;
 
-		$json = wp_json_encode( baizy_scf_setting_to_array( $setting ), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
+		$json = wp_json_encode( baizy_scf_setting_to_array( $settings_post ), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
 		if ( ! $json || ! baizy_scf_write_file( $data_dir . '/' . $filename, $json ) ) {
 			baizy_scf_log( '書き込みに失敗: ' . $filename );
 		}
@@ -178,4 +191,6 @@ function baizy_scf_export_field_group( $post_id ) {
 }
 
 // SCF設定保存時にエクスポート
-add_action( 'save_post_smart-cf', 'baizy_scf_export_field_group', 10, 1 );
+// SCF は save_post でフィールド定義のメタを保存する。それより先に動く save_post_{post_type} だと
+// 保存前の古い内容を書き出してしまうため、メタの保存まで終わった後の wp_after_insert_post を使う
+add_action( 'wp_after_insert_post', 'baizy_scf_export_field_group', 10, 2 );
