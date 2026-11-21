@@ -40,6 +40,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 - パーツは `get_template_part()` ではなく `baizy_template_part( 'resources/...', $args )` で読み込む（パスは拡張子なし）
 - データは第2引数の `$args` で渡し、受け取る側では `$args['key'] ?? 既定値` でフォールバックを用意する
 
+## 画像
+
+- 画像は `<img>` で置く(テーマの画像は `baizy_img()` / `baizy_img_wh()` で出す)。CSS の `background-image` で画像を出すのは、繰り返して敷く模様だけ(詳しくは `scss.md` の「背景画像」)
+- 背景に見える写真やイラストも `<img>` を重ねて置く。飾りだけの画像は `alt=""` にする
+- ファーストビューの画像は遅延読み込みにしない(`baizy_img_wh( $path, false )`)
+
 ## ビューに書いてよいこと・いけないこと
 
 - ビューは表示に専念する。`get_field()` / `WP_Query` / `get_posts()` を直接書かない。データ取得は Model、組み立ては Controller で行い `$args` で受け取る
